@@ -46,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@+id/loginText" />
 
     <EditText
-        android:id="@+id/inputUserPassword"
+        android:id="@+id/inputUserLoginPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -55,7 +55,7 @@
         android:drawablePadding="10dp"
         android:ems="10"
         android:hint="Hasło"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
         android:paddingRight="10dp"
@@ -76,8 +76,8 @@
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/inputUserPassword"
-        app:layout_constraintTop_toBottomOf="@+id/inputUserPassword" />
+        app:layout_constraintEnd_toEndOf="@+id/inputUserLoginPassword"
+        app:layout_constraintTop_toBottomOf="@+id/inputUserLoginPassword" />
 
     <Button
         android:id="@+id/buttonLogin"
@@ -87,8 +87,8 @@
         android:background="@drawable/btn_bg"
         android:text="ZALOGUJ"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/inputUserPassword"
-        app:layout_constraintStart_toStartOf="@+id/inputUserPassword"
+        app:layout_constraintEnd_toEndOf="@+id/inputUserLoginPassword"
+        app:layout_constraintStart_toStartOf="@+id/inputUserLoginPassword"
         app:layout_constraintTop_toBottomOf="@+id/forgotPassword" />
 
     <TextView

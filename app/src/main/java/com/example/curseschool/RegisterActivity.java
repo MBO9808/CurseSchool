@@ -97,7 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
             showError(inputUserPassword, "Hasło musi mieć więcej niż 7 znaków");
         } else if (userPhoneNumber.isEmpty()) {
             showError(inputUserPhoneNumber, "Nie podano numeru telefonu!");
-        } else if (userPhoneNumber.length() < 7) {
+        } else if (userPhoneNumber.length() <= 7) {
             showError(inputUserPhoneNumber, "Numer telefonu musi mieć więcej niż 9 cyfr");
         } else if (userCity.isEmpty()) {
             showError(inputUserCity, "Nie podano miasta!");
