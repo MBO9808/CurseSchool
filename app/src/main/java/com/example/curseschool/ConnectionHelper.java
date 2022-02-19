@@ -15,7 +15,7 @@ public class ConnectionHelper {
     public Connection getConnection() {
         ip = "192.168.0.31";
         port = "1433";
-        db = "course";
+        db = "schoolCurse";
         username = "mbo";
         pass = "mbo";
         StrictMode.ThreadPolicy tpolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
