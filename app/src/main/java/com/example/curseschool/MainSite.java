@@ -30,14 +30,17 @@ public class MainSite extends AppCompatActivity {
             switch (item.getItemId()){
                 case R.id.mainFragment:
                 fragment = new mainFragment();
+                item.setChecked(true);
                 break;
 
                 case R.id.secondFragment:
                     fragment = new secondFragment();
+                    item.setChecked(true);
                     break;
 
                 case R.id.thirdFragment:
                     fragment = new thirdFragment();
+                    item.setChecked(true);
                     break;
             }
 
