@@ -52,20 +52,22 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                validateFields();
+                try {
+                    validateFields();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
             }
         });
     }
 
-    private void validateFields() {
+    private void validateFields() throws SQLException {
         initializeFields();
         boolean isEmpty = checkIfFieldsEmpty();
         if (!isEmpty) {
-            try {
-                validateLogin();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+            boolean login = validateLogin();
+            if (login)
+                startActivity(new Intent(LoginActivity.this, MainSite.class));
         }
     }
 
@@ -102,7 +104,8 @@ public class LoginActivity extends AppCompatActivity {
         inputField.requestFocus();
     }
 
-    private void validateLogin() throws SQLException {
+    private boolean validateLogin() throws SQLException {
+        boolean loginSucces = false;
         String userEmail = inputUserLogin.getText().toString();
         String userPassword = inputUserPassword.getText().toString();
         ResultSet resultSet = getResultSet(userEmail);
@@ -113,28 +116,31 @@ public class LoginActivity extends AppCompatActivity {
                 String password = resultSet.getString(5);
                 if (!userPassword.equals(password))
                     showError(inputUserPassword, "Nieprawidłowe hasło!");
+                else
+                    loginSucces = true;
             } while (resultSet.next());
         }
+        return loginSucces;
     }
 
-        private ResultSet getResultSet (String userEmail){
-            ResultSet resultSet = null;
-            try {
-                ConnectionHelper connectionHelper = new ConnectionHelper();
-                connect = connectionHelper.getConnection();
-                if (connect != null) {
-                    String query = "Select * from users where email = '" + userEmail + "'";
-                    Statement statement = connect.createStatement();
-                    resultSet = statement.executeQuery(query);
-                } else {
-                    connectionResult = "Check Connection";
-                }
-            } catch (Exception ex) {
-                Log.e("Error :", ex.getMessage());
+    private ResultSet getResultSet(String userEmail) {
+        ResultSet resultSet = null;
+        try {
+            ConnectionHelper connectionHelper = new ConnectionHelper();
+            connect = connectionHelper.getConnection();
+            if (connect != null) {
+                String query = "Select * from users where email = '" + userEmail + "'";
+                Statement statement = connect.createStatement();
+                resultSet = statement.executeQuery(query);
+            } else {
+                connectionResult = "Check Connection";
             }
-
-            return resultSet;
+        } catch (Exception ex) {
+            Log.e("Error :", ex.getMessage());
         }
 
-
+        return resultSet;
     }
+
+
+}
