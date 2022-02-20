@@ -46,7 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
         alreadySignButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                startLoginActivity();
             }
         });
     }
@@ -74,10 +74,12 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void registerNewAccount() {
         boolean emailExists = checkIfEmailExistInDatabase();
-        if (emailExists)
+        if (emailExists) {
             showError(inputUserEmail, "Podany adres email jest już zajęty!");
-
-        addUserToDatabase();
+        } else {
+            addUserToDatabase();
+            startLoginActivity();
+        }
     }
 
     private void addUserToDatabase() {
@@ -245,6 +247,10 @@ public class RegisterActivity extends AppCompatActivity {
             return id;
         else
             return id + 1;
+    }
+
+    private void startLoginActivity() {
+        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
     }
 
 }
