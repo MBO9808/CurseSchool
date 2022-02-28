@@ -231,10 +231,10 @@ public class RegisterActivity extends AppCompatActivity {
                 String query = "Select MAX(id) from users";
                 Statement statement = connect.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
-                connect.close();
                 while (resultSet.next()) {
                     id = resultSet.getInt(1);
                 }
+                connect.close();
 
             } else {
                 connectionResult = "Check Connection";

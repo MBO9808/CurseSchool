@@ -7,6 +7,9 @@
     android:layout_height="match_parent"
     tools:context=".MainSite">
 
+    <include
+        layout="@layout/mainappbar"/>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"

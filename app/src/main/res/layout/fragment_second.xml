@@ -5,18 +5,123 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".secondFragment"
-    >
+    android:background="@drawable/bb">
+    <include
+        layout="@layout/mainappbar"/>
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/userProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SecondFragment"
-        android:textSize="34dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:editable="false"
+        android:text="Dane użytkownika"
+        android:textColor="@color/white"
+        android:textSize="36sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.403" />
+        app:layout_constraintVertical_bias="0.058" />
+
+    <TextView
+        android:id="@+id/userProfileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:drawablePadding="10dp"
+        android:drawableLeft="@drawable/ic_person"
+        android:editable="false"
+        android:text="Imie i nazwisko"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/userProfile"
+        app:layout_constraintStart_toStartOf="@+id/userProfile"
+        app:layout_constraintTop_toBottomOf="@+id/userProfile" />
+
+    <TextView
+        android:id="@+id/userProfileEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:drawableLeft="@drawable/ic_email"
+        android:drawablePadding="10dp"
+        android:editable="false"
+        android:text="Email"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/userProfileName"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="@+id/userProfileName"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileName" />
+
+    <TextView
+        android:id="@+id/userProfilePhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:drawableLeft="@drawable/ic_phone"
+        android:drawablePadding="10dp"
+        android:editable="false"
+        android:text="Telefon"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/userProfileEmail"
+        app:layout_constraintHorizontal_bias="0.371"
+        app:layout_constraintStart_toStartOf="@+id/userProfileEmail"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileEmail" />
+
+    <TextView
+        android:id="@+id/userProfileCity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableLeft="@drawable/ic_home"
+        android:drawablePadding="10dp"
+        android:editable="false"
+        android:text="Miasto"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/userProfilePhone"
+        app:layout_constraintStart_toStartOf="@+id/userProfilePhone"
+        app:layout_constraintTop_toBottomOf="@+id/userProfilePhone" />
+
+    <TextView
+        android:id="@+id/userProfileStreet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:drawableLeft="@drawable/ic_home"
+        android:drawablePadding="10dp"
+        android:duplicateParentState="false"
+        android:editable="false"
+        android:text="Ulica"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/userProfileCity"
+        app:layout_constraintStart_toStartOf="@+id/userProfileCity"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileCity" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

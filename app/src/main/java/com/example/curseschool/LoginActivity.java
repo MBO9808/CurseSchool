@@ -2,14 +2,14 @@ package com.example.curseschool;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import net.sourceforge.jtds.jdbc.JtdsResultSet;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -24,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText inputUserPassword;
     private Connection connect;
     private String connectionResult = "";
+    private String MyPREFERENCES = "userData";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,21 +55,35 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 try {
                     validateFields();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
+                } catch (SQLException throwable) {
+                    throwable.printStackTrace();
                 }
             }
         });
     }
 
     private void validateFields() throws SQLException {
+        startActivity(new Intent(LoginActivity.this, MainSite.class));
         initializeFields();
         boolean isEmpty = checkIfFieldsEmpty();
         if (!isEmpty) {
             boolean login = validateLogin();
-            if (login)
+            if (login) {
+                startUserSession();
                 startActivity(new Intent(LoginActivity.this, MainSite.class));
+            }
         }
+    }
+
+    private void startUserSession() {
+        String userEmail = inputUserLogin.getText().toString();
+        User user = UserUtils.getUserFromEmail(userEmail);
+        SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putInt("id", user.getId());
+        editor.putString("email", user.getEmail());
+        editor.commit();
+        singleToneClass.getInstance().setData(user.getEmail());
     }
 
     private void initializeFields() {
@@ -105,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean validateLogin() throws SQLException {
-        boolean loginSucces = false;
+        boolean loginSuccess = false;
         String userEmail = inputUserLogin.getText().toString();
         String userPassword = inputUserPassword.getText().toString();
         ResultSet resultSet = getResultSet(userEmail);
@@ -117,10 +132,10 @@ public class LoginActivity extends AppCompatActivity {
                 if (!userPassword.equals(password))
                     showError(inputUserPassword, "Nieprawidłowe hasło!");
                 else
-                    loginSucces = true;
+                    loginSuccess = true;
             } while (resultSet.next());
         }
-        return loginSucces;
+        return loginSuccess;
     }
 
     private ResultSet getResultSet(String userEmail) {
