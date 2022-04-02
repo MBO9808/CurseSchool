@@ -223,7 +223,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private int findMaxId() {
-        int id = 1;
+        Integer id = null;
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             connect = connectionHelper.getConnection();
@@ -243,8 +243,8 @@ public class RegisterActivity extends AppCompatActivity {
             Log.e("Error :", ex.getMessage());
         }
 
-        if (id == 1)
-            return id;
+        if (id == null)
+            return 1;
         else
             return id + 1;
     }
