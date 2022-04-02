@@ -2,6 +2,8 @@ package com.example.curseschool;
 
 
 import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +12,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class CourseLanguageAdapter extends RecyclerView.Adapter<CourseLanguageAdapter.LanguageHolder> {
 
     private Context context;
     private ArrayList<CourseLanguage> courseLanguages;
+    private CourseLanguagesDictionary courseLanguagesDictionary;
 
-    public CourseLanguageAdapter(Context context, ArrayList<CourseLanguage> courseLanguages) {
+    public CourseLanguageAdapter(Context context, ArrayList<CourseLanguage> courseLanguages, CourseLanguagesDictionary courseLanguagesDictionary) {
         this.context = context;
         this.courseLanguages = courseLanguages;
+        this.courseLanguagesDictionary = courseLanguagesDictionary;
     }
 
     @NonNull
@@ -42,9 +49,48 @@ public class CourseLanguageAdapter extends RecyclerView.Adapter<CourseLanguageAd
         return courseLanguages.size();
     }
 
+    public Context getContext() {
+        return context;
+    }
+
     public void setCourseLanguages(ArrayList<CourseLanguage> courseLanguageArrayList) {
         this.courseLanguages = courseLanguageArrayList;
         notifyDataSetChanged();
+    }
+
+    public void deleteLanguage(int id){
+        CourseLanguage language = courseLanguages.get(id);
+        deleteItem(language.getId());
+        courseLanguages.remove(id);
+        notifyItemRemoved(id);
+    }
+
+    private void deleteItem(int id){
+        try {
+            ConnectionHelper connectionHelper = new ConnectionHelper();
+            Connection connect = connectionHelper.getConnection();
+            if (connect != null) {
+                String query = "DELETE FROM course_languages WHERE id = " + id;
+                Statement statement = connect.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                connect.close();
+            } else {
+                String connectionResult = "Check Connection";
+            }
+        } catch (Exception ex) {
+            Log.e("Error :", ex.getMessage());
+        }
+    }
+
+    public void editLanguage(int id){
+        CourseLanguage language = courseLanguages.get(id);
+        Bundle bundle = new Bundle();
+        bundle.putInt("id", language.getId());
+        bundle.putString("language", language.getLanguage());
+        NewCourseLanguageHandler handler = new NewCourseLanguageHandler();
+        handler.setArguments(bundle);
+        handler.show(courseLanguagesDictionary.getSupportFragmentManager(), NewCourseLanguageHandler.TAG);
+
     }
 
     class LanguageHolder extends RecyclerView.ViewHolder {
@@ -56,8 +102,9 @@ public class CourseLanguageAdapter extends RecyclerView.Adapter<CourseLanguageAd
             name = itemView.findViewById(R.id.languageName);
         }
 
-        void setDetails(CourseLanguage courseLanguage) {
+       public void setDetails(CourseLanguage courseLanguage) {
             name.setText(courseLanguage.getLanguage());
         }
+
     }
 }

@@ -8,6 +8,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,13 +35,31 @@ public class CourseLanguagesDictionary extends AppCompatActivity implements Lang
         toolbar = findViewById(R.id.mainToolBar);
         toolbar.setTitle("Słownik języków kursów");
         setSupportActionBar(toolbar);
+        initDictionaryView();
+        handleSwipe();
+        handleLanguageList();
+        handleFloatingButton();
+    }
+
+    private void initDictionaryView(){
         recyclerView = findViewById(R.id.languagesDictionary);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         courseLanguageList = new ArrayList<>();
-        courseLanguageAdapter = new CourseLanguageAdapter(this, courseLanguageList);
+        courseLanguageAdapter = new CourseLanguageAdapter(this, courseLanguageList, CourseLanguagesDictionary.this);
         recyclerView.setAdapter(courseLanguageAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+    }
+
+    private void handleLanguageList(){
         courseLanguageList = createLanguageListData();
+    }
+
+    private void handleSwipe(){
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new LanguageDictionaryHelper(courseLanguageAdapter));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    private void handleFloatingButton(){
         newCourseLanguage = findViewById(R.id.addNewLanguage);
         setListenerForNewLanguage();
     }

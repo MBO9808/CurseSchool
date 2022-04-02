@@ -146,15 +146,13 @@ public class NewCourseLanguageHandler extends BottomSheetDialogFragment {
     private void updateLanguage(CourseLanguage courseLanguage) {
         int id = courseLanguage.getId();
         String name = courseLanguage.getLanguage();
-        String query = "UPDATE course_languages SET name = " + name + " WHERE id = " + id;
+        String query = "UPDATE course_languages SET name = '" + name + "' WHERE id = " + id;
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
             if (connect != null) {
-                PreparedStatement preparedStatement = connect.prepareStatement(query);
-                preparedStatement.setString(1, name);
-                preparedStatement.setInt(2, id);
-                preparedStatement.execute();
+                Statement statement = connect.createStatement();
+                statement.executeUpdate(query);
                 connect.close();
 
             } else {
