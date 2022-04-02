@@ -13,12 +13,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link thirdFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class thirdFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
@@ -28,6 +24,9 @@ public class thirdFragment extends Fragment {
     private View view;
     private String MyPREFERENCES = "userData";
     private Toolbar toolbar;
+    private Button settingsUsers;
+    private Button settingsCourseLanguages;
+
 
     public thirdFragment() {
         // Required empty public constructor
@@ -56,6 +55,9 @@ public class thirdFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_third, container, false);
         toolbar = view.findViewById(R.id.mainToolBar);
+        settingsUsers = view.findViewById(R.id.settingsUsers);
+        settingsCourseLanguages = view.findViewById(R.id.settingsCourseLanguage);
+        setSettingsListeners();
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         return view;
     }
@@ -77,5 +79,32 @@ public class thirdFragment extends Fragment {
         editor.clear();
         editor.commit();
         startActivity(new Intent(getActivity(), LoginActivity.class));
+    }
+
+    private void setSettingsListeners(){
+        setSettingsUsersListener();
+        setSettingsCourseLanguagesListener();
+    }
+
+    private void setSettingsUsersListener(){
+        settingsUsers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(view.getId() == settingsUsers.getId()){
+                    startActivity(new Intent(getActivity(), UsersSettings.class));
+                }
+            }
+        });
+    }
+
+    private void setSettingsCourseLanguagesListener(){
+        settingsCourseLanguages.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(view.getId() == settingsCourseLanguages.getId()) {
+                    startActivity(new Intent(getActivity(), CourseLanguagesDictionary.class));
+                }
+            }
+        });
     }
 }
