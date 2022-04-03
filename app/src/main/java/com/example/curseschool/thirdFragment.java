@@ -26,6 +26,7 @@ public class thirdFragment extends Fragment {
     private Toolbar toolbar;
     private Button settingsUsers;
     private Button settingsCourseLanguages;
+    private Button settingsClassRoom;
 
 
     public thirdFragment() {
@@ -57,6 +58,7 @@ public class thirdFragment extends Fragment {
         toolbar = view.findViewById(R.id.mainToolBar);
         settingsUsers = view.findViewById(R.id.settingsUsers);
         settingsCourseLanguages = view.findViewById(R.id.settingsCourseLanguage);
+        settingsClassRoom = view.findViewById(R.id.settingsClassRoom);
         setSettingsListeners();
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         return view;
@@ -84,6 +86,7 @@ public class thirdFragment extends Fragment {
     private void setSettingsListeners(){
         setSettingsUsersListener();
         setSettingsCourseLanguagesListener();
+        setSettingsClassRoomListener();
     }
 
     private void setSettingsUsersListener(){
@@ -103,6 +106,17 @@ public class thirdFragment extends Fragment {
             public void onClick(View view) {
                 if(view.getId() == settingsCourseLanguages.getId()) {
                     startActivity(new Intent(getActivity(), CourseLanguagesDictionary.class));
+                }
+            }
+        });
+    }
+
+    private void setSettingsClassRoomListener(){
+        settingsClassRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(view.getId() == settingsClassRoom.getId()) {
+                    startActivity(new Intent(getActivity(), ClassRoomDictionary.class));
                 }
             }
         });
