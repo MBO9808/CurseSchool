@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">CurseSchool</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name">Kursowo</string>
+    <string name="hello_blank_fragment">Tutaj coś będzie</string>
+    <string name="admin">Administrator</string>
+    <string name="teacher">Nauczyciel</string>
+    <string name="student">Uczeń</string>
 </resources>

@@ -91,7 +91,7 @@ public class RegisterActivity extends AppCompatActivity {
         String userPhoneNumber = inputUserPhoneNumber.getText().toString();
         String userCity = inputUserCity.getText().toString();
         String userPostalCode = inputUserPostalCode.getText().toString();
-        String userType = "admin";
+        String userType = UserKind.student.toString();
         String userStreet = inputUserStreet.getText().toString();
         String query = "INSERT INTO users (id, forename, surname, email, password, phone_number, city, adress, postal_code, user_type, archival) "
                 + " VALUES(?,?,?,?,?,?,?,?,?,?,?)";
