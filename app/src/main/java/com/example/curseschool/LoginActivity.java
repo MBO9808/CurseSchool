@@ -82,6 +82,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putInt("id", user.getId());
         editor.putString("email", user.getEmail());
+        editor.putString("type", user.getType());
         editor.commit();
         singleToneClass.getInstance().setData(user.getEmail());
     }

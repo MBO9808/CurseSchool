@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import java.util.Map;
+
 public class thirdFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
@@ -27,6 +29,7 @@ public class thirdFragment extends Fragment {
     private Button settingsUsers;
     private Button settingsCourseLanguages;
     private Button settingsClassRoom;
+    private Button settingsAboutApp;
 
 
     public thirdFragment() {
@@ -59,6 +62,8 @@ public class thirdFragment extends Fragment {
         settingsUsers = view.findViewById(R.id.settingsUsers);
         settingsCourseLanguages = view.findViewById(R.id.settingsCourseLanguage);
         settingsClassRoom = view.findViewById(R.id.settingsClassRoom);
+        settingsAboutApp = view.findViewById(R.id.settingsAboutApp);
+        handleButtonsVisibility();
         setSettingsListeners();
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         return view;
@@ -81,6 +86,21 @@ public class thirdFragment extends Fragment {
         editor.clear();
         editor.commit();
         startActivity(new Intent(getActivity(), LoginActivity.class));
+    }
+
+    private void handleButtonsVisibility(){
+        SharedPreferences sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String userType = sharedpreferences.getString("type", null);
+        if(userType.equals(UserKind.admin.toString())){
+            settingsCourseLanguages.setVisibility(View.VISIBLE);
+            settingsClassRoom.setVisibility(View.VISIBLE);
+            settingsUsers.setVisibility(View.VISIBLE);
+        } else {
+            settingsCourseLanguages.setVisibility(View.GONE);
+            settingsClassRoom.setVisibility(View.GONE);
+            settingsUsers.setVisibility(View.GONE);
+        }
+
     }
 
     private void setSettingsListeners(){
