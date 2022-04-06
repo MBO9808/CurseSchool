@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CurseSchool">
-        <activity android:name=".CourseAdvancementDictionary"></activity>
+        <activity android:name=".GradeNameDictionary"></activity>
+        <activity android:name=".CourseAdvancementDictionary" />
         <activity android:name=".ClassRoomDictionary" />
         <activity android:name=".CourseLanguagesDictionary" />
         <activity android:name=".UsersSettings" />

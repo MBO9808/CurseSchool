@@ -26,15 +26,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class NewCourseAdvancementHandler extends BottomSheetDialogFragment {
+public class NewGradeNameHandler extends BottomSheetDialogFragment {
 
-    public static final String TAG = "NewCourseAdvancementDialog";
-    private EditText courseAdvancementName;
+    public static final String TAG = "NewGradeNameDialog";
+    private EditText gradeName;
     private Button saveButton;
     private String connectionResult = "";
 
-    public static NewCourseAdvancementHandler newInstance() {
-        return new NewCourseAdvancementHandler();
+    public static NewGradeNameHandler newInstance() {
+        return new NewGradeNameHandler();
     }
 
     @Override
@@ -47,7 +47,7 @@ public class NewCourseAdvancementHandler extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.add_new_course_advancement, container, false);
+        View view = inflater.inflate(R.layout.add_new_grade_name, container, false);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         return view;
     }
@@ -55,21 +55,21 @@ public class NewCourseAdvancementHandler extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        courseAdvancementName = requireView().findViewById(R.id.textAddNewCourseAdvancement);
-        saveButton = requireView().findViewById(R.id.saveNewCourseAdvancement);
+        gradeName = requireView().findViewById(R.id.textAddNewGradeName);
+        saveButton = requireView().findViewById(R.id.saveNewGradeName);
         boolean isUpdate = false;
         final Bundle bundle = getArguments();
 
         if (bundle != null) {
             isUpdate = true;
             String name = bundle.getString("name");
-            courseAdvancementName.setText(name);
+            gradeName.setText(name);
             assert name != null;
             if (name.length() > 0)
                 saveButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.teal_200));
         }
 
-        courseAdvancementName.addTextChangedListener(new TextWatcher() {
+        gradeName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -94,24 +94,24 @@ public class NewCourseAdvancementHandler extends BottomSheetDialogFragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = courseAdvancementName.getText().toString();
-                String text = "Poziom zaawansowania kursu o nazwie " + name + " już istnieje w słowniku.";
+                String name = gradeName.getText().toString();
+                String text = "Typ oceny o nazwie " + name + " już istnieje w słowniku.";
                 if (updated) {
                     int id = bundle.getInt("id");
-                    CourseAdvancement courseAdvancement = new CourseAdvancement(id, name);
-                    boolean classRoomAlreadyExists = isCourseAdvancementAlreadyExists(courseAdvancement);
-                    if (classRoomAlreadyExists == false) {
-                        updateCourseAdvancement(courseAdvancement);
+                    GradeName gradeName = new GradeName(id, name);
+                    boolean gradeNameAlreadyExists = isGradeNameAlreadyExists(gradeName);
+                    if (gradeNameAlreadyExists == false) {
+                        updateGradeName(gradeName);
                         dismiss();
                     } else {
                         Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
                     }
                 } else {
                     int id = findMaxId();
-                    CourseAdvancement courseAdvancement = new CourseAdvancement(id, name);
-                    boolean courseAdvancementAlreadyExists = isCourseAdvancementAlreadyExists(courseAdvancement);
-                    if (courseAdvancementAlreadyExists == false) {
-                        addNewCourseAdvancement(courseAdvancement);
+                    GradeName gradeName = new GradeName(id, name);
+                    boolean gradeNameAlreadyExists = isGradeNameAlreadyExists(gradeName);
+                    if (gradeNameAlreadyExists == false) {
+                        addNewGradeName(gradeName);
                         dismiss();
                     } else {
                         Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
@@ -129,7 +129,7 @@ public class NewCourseAdvancementHandler extends BottomSheetDialogFragment {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
             if (connect != null) {
-                String query = "Select MAX(id) from course_advancement";
+                String query = "Select MAX(id) from grade_type";
                 Statement statement = connect.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
@@ -153,14 +153,14 @@ public class NewCourseAdvancementHandler extends BottomSheetDialogFragment {
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         Activity activity = getActivity();
-        if (activity instanceof CourseAdvancementDialogCloseHandler)
-            ((CourseAdvancementDialogCloseHandler) activity).handleDialogClose(dialog);
+        if (activity instanceof GradeNameDialogCloseHandler)
+            ((GradeNameDialogCloseHandler) activity).handleDialogClose(dialog);
     }
 
-    private void updateCourseAdvancement(CourseAdvancement courseAdvancement) {
-        int id = courseAdvancement.getId();
-        String name = courseAdvancement.getName();
-        String query = "UPDATE course_advancement SET name = '" + name + "' WHERE id = " + id;
+    private void updateGradeName(GradeName gradeName) {
+        int id = gradeName.getId();
+        String name = gradeName.getName();
+        String query = "UPDATE grade_type SET name = '" + name + "' WHERE id = " + id;
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
@@ -177,10 +177,10 @@ public class NewCourseAdvancementHandler extends BottomSheetDialogFragment {
         }
     }
 
-    private void addNewCourseAdvancement(CourseAdvancement courseAdvancement) {
-        int id = courseAdvancement.getId();
-        String name = courseAdvancement.getName();
-        String query = "INSERT INTO course_advancement (id, name) "
+    private void addNewGradeName(GradeName gradeName) {
+        int id = gradeName.getId();
+        String name = gradeName.getName();
+        String query = "INSERT INTO grade_type (id, name) "
                 + " VALUES(?,?)";
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
@@ -200,25 +200,25 @@ public class NewCourseAdvancementHandler extends BottomSheetDialogFragment {
         }
     }
 
-    private boolean isCourseAdvancementAlreadyExists(CourseAdvancement courseAdvancement) {
-        int id = courseAdvancement.getId();
-        String name = courseAdvancement.getName();
-        CourseAdvancement courseAdvancementDb = getCourseAdvancementFromDb(name);
-        if (courseAdvancementDb == null)
+    private boolean isGradeNameAlreadyExists(GradeName gradeName) {
+        int id = gradeName.getId();
+        String name = gradeName.getName();
+        GradeName GradeNameDb = getGradeNameFromDb(name);
+        if (GradeNameDb == null)
             return false;
 
-        int courseAdvancementDbId = courseAdvancementDb.getId();
-        String courseAdvancementDbName = courseAdvancementDb.getName();
-        if (id != courseAdvancementDbId && name.equals(courseAdvancementDbName))
+        int GradeNameDbId = GradeNameDb.getId();
+        String GradeNameDbName = GradeNameDb.getName();
+        if (id != GradeNameDbId && name.equals(GradeNameDbName))
             return true;
 
         return false;
 
     }
 
-    private CourseAdvancement getCourseAdvancementFromDb(String name) {
-        CourseAdvancement courseAdvancement = null;
-        String query = "SELECT * FROM course_advancement WHERE name = '" + name + "'";
+    private GradeName getGradeNameFromDb(String name) {
+        GradeName gradeName = null;
+        String query = "SELECT * FROM grade_type WHERE name = '" + name + "'";
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
@@ -227,8 +227,8 @@ public class NewCourseAdvancementHandler extends BottomSheetDialogFragment {
                 ResultSet resultSet = statement.executeQuery(query);
                 if (resultSet.next() != false) {
                     int id = resultSet.getInt(1);
-                    String nameAdvancement = resultSet.getString(2);
-                    courseAdvancement = new CourseAdvancement(id, nameAdvancement);
+                    String nameGrade = resultSet.getString(2);
+                    gradeName = new GradeName(id, nameGrade);
                 }
                 connect.close();
             } else {
@@ -238,6 +238,6 @@ public class NewCourseAdvancementHandler extends BottomSheetDialogFragment {
             Log.e("Error :", ex.getMessage());
         }
 
-        return courseAdvancement;
+        return gradeName;
     }
 }

@@ -31,6 +31,7 @@ public class thirdFragment extends Fragment {
     private Button settingsClassRoom;
     private Button settingsAboutApp;
     private Button settingsCourseAdvancement;
+    private Button settingGradeType;
 
 
     public thirdFragment() {
@@ -65,6 +66,7 @@ public class thirdFragment extends Fragment {
         settingsClassRoom = view.findViewById(R.id.settingsClassRoom);
         settingsAboutApp = view.findViewById(R.id.settingsAboutApp);
         settingsCourseAdvancement = view.findViewById(R.id.settingsCourseAdvancement);
+        settingGradeType = view.findViewById(R.id.settingsGradeType);
         handleButtonsVisibility();
         setSettingsListeners();
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -98,11 +100,13 @@ public class thirdFragment extends Fragment {
             settingsClassRoom.setVisibility(View.VISIBLE);
             settingsUsers.setVisibility(View.VISIBLE);
             settingsCourseAdvancement.setVisibility(View.VISIBLE);
+            settingGradeType.setVisibility(View.VISIBLE);
         } else {
             settingsCourseLanguages.setVisibility(View.GONE);
             settingsClassRoom.setVisibility(View.GONE);
             settingsUsers.setVisibility(View.GONE);
             settingsCourseAdvancement.setVisibility(View.GONE);
+            settingGradeType.setVisibility(View.GONE);
         }
 
     }
@@ -112,6 +116,7 @@ public class thirdFragment extends Fragment {
         setSettingsCourseLanguagesListener();
         setSettingsClassRoomListener();
         setSettingsCourseAdvancementListener();
+        setSettingsGradeTypeListener();
     }
 
     private void setSettingsUsersListener() {
@@ -153,6 +158,17 @@ public class thirdFragment extends Fragment {
             public void onClick(View view) {
                 if (view.getId() == settingsCourseAdvancement.getId()) {
                     startActivity(new Intent(getActivity(), CourseAdvancementDictionary.class));
+                }
+            }
+        });
+    }
+
+    private void setSettingsGradeTypeListener() {
+        settingGradeType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (view.getId() == settingGradeType.getId()) {
+                    startActivity(new Intent(getActivity(), GradeNameDictionary.class));
                 }
             }
         });

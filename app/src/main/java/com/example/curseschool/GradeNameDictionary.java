@@ -19,21 +19,21 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class CourseAdvancementDictionary extends AppCompatActivity implements CourseAdvancementDialogCloseHandler {
+public class GradeNameDictionary extends AppCompatActivity implements GradeNameDialogCloseHandler {
 
     RecyclerView recyclerView;
 
-    private CourseAdvancementAdapter courseAdvancementAdapter;
-    private ArrayList<CourseAdvancement> courseAdvancements;
+    private GradeNameAdapter gradeNameAdapter;
+    private ArrayList<GradeName> gradeNames;
     private Toolbar toolbar;
-    private FloatingActionButton newCourseAdvancement;
+    private FloatingActionButton newGradeName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_course_advancement_dictionary);
+        setContentView(R.layout.activity_grade_name_dictionary);
         toolbar = findViewById(R.id.mainToolBar);
-        toolbar.setTitle("Słownik poziomów zaawansownia kursu");
+        toolbar.setTitle("Słownik typów ocen");
         setSupportActionBar(toolbar);
         initDictionaryView();
         handleSwipe();
@@ -42,42 +42,42 @@ public class CourseAdvancementDictionary extends AppCompatActivity implements Co
     }
 
     private void initDictionaryView() {
-        recyclerView = findViewById(R.id.courseAdvancementDictionary);
+        recyclerView = findViewById(R.id.gradeNameDictionary);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        courseAdvancements = new ArrayList<>();
-        courseAdvancementAdapter = new CourseAdvancementAdapter(this, courseAdvancements, CourseAdvancementDictionary.this);
-        recyclerView.setAdapter(courseAdvancementAdapter);
+        gradeNames = new ArrayList<>();
+        gradeNameAdapter = new GradeNameAdapter(this, gradeNames, GradeNameDictionary.this);
+        recyclerView.setAdapter(gradeNameAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
     }
 
     private void handleClassRoomList() {
-        courseAdvancements = createCourseAdvancementListData();
+        gradeNames = createGradeNameListData();
     }
 
     private void handleSwipe() {
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new CourseAdvancementHelper(courseAdvancementAdapter));
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new GradeNameDictionaryHelper(gradeNameAdapter));
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     private void handleFloatingButton() {
-        newCourseAdvancement = findViewById(R.id.addNewCourseAdvancement);
+        newGradeName = findViewById(R.id.addNewGradeName);
         setListenerForNewCourseAdvancement();
     }
 
-    private ArrayList<CourseAdvancement> createCourseAdvancementListData() {
-        courseAdvancements.clear();
+    private ArrayList<GradeName> createGradeNameListData() {
+        gradeNames.clear();
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
             if (connect != null) {
-                String query = "Select * from course_advancement order by id asc";
+                String query = "Select * from grade_type order by id asc";
                 Statement statement = connect.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
                     int id = resultSet.getInt(1);
                     String name = resultSet.getString(2);
-                    CourseAdvancement courseAdvancement = new CourseAdvancement(id, name);
-                    courseAdvancements.add(courseAdvancement);
+                    GradeName gradeName = new GradeName(id, name);
+                    gradeNames.add(gradeName);
                 }
                 connect.close();
 
@@ -88,15 +88,15 @@ public class CourseAdvancementDictionary extends AppCompatActivity implements Co
             Log.e("Error :", ex.getMessage());
         }
 
-        return courseAdvancements;
+        return gradeNames;
     }
 
     private void setListenerForNewCourseAdvancement() {
-        newCourseAdvancement.setOnClickListener(new View.OnClickListener() {
+        newGradeName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (view.getId() == newCourseAdvancement.getId()) {
-                    NewCourseAdvancementHandler.newInstance().show(getSupportFragmentManager(), NewCourseAdvancementHandler.TAG);
+                if (view.getId() == newGradeName.getId()) {
+                    NewGradeNameHandler.newInstance().show(getSupportFragmentManager(), NewGradeNameHandler.TAG);
                 }
             }
         });
@@ -104,8 +104,8 @@ public class CourseAdvancementDictionary extends AppCompatActivity implements Co
 
     @Override
     public void handleDialogClose(DialogInterface dialog) {
-        courseAdvancements = createCourseAdvancementListData();
-        courseAdvancementAdapter.setCourseAdvancements(courseAdvancements);
-        courseAdvancementAdapter.notifyDataSetChanged();
+        gradeNames = createGradeNameListData();
+        gradeNameAdapter.setGradeNames(gradeNames);
+        gradeNameAdapter.notifyDataSetChanged();
     }
 }
