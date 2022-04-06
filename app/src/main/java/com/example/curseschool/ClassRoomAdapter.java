@@ -52,8 +52,8 @@ public class ClassRoomAdapter extends RecyclerView.Adapter<ClassRoomAdapter.Clas
         return context;
     }
 
-    public void setClassRooms(ArrayList<ClassRoom> ClassRoomsArrayList) {
-        this.classRooms = ClassRoomsArrayList;
+    public void setClassRooms(ArrayList<ClassRoom> classRoomsArrayList) {
+        this.classRooms = classRoomsArrayList;
         notifyDataSetChanged();
     }
 

@@ -30,6 +30,7 @@ public class thirdFragment extends Fragment {
     private Button settingsCourseLanguages;
     private Button settingsClassRoom;
     private Button settingsAboutApp;
+    private Button settingsCourseAdvancement;
 
 
     public thirdFragment() {
@@ -63,15 +64,16 @@ public class thirdFragment extends Fragment {
         settingsCourseLanguages = view.findViewById(R.id.settingsCourseLanguage);
         settingsClassRoom = view.findViewById(R.id.settingsClassRoom);
         settingsAboutApp = view.findViewById(R.id.settingsAboutApp);
+        settingsCourseAdvancement = view.findViewById(R.id.settingsCourseAdvancement);
         handleButtonsVisibility();
         setSettingsListeners();
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         return view;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()){
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
             case R.id.logoutAppBar:
                 logout();
                 return true;
@@ -80,7 +82,7 @@ public class thirdFragment extends Fragment {
         return false;
     }
 
-    private void logout(){
+    private void logout() {
         SharedPreferences sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.clear();
@@ -88,55 +90,69 @@ public class thirdFragment extends Fragment {
         startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 
-    private void handleButtonsVisibility(){
+    private void handleButtonsVisibility() {
         SharedPreferences sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         String userType = sharedpreferences.getString("type", null);
-        if(userType.equals(UserKind.admin.toString())){
+        if (userType.equals(UserKind.admin.toString())) {
             settingsCourseLanguages.setVisibility(View.VISIBLE);
             settingsClassRoom.setVisibility(View.VISIBLE);
             settingsUsers.setVisibility(View.VISIBLE);
+            settingsCourseAdvancement.setVisibility(View.VISIBLE);
         } else {
             settingsCourseLanguages.setVisibility(View.GONE);
             settingsClassRoom.setVisibility(View.GONE);
             settingsUsers.setVisibility(View.GONE);
+            settingsCourseAdvancement.setVisibility(View.GONE);
         }
 
     }
 
-    private void setSettingsListeners(){
+    private void setSettingsListeners() {
         setSettingsUsersListener();
         setSettingsCourseLanguagesListener();
         setSettingsClassRoomListener();
+        setSettingsCourseAdvancementListener();
     }
 
-    private void setSettingsUsersListener(){
+    private void setSettingsUsersListener() {
         settingsUsers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(view.getId() == settingsUsers.getId()){
+                if (view.getId() == settingsUsers.getId()) {
                     startActivity(new Intent(getActivity(), UsersSettings.class));
                 }
             }
         });
     }
 
-    private void setSettingsCourseLanguagesListener(){
+    private void setSettingsCourseLanguagesListener() {
         settingsCourseLanguages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(view.getId() == settingsCourseLanguages.getId()) {
+                if (view.getId() == settingsCourseLanguages.getId()) {
                     startActivity(new Intent(getActivity(), CourseLanguagesDictionary.class));
                 }
             }
         });
     }
 
-    private void setSettingsClassRoomListener(){
+    private void setSettingsClassRoomListener() {
         settingsClassRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(view.getId() == settingsClassRoom.getId()) {
+                if (view.getId() == settingsClassRoom.getId()) {
                     startActivity(new Intent(getActivity(), ClassRoomDictionary.class));
+                }
+            }
+        });
+    }
+
+    private void setSettingsCourseAdvancementListener() {
+        settingsCourseAdvancement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (view.getId() == settingsCourseAdvancement.getId()) {
+                    startActivity(new Intent(getActivity(), CourseAdvancementDictionary.class));
                 }
             }
         });

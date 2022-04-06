@@ -26,15 +26,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class NewClassRoomHandler extends BottomSheetDialogFragment {
+public class NewCourseAdvancementHandler extends BottomSheetDialogFragment {
 
-    public static final String TAG = "NewClassRoomDialog";
-    private EditText classRoomNumber;
+    public static final String TAG = "NewCourseAdvancementDialog";
+    private EditText courseAdvancementName;
     private Button saveButton;
     private String connectionResult = "";
 
-    public static NewClassRoomHandler newInstance() {
-        return new NewClassRoomHandler();
+    public static NewCourseAdvancementHandler newInstance() {
+        return new NewCourseAdvancementHandler();
     }
 
     @Override
@@ -47,7 +47,7 @@ public class NewClassRoomHandler extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.add_new_class_room, container, false);
+        View view = inflater.inflate(R.layout.add_new_course_advancement, container, false);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         return view;
     }
@@ -55,20 +55,21 @@ public class NewClassRoomHandler extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        classRoomNumber = requireView().findViewById(R.id.textAddNewClassRoom);
-        saveButton = requireView().findViewById(R.id.saveNewClassRoom);
+        courseAdvancementName = requireView().findViewById(R.id.textAddNewCourseAdvancement);
+        saveButton = requireView().findViewById(R.id.saveNewCourseAdvancement);
         boolean isUpdate = false;
         final Bundle bundle = getArguments();
 
         if (bundle != null) {
             isUpdate = true;
-            Integer number = bundle.getInt("number");
-            classRoomNumber.setText(String.valueOf(number));
-            if (number != null)
+            String name = bundle.getString("name");
+            courseAdvancementName.setText(name);
+            assert name != null;
+            if (name.length() > 0)
                 saveButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.teal_200));
         }
 
-        classRoomNumber.addTextChangedListener(new TextWatcher() {
+        courseAdvancementName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -93,24 +94,24 @@ public class NewClassRoomHandler extends BottomSheetDialogFragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Integer number = Integer.valueOf(classRoomNumber.getText().toString());
-                String text = "Sale o numerze " + number + " już istnieje w słowniku.";
+                String name = courseAdvancementName.getText().toString();
+                String text = "Poziom zaawansowania kursu o nazwie " + name + " już istnieje w słowniku.";
                 if (updated) {
                     int id = bundle.getInt("id");
-                    ClassRoom classRoom = new ClassRoom(id, number);
-                    boolean classRoomAlreadyExists = isClassRoomAlreadyExists(classRoom);
-                    if(classRoomAlreadyExists == false) {
-                        updateClassRoom(classRoom);
+                    CourseAdvancement courseAdvancement = new CourseAdvancement(id, name);
+                    boolean classRoomAlreadyExists = isCourseAdvancementAlreadyExists(courseAdvancement);
+                    if (classRoomAlreadyExists == false) {
+                        updateCourseAdvancement(courseAdvancement);
                         dismiss();
                     } else {
                         Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
                     }
                 } else {
                     int id = findMaxId();
-                    ClassRoom classRoom = new ClassRoom(id, number);
-                    boolean classRoomAlreadyExists = isClassRoomAlreadyExists(classRoom);
-                    if(classRoomAlreadyExists == false) {
-                        addNewClassRoom(classRoom);
+                    CourseAdvancement courseAdvancement = new CourseAdvancement(id, name);
+                    boolean courseAdvancementAlreadyExists = isCourseAdvancementAlreadyExists(courseAdvancement);
+                    if (courseAdvancementAlreadyExists == false) {
+                        addNewCourseAdvancement(courseAdvancement);
                         dismiss();
                     } else {
                         Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
@@ -128,7 +129,7 @@ public class NewClassRoomHandler extends BottomSheetDialogFragment {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
             if (connect != null) {
-                String query = "Select MAX(id) from class_room";
+                String query = "Select MAX(id) from course_advancement";
                 Statement statement = connect.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
@@ -156,10 +157,10 @@ public class NewClassRoomHandler extends BottomSheetDialogFragment {
             ((ClassRoomDialogCloseHandler) activity).handleDialogClose(dialog);
     }
 
-    private void updateClassRoom(ClassRoom classRoom) {
-        int id = classRoom.getId();
-        int number = classRoom.getClassRoom();
-        String query = "UPDATE class_room SET number = '" + number + "' WHERE id = " + id;
+    private void updateCourseAdvancement(CourseAdvancement courseAdvancement) {
+        int id = courseAdvancement.getId();
+        String name = courseAdvancement.getName();
+        String query = "UPDATE course_advancement SET name = '" + name + "' WHERE id = " + id;
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
@@ -176,10 +177,10 @@ public class NewClassRoomHandler extends BottomSheetDialogFragment {
         }
     }
 
-    private void addNewClassRoom(ClassRoom classRoom) {
-        int id = classRoom.getId();
-        int number = classRoom.getClassRoom();
-        String query = "INSERT INTO class_room (id, number) "
+    private void addNewCourseAdvancement(CourseAdvancement courseAdvancement) {
+        int id = courseAdvancement.getId();
+        String name = courseAdvancement.getName();
+        String query = "INSERT INTO course_advancement (id, name) "
                 + " VALUES(?,?)";
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
@@ -187,7 +188,7 @@ public class NewClassRoomHandler extends BottomSheetDialogFragment {
             if (connect != null) {
                 PreparedStatement preparedStatement = connect.prepareStatement(query);
                 preparedStatement.setInt(1, id);
-                preparedStatement.setInt(2, number);
+                preparedStatement.setString(2, name);
                 preparedStatement.execute();
                 connect.close();
 
@@ -199,35 +200,35 @@ public class NewClassRoomHandler extends BottomSheetDialogFragment {
         }
     }
 
-    private boolean isClassRoomAlreadyExists(ClassRoom classRoom){
-        int id = classRoom.getId();
-        int number = classRoom.getClassRoom();
-        ClassRoom classRoomDb = getClassRoomFromDb(number);
-        if(classRoomDb == null)
+    private boolean isCourseAdvancementAlreadyExists(CourseAdvancement courseAdvancement) {
+        int id = courseAdvancement.getId();
+        String name = courseAdvancement.getName();
+        CourseAdvancement courseAdvancementDb = getCourseAdvancementFromDb(name);
+        if (courseAdvancementDb == null)
             return false;
 
-        int classRoomDbId = classRoomDb.getId();
-        int classRoomDbName = classRoomDb.getClassRoom();
-        if(id != classRoomDbId && number == classRoomDbName)
+        int courseAdvancementDbId = courseAdvancementDb.getId();
+        String courseAdvancementDbName = courseAdvancementDb.getName();
+        if (id != courseAdvancementDbId && name.equals(courseAdvancementDbName))
             return true;
 
         return false;
 
     }
 
-    private ClassRoom getClassRoomFromDb(int number){
-        ClassRoom classRoom = null;
-        String query = "SELECT * FROM class_room WHERE number = '" + number + "'";
+    private CourseAdvancement getCourseAdvancementFromDb(String name) {
+        CourseAdvancement courseAdvancement = null;
+        String query = "SELECT * FROM course_advancement WHERE name = '" + name + "'";
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
             if (connect != null) {
                 Statement statement = connect.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
-                if(resultSet.next() != false){
+                if (resultSet.next() != false) {
                     int id = resultSet.getInt(1);
-                    int classRoomNo = resultSet.getInt(2);
-                    classRoom = new ClassRoom(id, classRoomNo);
+                    String nameAdvancement = resultSet.getString(2);
+                    courseAdvancement = new CourseAdvancement(id, nameAdvancement);
                 }
                 connect.close();
             } else {
@@ -237,6 +238,6 @@ public class NewClassRoomHandler extends BottomSheetDialogFragment {
             Log.e("Error :", ex.getMessage());
         }
 
-        return classRoom;
+        return courseAdvancement;
     }
 }

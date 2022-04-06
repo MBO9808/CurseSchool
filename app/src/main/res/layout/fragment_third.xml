@@ -26,6 +26,12 @@
         android:text="Słownik sal zajęć" />
 
     <Button
+        android:id="@+id/settingsCourseAdvancement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Słownik poziomów zaawansowania kursów" />
+
+    <Button
         android:id="@+id/settingsAboutApp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
