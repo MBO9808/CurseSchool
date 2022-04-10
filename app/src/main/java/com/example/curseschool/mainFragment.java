@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -32,6 +33,7 @@ public class mainFragment extends Fragment {
     private View view;
     private String MyPREFERENCES = "userData";
     private Toolbar toolbar;
+    private Button courseOverview;
 
     public mainFragment() {
         // Required empty public constructor
@@ -61,7 +63,20 @@ public class mainFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_main, container, false);
         toolbar = view.findViewById(R.id.mainToolBar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        courseOverview = view.findViewById(R.id.courseOverview);
+        setCourseOverviewListener();
         return view;
+    }
+
+    private void setCourseOverviewListener() {
+        courseOverview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (view.getId() == courseOverview.getId()) {
+                    startActivity(new Intent(getActivity(), CourseView.class));
+                }
+            }
+        });
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.curseschool;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,6 +36,13 @@ public class CourseLanguagesDictionary extends AppCompatActivity implements Lang
         toolbar = findViewById(R.id.mainToolBar);
         toolbar.setTitle("Słownik języków kursów");
         setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(CourseLanguagesDictionary.this, MainSite.class));
+            }
+        });
         initDictionaryView();
         handleSwipe();
         handleLanguageList();

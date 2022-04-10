@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,6 +36,13 @@ public class ClassRoomDictionary extends AppCompatActivity implements ClassRoomD
         toolbar = findViewById(R.id.mainToolBar);
         toolbar.setTitle("Słownik sal zajęć");
         setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ClassRoomDictionary.this, MainSite.class));
+            }
+        });
         initDictionaryView();
         handleSwipe();
         handleClassRoomList();
