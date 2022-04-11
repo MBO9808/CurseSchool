@@ -12,9 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CurseSchool">
-        <activity android:name=".CourseView"
-            android:parentActivityName=".MainSite"
-            ></activity>
+        <activity android:name=".StudentGradesTeacherView"></activity>
+        <activity android:name=".GradeCourseStudentsListView" />
+        <activity android:name=".GradeCourseTeacherView" />
+        <activity
+            android:name=".CourseView"
+            android:parentActivityName=".MainSite" />
         <activity android:name=".GradeNameDictionary" />
         <activity android:name=".CourseAdvancementDictionary" />
         <activity android:name=".ClassRoomDictionary" />

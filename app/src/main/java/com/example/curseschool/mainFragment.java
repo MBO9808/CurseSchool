@@ -34,6 +34,7 @@ public class mainFragment extends Fragment {
     private String MyPREFERENCES = "userData";
     private Toolbar toolbar;
     private Button courseOverview;
+    private Button teacherGradeView;
 
     public mainFragment() {
         // Required empty public constructor
@@ -62,9 +63,11 @@ public class mainFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_main, container, false);
         toolbar = view.findViewById(R.id.mainToolBar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         courseOverview = view.findViewById(R.id.courseOverview);
+        teacherGradeView = view.findViewById(R.id.teachersGradeView);
         setCourseOverviewListener();
+        setTeacherGradeViewListener();
         return view;
     }
 
@@ -79,9 +82,20 @@ public class mainFragment extends Fragment {
         });
     }
 
+    private void setTeacherGradeViewListener() {
+        teacherGradeView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (view.getId() == teacherGradeView.getId()) {
+                    startActivity(new Intent(getActivity(), GradeCourseTeacherView.class));
+                }
+            }
+        });
+    }
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()){
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
             case R.id.logoutAppBar:
                 logout();
                 return true;
@@ -90,7 +104,7 @@ public class mainFragment extends Fragment {
         return false;
     }
 
-    private void logout(){
+    private void logout() {
         SharedPreferences sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.clear();

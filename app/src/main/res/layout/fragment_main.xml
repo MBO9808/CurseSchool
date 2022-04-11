@@ -15,6 +15,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Przeglądaj kursy" />
+    <Button
+        android:id="@+id/teachersGradeView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Dziennik ocen" />
+
+    <Button
+        android:id="@+id/studentGradeView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Oceny" />
 
 
 </LinearLayout>
