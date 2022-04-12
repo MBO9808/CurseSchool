@@ -61,6 +61,7 @@ public class thirdFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_third, container, false);
         toolbar = view.findViewById(R.id.mainToolBar);
+        toolbar.setTitle("Ustawienia");
         settingsUsers = view.findViewById(R.id.settingsUsers);
         settingsCourseLanguages = view.findViewById(R.id.settingsCourseLanguage);
         settingsClassRoom = view.findViewById(R.id.settingsClassRoom);

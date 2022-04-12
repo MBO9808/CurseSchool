@@ -46,4 +46,38 @@ public class UserUtils {
         return user;
 
     }
+
+    public static User getUserById(int id) {
+        User user = new User();
+        try {
+            ConnectionHelper connectionHelper = new ConnectionHelper();
+            Connection connect = connectionHelper.getConnection();
+            if (connect != null) {
+                String query = "Select * from users where id = '" + id + "'";
+                Statement statement = connect.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                while (resultSet.next()) {
+                    user.setId(resultSet.getInt(1));
+                    user.setFirstName(resultSet.getString(2));
+                    user.setLastName(resultSet.getString(3));
+                    user.setEmail(resultSet.getString(4));
+                    user.setPhoneNumber(resultSet.getString(6));
+                    user.setCity(resultSet.getString(7));
+                    user.setStreet(resultSet.getString(8));
+                    user.setType(resultSet.getString(9));
+                    user.setArchival(resultSet.getBoolean(10));
+                    user.setPostalCode(resultSet.getString(11));
+                }
+                connect.close();
+
+            } else {
+                String connectionResult = "Check Connection";
+            }
+        } catch (Exception ex) {
+            Log.e("Error :", ex.getMessage());
+        }
+
+        return user;
+
+    }
 }

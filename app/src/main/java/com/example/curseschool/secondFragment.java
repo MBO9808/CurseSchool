@@ -56,6 +56,7 @@ public class secondFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_second, container, false);
         toolbar = view.findViewById(R.id.mainToolBar);
+        toolbar.setTitle("Profil");
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         setUserProfileData(view);
         return view;
