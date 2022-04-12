@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CurseSchool">
-        <activity android:name=".StudentGradesTeacherView"></activity>
+        <activity android:name=".GradesStudentView"></activity>
+        <activity android:name=".GradesStudentCourseView" />
+        <activity android:name=".StudentGradesTeacherView" />
         <activity android:name=".GradeCourseStudentsListView" />
         <activity android:name=".GradeCourseTeacherView" />
         <activity

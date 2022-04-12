@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -35,6 +36,7 @@ public class mainFragment extends Fragment {
     private Toolbar toolbar;
     private Button courseOverview;
     private Button teacherGradeView;
+    private Button studentGradeView;
 
     public mainFragment() {
         // Required empty public constructor
@@ -66,8 +68,10 @@ public class mainFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         courseOverview = view.findViewById(R.id.courseOverview);
         teacherGradeView = view.findViewById(R.id.teachersGradeView);
+        studentGradeView = view.findViewById(R.id.studentGradeView);
         setCourseOverviewListener();
         setTeacherGradeViewListener();
+        setStudentGradeViewListener();
         return view;
     }
 
@@ -88,6 +92,17 @@ public class mainFragment extends Fragment {
             public void onClick(View view) {
                 if (view.getId() == teacherGradeView.getId()) {
                     startActivity(new Intent(getActivity(), GradeCourseTeacherView.class));
+                }
+            }
+        });
+    }
+
+    private void setStudentGradeViewListener() {
+        studentGradeView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (view.getId() == studentGradeView.getId()) {
+                    startActivity(new Intent(getActivity(), GradesStudentCourseView.class));
                 }
             }
         });
