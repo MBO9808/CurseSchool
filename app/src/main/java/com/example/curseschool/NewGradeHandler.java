@@ -36,9 +36,16 @@ public class NewGradeHandler extends BottomSheetDialogFragment {
     private Button saveButton;
     private String connectionResult = "";
     private ArrayList<String> gradeNames = new ArrayList<>();
+    private int studentId;
+    private int courseId;
 
-    public static NewGradeHandler newInstance() {
-        return new NewGradeHandler();
+    public NewGradeHandler(int studentId, int courseId) {
+        this.studentId = studentId;
+        this.courseId = courseId;
+    }
+
+    public static NewGradeHandler newInstance(int studentId, int courseId) {
+        return new NewGradeHandler(studentId, courseId);
     }
 
     @Override
@@ -109,15 +116,18 @@ public class NewGradeHandler extends BottomSheetDialogFragment {
                 Float value = Float.valueOf(gradeText.getText().toString());
                 int gradePosition = gradeType.getSelectedItemPosition();
                 String name = gradeNames.get(gradePosition);
-                int gradeId = getGradeId(name);
+                int gradeId = getGradeNameId(name);
                 if (updated) {
                     int id = bundle.getInt("id");
                     updateGrade(id, gradeId, value);
                     dismiss();
                 } else {
                     int id = findMaxId();
-                    Object selectedItem = gradeType.getSelectedItem();
-                    Grade grade = null;
+                    int gradePos = gradeType.getSelectedItemPosition();
+                    String gradeN = gradeNames.get(gradePos);
+                    int gradeNameId = getGradeNameId(gradeN);
+                    Float valueGrade = Float.valueOf(gradeText.getText().toString());
+                    Grade grade = new Grade(id, studentId, courseId, gradeNameId, valueGrade);
                     addNewGrade(grade);
                     dismiss();
                 }
@@ -240,7 +250,7 @@ public class NewGradeHandler extends BottomSheetDialogFragment {
         return name;
     }
 
-    private int getGradeId(String gradeName) {
+    private int getGradeNameId(String gradeName) {
         ArrayList<GradeName> gradeNamesList = getFullGradeNameListData();
         int gradeId = 0;
         for (GradeName grade : gradeNamesList) {

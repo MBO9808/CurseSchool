@@ -87,7 +87,7 @@ public class StudentGradesTeacherAdapter extends RecyclerView.Adapter<StudentGra
         bundle.putInt("id", grade.getId());
         bundle.putFloat("gradeValue", grade.getGrade());
         bundle.putInt("gradeTypeId", grade.getGradeNameId());
-        NewGradeHandler handler = new NewGradeHandler();
+        NewGradeHandler handler = new NewGradeHandler(grade.getStudentId(), grade.getCourseId());
         handler.setArguments(bundle);
         handler.show(studentGradesTeacherView.getSupportFragmentManager(), NewGradeHandler.TAG);
 

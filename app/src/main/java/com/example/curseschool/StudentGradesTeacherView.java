@@ -28,25 +28,58 @@ public class StudentGradesTeacherView extends AppCompatActivity implements Stude
     private ArrayList<Grade> gradeArrayList;
     private Toolbar toolbar;
     private FloatingActionButton newGrade;
+    private int studentId;
+    private int courseId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_grades_teacher_view);
+        studentId = getIntent().getIntExtra("studentId", 0);
+        courseId = getIntent().getIntExtra("courseId", 0);
+        String studentName = getStudentName(studentId);
         toolbar = findViewById(R.id.mainToolBar);
-        toolbar.setTitle("Lista ocen studenta");
+        toolbar.setTitle("Lista ocen studenta: " + studentName);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(StudentGradesTeacherView.this, GradeCourseStudentsListView.class));
+                Intent intent = new Intent(StudentGradesTeacherView.this, GradeCourseStudentsListView.class);
+                intent.putExtra("courseId", courseId);
+                startActivity(intent);
             }
         });
         initDictionaryView();
         handleSwipe();
         handleLanguageList();
         handleFloatingButton();
+    }
+
+    private String getStudentName(int studentId) {
+        String studentName = "";
+        try {
+            ConnectionHelper connectionHelper = new ConnectionHelper();
+            Connection connect = connectionHelper.getConnection();
+            if (connect != null) {
+                String query = "Select * from users where id = " + studentId;
+                Statement statement = connect.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                while (resultSet.next()) {
+                    String forename = resultSet.getString(2);
+                    String surname = resultSet.getString(3);
+                    studentName = forename + " " + surname;
+                }
+                connect.close();
+
+            } else {
+                String connectionResult = "Check Connection";
+            }
+        } catch (Exception ex) {
+            Log.e("Error :", ex.getMessage());
+        }
+
+        return studentName;
     }
 
     private void initDictionaryView() {
@@ -78,7 +111,7 @@ public class StudentGradesTeacherView extends AppCompatActivity implements Stude
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
             if (connect != null) {
-                String query = "Select * from grades";
+                String query = "Select * from grades where student_id = " + studentId + " and course_id = " + courseId;
                 Statement statement = connect.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
@@ -107,7 +140,7 @@ public class StudentGradesTeacherView extends AppCompatActivity implements Stude
             @Override
             public void onClick(View view) {
                 if (view.getId() == newGrade.getId()) {
-                    NewGradeHandler.newInstance().show(getSupportFragmentManager(), NewGradeHandler.TAG);
+                    NewGradeHandler.newInstance(studentId, courseId).show(getSupportFragmentManager(), NewGradeHandler.TAG);
                 }
             }
         });
