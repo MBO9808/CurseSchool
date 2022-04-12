@@ -37,6 +37,10 @@ public class RegisterActivity extends AppCompatActivity {
         handleRegister();
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
     private void handleAlreadyHaveAccount() {
         alreadySignButton = findViewById(R.id.alreadySigned);
         goBackToLogin();

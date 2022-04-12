@@ -34,6 +34,10 @@ public class LoginActivity extends AppCompatActivity {
         login();
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
     private void goToRegister() {
         registerButton = findViewById(R.id.noAccountTextView);
         startRegisterActivity();

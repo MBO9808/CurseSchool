@@ -42,12 +42,21 @@ public class CourseView extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    startActivity(new Intent(CourseView.this, MainSite.class));
+                Intent intent = new Intent(CourseView.this, MainSite.class);
+                intent.putExtra("Navigation", 1);
+                startActivity(intent);
             }
         });
         initDictionaryView();
         handleCoursesList();
         handleFloatingButton();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(CourseView.this, MainSite.class);
+        intent.putExtra("Navigation", 1);
+        startActivity(intent);
     }
 
     private void initDictionaryView(){

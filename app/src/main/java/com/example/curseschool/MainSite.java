@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -32,17 +33,33 @@ public class MainSite extends AppCompatActivity {
         navigationBarView.setOnNavigationItemSelectedListener(bottomNavMethod);
         getSupportFragmentManager().beginTransaction().replace(R.id.mainSite, new mainFragment()).commit();
         setSupportActionBar(toolbar);
+        int navigationId = getIntent().getIntExtra("Navigation", 1);
+        setNavigationSelected(navigationId);
+    }
+
+    private void setNavigationSelected(int navigationId) {
+        if (navigationId == 2) {
+            navigationBarView.setSelectedItemId(R.id.secondFragment);
+        } else if (navigationId == 3) {
+            navigationBarView.setSelectedItemId(R.id.thirdFragment);
+        } else {
+            navigationBarView.setSelectedItemId(R.id.mainFragment);
+        }
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public void onBackPressed() {
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.appbar_menu, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()){
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
             case R.id.logoutAppBar:
                 logout();
                 return true;
@@ -51,7 +68,7 @@ public class MainSite extends AppCompatActivity {
         return false;
     }
 
-    private void logout(){
+    private void logout() {
         SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.clear();
@@ -63,11 +80,11 @@ public class MainSite extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment fragment = null;
-            switch (item.getItemId()){
+            switch (item.getItemId()) {
                 case R.id.mainFragment:
-                fragment = new mainFragment();
-                item.setChecked(true);
-                break;
+                    fragment = new mainFragment();
+                    item.setChecked(true);
+                    break;
 
                 case R.id.secondFragment:
                     fragment = new secondFragment();

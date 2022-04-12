@@ -40,13 +40,22 @@ public class CourseAdvancementDictionary extends AppCompatActivity implements Co
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(CourseAdvancementDictionary.this, MainSite.class));
+                Intent intent = new Intent(CourseAdvancementDictionary.this, MainSite.class);
+                intent.putExtra("Navigation", 3);
+                startActivity(intent);
             }
         });
         initDictionaryView();
         handleSwipe();
         handleClassRoomList();
         handleFloatingButton();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(CourseAdvancementDictionary.this, MainSite.class);
+        intent.putExtra("Navigation", 3);
+        startActivity(intent);
     }
 
     private void initDictionaryView() {
