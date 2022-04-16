@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:scrollbars="vertical"
     android:orientation="vertical"
-    tools:context=".CalendarView">
+    tools:context=".ScheduleView.CalendarView">
 
     <include layout="@layout/mainappbar" />
 

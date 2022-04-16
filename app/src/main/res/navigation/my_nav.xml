@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.curseschool.mainFragment"
+        android:name="com.example.curseschool.MainView.mainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" />
     <fragment
         android:id="@+id/secondFragment"
-        android:name="com.example.curseschool.secondFragment"
+        android:name="com.example.curseschool.MainView.secondFragment"
         android:label="fragment_second"
         tools:layout="@layout/fragment_second" />
     <fragment
         android:id="@+id/thirdFragment"
-        android:name="com.example.curseschool.thirdFragment"
+        android:name="com.example.curseschool.MainView.thirdFragment"
         android:label="fragment_third"
         tools:layout="@layout/fragment_third" />
 </navigation>

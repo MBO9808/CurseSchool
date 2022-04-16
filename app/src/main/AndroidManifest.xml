@@ -12,29 +12,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CurseSchool">
-        <activity android:name=".CalendarView"></activity>
-        <activity android:name=".GradesStudentView" />
-        <activity android:name=".GradesStudentCourseView" />
-        <activity android:name=".StudentGradesTeacherView" />
-        <activity android:name=".GradeCourseStudentsListView" />
-        <activity android:name=".GradeCourseTeacherView" />
+        <activity android:name=".ScheduleView.CalendarView"></activity>
+        <activity android:name=".StudentGradesView.GradesStudentView" />
+        <activity android:name=".StudentGradesView.GradesStudentCourseView" />
+        <activity android:name=".TeacherGradesView.StudentGradesTeacherView" />
+        <activity android:name=".TeacherGradesView.GradeCourseStudentsListView" />
+        <activity android:name=".TeacherGradesView.GradeCourseTeacherView" />
         <activity
-            android:name=".CourseView"
-            android:parentActivityName=".MainSite" />
-        <activity android:name=".GradeNameDictionary" />
-        <activity android:name=".CourseAdvancementDictionary" />
-        <activity android:name=".ClassRoomDictionary" />
-        <activity android:name=".CourseLanguagesDictionary" />
-        <activity android:name=".UsersSettings" />
-        <activity android:name=".MainSite" />
-        <activity android:name=".LoginActivity">
+            android:name=".CourseView.CourseView"
+            android:parentActivityName=".MainView.MainSite" />
+        <activity android:name=".Dictionaries.GradeNameDictionary" />
+        <activity android:name=".Dictionaries.CourseAdvancementDictionary" />
+        <activity android:name=".Dictionaries.ClassRoomDictionary" />
+        <activity android:name=".Dictionaries.CourseLanguagesDictionary" />
+        <activity android:name=".Dictionaries.UsersSettings" />
+        <activity android:name=".MainView.MainSite" />
+        <activity android:name=".LoginActivity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".RegisterActivity.RegisterActivity" />
         <activity android:name=".MainActivity" />
     </application>
 
