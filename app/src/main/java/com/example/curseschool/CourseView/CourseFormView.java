@@ -10,16 +10,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Toast;
 
 import com.example.curseschool.Adapters.CourseFormAdapter;
 import com.example.curseschool.Objects.User;
 import com.example.curseschool.R;
 import com.example.curseschool.UserUtils.UserKind;
 import com.example.curseschool.UserUtils.UserUtils;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
@@ -33,9 +29,6 @@ public class CourseFormView extends AppCompatActivity {
     private TabItem studentTab;
     private String MyPREFERENCES = "userData";
     private int currentUserId;
-    private ExtendedFloatingActionButton fabOptions, fabEdit, fabArchive;
-    private Animation fabOpen, fabClose, rotateForward, rotateBackward;
-    private boolean isFabOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

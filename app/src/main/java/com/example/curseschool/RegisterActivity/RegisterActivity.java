@@ -102,8 +102,9 @@ public class RegisterActivity extends AppCompatActivity {
         String userPostalCode = inputUserPostalCode.getText().toString();
         String userType = UserKind.student.toString();
         String userStreet = inputUserStreet.getText().toString();
-        String query = "INSERT INTO users (id, forename, surname, email, password, phone_number, city, adress, postal_code, user_type, archival) "
-                + " VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+        String idn = "Z00" + userId;
+        String query = "INSERT INTO users (id, forename, surname, email, password, phone_number, city, adress, postal_code, user_type, archival, idn) "
+                + " VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
 
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
@@ -121,6 +122,7 @@ public class RegisterActivity extends AppCompatActivity {
                 preparedStatement.setString(9, userPostalCode);
                 preparedStatement.setString(10, userType);
                 preparedStatement.setBoolean(11, false);
+                preparedStatement.setString(12, idn);
                 preparedStatement.execute();
                 connect.close();
 

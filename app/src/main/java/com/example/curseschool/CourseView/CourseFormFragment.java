@@ -3,11 +3,6 @@ package com.example.curseschool.CourseView;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,14 +13,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.example.curseschool.Helpers.ConnectionHelper;
 import com.example.curseschool.Objects.Course;
 import com.example.curseschool.Objects.CourseDate;
-import com.example.curseschool.Objects.CourseLanguage;
-import com.example.curseschool.Objects.Student;
-import com.example.curseschool.Objects.User;
 import com.example.curseschool.R;
-import com.example.curseschool.UserUtils.UserUtils;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.sql.Connection;

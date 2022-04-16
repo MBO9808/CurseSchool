@@ -17,7 +17,7 @@ public class UserUtils {
     }
 
     private static User getUserData(String email) {
-        User user = new User();
+        User user = null;
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
@@ -36,6 +36,7 @@ public class UserUtils {
                     user.setType(resultSet.getString(9));
                     user.setArchival(resultSet.getBoolean(10));
                     user.setPostalCode(resultSet.getString(11));
+                    user.setIdn(resultSet.getString(12));
                 }
                 connect.close();
 
@@ -51,7 +52,7 @@ public class UserUtils {
     }
 
     public static User getUserById(int id) {
-        User user = new User();
+        User user = null;
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
@@ -70,6 +71,7 @@ public class UserUtils {
                     user.setType(resultSet.getString(9));
                     user.setArchival(resultSet.getBoolean(10));
                     user.setPostalCode(resultSet.getString(11));
+                    user.setIdn(resultSet.getString(12));
                 }
                 connect.close();
 
