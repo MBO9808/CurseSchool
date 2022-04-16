@@ -1,6 +1,7 @@
 package com.example.curseschool.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,11 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.curseschool.CourseView.CourseFormView;
 import com.example.curseschool.Helpers.ConnectionHelper;
 import com.example.curseschool.Objects.Course;
 import com.example.curseschool.CourseView.CourseView;
 import com.example.curseschool.NewObjectsHandlers.NewGradeNameHandler;
 import com.example.curseschool.R;
+import com.example.curseschool.StudentGradesView.GradesStudentView;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -48,6 +51,15 @@ public class CourseViewAdapter extends RecyclerView.Adapter<CourseViewAdapter.Co
     public void onBindViewHolder(@NonNull CourseViewAdapter.CourseHolder holder, int position) {
         Course course = courses.get(position);
         holder.setDetails(course);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, CourseFormView.class);
+                intent.putExtra("courseId", course.getId());
+                intent.putExtra("courseName", course.getCourseName());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -134,6 +146,7 @@ public class CourseViewAdapter extends RecyclerView.Adapter<CourseViewAdapter.Co
             String language = getLanguageName(course.getLanguageId());
             String advancement = getCourseAdvancementName(course.getCourseAdvancementId());
             String maxStudents = String.valueOf(course.getMaxStudents());
+            String students = course.getStudentsList().size() + "/" + maxStudents;
             String startDate = course.getStartDate().toString();
             String endDate = course.getEndDate().toString();
             String classRoom = getCourseClassRoom(course.getClassRoomId());
@@ -144,7 +157,7 @@ public class CourseViewAdapter extends RecyclerView.Adapter<CourseViewAdapter.Co
             this.courseTeacher.setText(HtmlCompat.fromHtml("<b>Prowadzący: </b>" + teacher, HtmlCompat.FROM_HTML_MODE_LEGACY));
             this.courseLanguage.setText(HtmlCompat.fromHtml("<b>Język: </b>" + language, HtmlCompat.FROM_HTML_MODE_LEGACY));
             this.courseAdvancement.setText(HtmlCompat.fromHtml("<b>Poziom zaawansowania: </b>" + advancement, HtmlCompat.FROM_HTML_MODE_LEGACY));
-            this.courseMaxStudents.setText(HtmlCompat.fromHtml("<b>Liczba studentów: </b>" + maxStudents, HtmlCompat.FROM_HTML_MODE_LEGACY));
+            this.courseMaxStudents.setText(HtmlCompat.fromHtml("<b>Liczba studentów: </b>" + students, HtmlCompat.FROM_HTML_MODE_LEGACY));
             this.courseStartDate.setText(HtmlCompat.fromHtml("<b>Data rozpoczęcia kursu: </b>" + startDate, HtmlCompat.FROM_HTML_MODE_LEGACY));
             this.courseEndDate.setText(HtmlCompat.fromHtml("<b>Data zakończenia kursu: </b>" + endDate, HtmlCompat.FROM_HTML_MODE_LEGACY));
             this.courseClassRoom.setText(HtmlCompat.fromHtml("<b>Sala zajęć: </b>" + classRoom, HtmlCompat.FROM_HTML_MODE_LEGACY));
