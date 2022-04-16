@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +26,7 @@ import com.example.curseschool.Objects.Student;
 import com.example.curseschool.Objects.User;
 import com.example.curseschool.R;
 import com.example.curseschool.UserUtils.UserUtils;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -52,6 +55,9 @@ public class CourseFormFragment extends Fragment {
     private TextView courseEnroll;
     private Button signForCourse;
     private int currentUserId;
+    private ExtendedFloatingActionButton fabOptions, fabEdit, fabArchive;
+    private Animation fabOpen, fabClose, rotateForward, rotateBackward;
+    private boolean isFabOpen = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,6 +69,7 @@ public class CourseFormFragment extends Fragment {
         setTextViewsValues();
         handleSignButtonVisibility();
         setListenerForSign();
+        handleFloatingButton();
         return view;
     }
 
@@ -418,5 +425,62 @@ public class CourseFormFragment extends Fragment {
         }
 
         return canSign;
+    }
+
+    private void handleFloatingButton() {
+        initFloatingButton();
+        setFabListeners();
+    }
+
+    private void initFloatingButton() {
+        fabOptions = (ExtendedFloatingActionButton) view.findViewById(R.id.fab_options);
+        fabEdit = (ExtendedFloatingActionButton) view.findViewById(R.id.fab_edit);
+        fabArchive = (ExtendedFloatingActionButton) view.findViewById(R.id.fab_archive);
+
+        fabOpen = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
+        fabClose = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
+        rotateForward = AnimationUtils.loadAnimation(getContext(), R.anim.rotate_forward);
+        rotateBackward = AnimationUtils.loadAnimation(getContext(), R.anim.rotate_backward);
+    }
+
+    private void setFabListeners(){
+        fabOptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                animateFab();
+            }
+        });
+
+        fabEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Edycja", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        fabArchive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Archiwizacja", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void animateFab(){
+        if(isFabOpen){
+            fabOptions.startAnimation(rotateForward);
+            fabEdit.startAnimation(fabClose);
+            fabArchive.startAnimation(fabClose);
+            fabEdit.setClickable(false);
+            fabArchive.setClickable(false);
+            isFabOpen = false;
+        } else{
+            fabOptions.startAnimation(rotateBackward);
+            fabEdit.startAnimation(fabOpen);
+            fabArchive.startAnimation(fabOpen);
+            fabEdit.setClickable(true);
+            fabArchive.setClickable(true);
+            isFabOpen = true;
+        }
     }
 }

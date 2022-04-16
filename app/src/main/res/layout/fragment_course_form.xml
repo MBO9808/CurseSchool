@@ -320,14 +320,58 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/grade"
             android:gravity="right"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="20dp"
             android:background="@color/primary"
             android:text="Zapisz się"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab_edit"
+            android:layout_width="130dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="end"
+            android:text="Edycja"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:visibility="invisible"
+            />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab_archive"
+            android:layout_width="130dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="end"
+            android:text="Archiwizuj"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:visibility="invisible"
+            />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab_options"
+            android:layout_width="130dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="right"
+            android:text="Opcje"
+            android:textAlignment="center"
+            android:gravity="center"
+            />
+
+
+
     </LinearLayout>
+
+
+
+
 
 
 </FrameLayout>
