@@ -1,5 +1,7 @@
 package com.example.curseschool.CourseView;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,14 +12,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.curseschool.Helpers.ConnectionHelper;
 import com.example.curseschool.Objects.Course;
 import com.example.curseschool.Objects.CourseDate;
+import com.example.curseschool.Objects.CourseLanguage;
+import com.example.curseschool.Objects.Student;
+import com.example.curseschool.Objects.User;
 import com.example.curseschool.R;
+import com.example.curseschool.UserUtils.UserUtils;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Time;
@@ -27,6 +36,8 @@ import java.util.Date;
 
 public class CourseFormFragment extends Fragment {
 
+    private String MyPREFERENCES = "userData";
+    private String connectionResult = "";
     private View view;
     private int courseId;
     private TextView courseFormTeacher;
@@ -39,14 +50,19 @@ public class CourseFormFragment extends Fragment {
     private TextView coursePaymentDateTo;
     private TextView coursePaymentValue;
     private TextView courseEnroll;
+    private Button signForCourse;
+    private int currentUserId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_course_form, container, false);
         courseId = getActivity().getIntent().getIntExtra("courseId", 0);
+        currentUserId = getCurrentUserId();
         initTextViews();
         setTextViewsValues();
+        handleSignButtonVisibility();
+        setListenerForSign();
         return view;
     }
 
@@ -61,9 +77,10 @@ public class CourseFormFragment extends Fragment {
         coursePaymentDateTo = view.findViewById(R.id.coursePaymentDateTo);
         coursePaymentValue = view.findViewById(R.id.coursePaymentValue);
         courseEnroll = view.findViewById(R.id.courseEnroll);
+        signForCourse = view.findViewById(R.id.signForCourse);
     }
 
-    private void setTextViewsValues(){
+    private void setTextViewsValues() {
         Course course = getCourse();
         setTeacher(course.getTeacherId());
         setLanguage(course.getLanguageId());
@@ -84,12 +101,12 @@ public class CourseFormFragment extends Fragment {
         courseEnroll.setText(signDate);
     }
 
-    private void setTeacher(int teacherId){
+    private void setTeacher(int teacherId) {
         String teacherName = getTeacherName(teacherId);
         courseFormTeacher.setText(teacherName);
     }
 
-    private void setLanguage(int languageId){
+    private void setLanguage(int languageId) {
         String language = getLanguageName(languageId);
         courseFormLanguage.setText(language);
     }
@@ -99,7 +116,7 @@ public class CourseFormFragment extends Fragment {
         courseFormAdvancement.setText(advancement);
     }
 
-    private void setClassRoom(int classRoomId){
+    private void setClassRoom(int classRoomId) {
         String classRoom = getCourseClassRoom(classRoomId);
         courseClassRoom.setText(classRoom);
     }
@@ -292,5 +309,114 @@ public class CourseFormFragment extends Fragment {
             Log.e("Error :", ex.getMessage());
         }
         return classRoom;
+    }
+
+    private void setListenerForSign() {
+        signForCourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (view.getId() == signForCourse.getId()) {
+                    Course course = getCourse();
+                    boolean canSign = checkSignDate(course.getSignDate());
+                    boolean alreadySigned = checkIfStudentAlreadySigned(course);
+                    if (canSign == false) {
+                        Toast.makeText(getContext(), "Zapisy zostały już zamknięte", Toast.LENGTH_LONG).show();
+                    } else if (alreadySigned == true) {
+                        Toast.makeText(getContext(), "Jesteś już zapisany na ten kurs", Toast.LENGTH_LONG).show();
+                    } else {
+                        signUserOnCourse();
+                        Toast.makeText(getContext(), "Udało się zapisać na kurs", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        });
+    }
+
+    private boolean checkIfStudentAlreadySigned(Course course) {
+        boolean alreadySigned = false;
+        ArrayList<Integer> students = course.getStudentsList();
+        for (Integer studentId : students) {
+            if (studentId == currentUserId)
+                alreadySigned = true;
+        }
+        return alreadySigned;
+    }
+
+    private int getCurrentUserId() {
+        SharedPreferences sharedpreferences = getContext().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        int id = sharedpreferences.getInt("id", 0);
+        return id;
+    }
+
+    private void signUserOnCourse() {
+        int id = findMaxId();
+        String query = "INSERT INTO course_students (id, student_id, course_id) "
+                + " VALUES(?,?,?)";
+        try {
+            ConnectionHelper connectionHelper = new ConnectionHelper();
+            Connection connect = connectionHelper.getConnection();
+            if (connect != null) {
+                PreparedStatement preparedStatement = connect.prepareStatement(query);
+                preparedStatement.setInt(1, id);
+                preparedStatement.setInt(2, currentUserId);
+                preparedStatement.setInt(3, courseId);
+                preparedStatement.execute();
+                connect.close();
+            } else {
+                connectionResult = "Check Connection";
+            }
+        } catch (Exception ex) {
+            Log.e("Error :", ex.getMessage());
+        }
+    }
+
+    private int findMaxId() {
+        Integer id = null;
+        try {
+            ConnectionHelper connectionHelper = new ConnectionHelper();
+            Connection connect = connectionHelper.getConnection();
+            if (connect != null) {
+                String query = "Select MAX(id) from course_students";
+                Statement statement = connect.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                while (resultSet.next()) {
+                    id = resultSet.getInt(1);
+                }
+                connect.close();
+
+            } else {
+                connectionResult = "Check Connection";
+            }
+        } catch (Exception ex) {
+            Log.e("Error :", ex.getMessage());
+        }
+
+        if (id == null)
+            return 1;
+        else
+            return id + 1;
+    }
+
+    private void handleSignButtonVisibility() {
+        Course course = getCourse();
+        boolean isAlreadySigned = checkIfStudentAlreadySigned(course);
+        if (isAlreadySigned == true) {
+            signForCourse.setText("Zapisano");
+            signForCourse.setEnabled(false);
+        } else {
+            signForCourse.setText("Zapisz się");
+            signForCourse.setEnabled(true);
+        }
+
+    }
+
+    private boolean checkSignDate(Date signDate) {
+        boolean canSign = true;
+        Date currentDate = new Date();
+        if (signDate.before(currentDate)) {
+            canSign = false;
+        }
+
+        return canSign;
     }
 }

@@ -3,12 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".CourseView.CourseFormFragment">
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/courseFormMainLinear"
         android:layout_marginTop="50dp"
         android:gravity="center"
         android:orientation="vertical"
@@ -312,6 +314,20 @@
 
     </LinearLayout>
 
+        <Button
+            android:id="@+id/signForCourse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/grade"
+            android:gravity="right"
+            android:layout_marginTop="50dp"
+            android:background="@color/primary"
+            android:text="Zapisz się"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
     </LinearLayout>
+
 
 </FrameLayout>
