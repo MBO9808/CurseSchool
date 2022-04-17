@@ -99,27 +99,31 @@ public class NewCourseLanguageHandler extends BottomSheetDialogFragment {
             @Override
             public void onClick(View view) {
                 String name = languageName.getText().toString();
-                String text = "Język " + name + " już istnieje w słowniku.";
-                if (updated) {
-                    int id = bundle.getInt("id");
-                    CourseLanguage courseLanguage = new CourseLanguage(id, name);
-                    boolean languageAlreadyExists = isLanguageAlreadyExists(courseLanguage);
-                    if(languageAlreadyExists == false) {
-                        updateLanguage(courseLanguage);
-                        dismiss();
+                if (name != null && !name.equals("")) {
+                    String text = "Język " + name + " już istnieje w słowniku.";
+                    if (updated) {
+                        int id = bundle.getInt("id");
+                        CourseLanguage courseLanguage = new CourseLanguage(id, name);
+                        boolean languageAlreadyExists = isLanguageAlreadyExists(courseLanguage);
+                        if (languageAlreadyExists == false) {
+                            updateLanguage(courseLanguage);
+                            dismiss();
+                        } else {
+                            Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
+                        }
                     } else {
-                        Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
+                        int id = findMaxId();
+                        CourseLanguage courseLanguage = new CourseLanguage(id, name);
+                        boolean languageAlreadyExists = isLanguageAlreadyExists(courseLanguage);
+                        if (languageAlreadyExists == false) {
+                            addNewLanguage(courseLanguage);
+                            dismiss();
+                        } else {
+                            Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
+                        }
                     }
                 } else {
-                    int id = findMaxId();
-                    CourseLanguage courseLanguage = new CourseLanguage(id, name);
-                    boolean languageAlreadyExists = isLanguageAlreadyExists(courseLanguage);
-                            if(languageAlreadyExists == false) {
-                                addNewLanguage(courseLanguage);
-                                dismiss();
-                            } else {
-                                Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
-                            }
+                    Toast.makeText(getContext(), "Proszę wpisać język", Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -204,23 +208,23 @@ public class NewCourseLanguageHandler extends BottomSheetDialogFragment {
         }
     }
 
-    private boolean isLanguageAlreadyExists(CourseLanguage courseLanguage){
+    private boolean isLanguageAlreadyExists(CourseLanguage courseLanguage) {
         int id = courseLanguage.getId();
         String name = courseLanguage.getLanguage();
         CourseLanguage courseLanguageDb = getLanguageFromDb(name);
-        if(courseLanguageDb == null)
+        if (courseLanguageDb == null)
             return false;
 
         int courseDbId = courseLanguageDb.getId();
         String courseDbName = courseLanguageDb.getLanguage();
-        if(id != courseDbId && name.equals(courseDbName))
+        if (id != courseDbId && name.equals(courseDbName))
             return true;
 
         return false;
 
     }
 
-    private CourseLanguage getLanguageFromDb(String name){
+    private CourseLanguage getLanguageFromDb(String name) {
         CourseLanguage courseLanguage = null;
         String query = "SELECT * FROM course_languages WHERE name = '" + name + "'";
         try {
@@ -229,7 +233,7 @@ public class NewCourseLanguageHandler extends BottomSheetDialogFragment {
             if (connect != null) {
                 Statement statement = connect.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
-                if(resultSet.next() != false){
+                if (resultSet.next() != false) {
                     int id = resultSet.getInt(1);
                     String language = resultSet.getString(2);
                     courseLanguage = new CourseLanguage(id, language);

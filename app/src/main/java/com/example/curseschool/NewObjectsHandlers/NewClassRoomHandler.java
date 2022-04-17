@@ -97,28 +97,33 @@ public class NewClassRoomHandler extends BottomSheetDialogFragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Integer number = Integer.valueOf(classRoomNumber.getText().toString());
-                String text = "Sale o numerze " + number + " już istnieje w słowniku.";
-                if (updated) {
-                    int id = bundle.getInt("id");
-                    ClassRoom classRoom = new ClassRoom(id, number);
-                    boolean classRoomAlreadyExists = isClassRoomAlreadyExists(classRoom);
-                    if(classRoomAlreadyExists == false) {
-                        updateClassRoom(classRoom);
-                        dismiss();
+                String numberTxt = classRoomNumber.getText().toString();
+                if (numberTxt != null && !numberTxt.equals("")) {
+                    Integer number = Integer.valueOf(classRoomNumber.getText().toString());
+                    String text = "Sale o numerze " + number + " już istnieje w słowniku.";
+                    if (updated) {
+                        int id = bundle.getInt("id");
+                        ClassRoom classRoom = new ClassRoom(id, number);
+                        boolean classRoomAlreadyExists = isClassRoomAlreadyExists(classRoom);
+                        if (classRoomAlreadyExists == false) {
+                            updateClassRoom(classRoom);
+                            dismiss();
+                        } else {
+                            Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
+                        }
                     } else {
-                        Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
+                        int id = findMaxId();
+                        ClassRoom classRoom = new ClassRoom(id, number);
+                        boolean classRoomAlreadyExists = isClassRoomAlreadyExists(classRoom);
+                        if (classRoomAlreadyExists == false) {
+                            addNewClassRoom(classRoom);
+                            dismiss();
+                        } else {
+                            Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
+                        }
                     }
                 } else {
-                    int id = findMaxId();
-                    ClassRoom classRoom = new ClassRoom(id, number);
-                    boolean classRoomAlreadyExists = isClassRoomAlreadyExists(classRoom);
-                    if(classRoomAlreadyExists == false) {
-                        addNewClassRoom(classRoom);
-                        dismiss();
-                    } else {
-                        Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
-                    }
+                    Toast.makeText(getContext(), "Proszę wpisać numer sali", Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -203,23 +208,23 @@ public class NewClassRoomHandler extends BottomSheetDialogFragment {
         }
     }
 
-    private boolean isClassRoomAlreadyExists(ClassRoom classRoom){
+    private boolean isClassRoomAlreadyExists(ClassRoom classRoom) {
         int id = classRoom.getId();
         int number = classRoom.getClassRoom();
         ClassRoom classRoomDb = getClassRoomFromDb(number);
-        if(classRoomDb == null)
+        if (classRoomDb == null)
             return false;
 
         int classRoomDbId = classRoomDb.getId();
         int classRoomDbName = classRoomDb.getClassRoom();
-        if(id != classRoomDbId && number == classRoomDbName)
+        if (id != classRoomDbId && number == classRoomDbName)
             return true;
 
         return false;
 
     }
 
-    private ClassRoom getClassRoomFromDb(int number){
+    private ClassRoom getClassRoomFromDb(int number) {
         ClassRoom classRoom = null;
         String query = "SELECT * FROM class_room WHERE number = '" + number + "'";
         try {
@@ -228,7 +233,7 @@ public class NewClassRoomHandler extends BottomSheetDialogFragment {
             if (connect != null) {
                 Statement statement = connect.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
-                if(resultSet.next() != false){
+                if (resultSet.next() != false) {
                     int id = resultSet.getInt(1);
                     int classRoomNo = resultSet.getInt(2);
                     classRoom = new ClassRoom(id, classRoomNo);

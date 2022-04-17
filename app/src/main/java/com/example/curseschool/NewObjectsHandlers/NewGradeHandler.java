@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -118,23 +119,32 @@ public class NewGradeHandler extends BottomSheetDialogFragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Float value = Float.valueOf(gradeText.getText().toString());
-                int gradePosition = gradeType.getSelectedItemPosition();
-                String name = gradeNames.get(gradePosition);
-                int gradeId = getGradeNameId(name);
-                if (updated) {
-                    int id = bundle.getInt("id");
-                    updateGrade(id, gradeId, value);
-                    dismiss();
+                String gradeValueTxt = gradeText.getText().toString();
+                if(gradeValueTxt != null && !gradeValueTxt.equals("")) {
+                    Float value = Float.valueOf(gradeValueTxt);
+                    if(value >= 1 && value <= 6) {
+                        int gradePosition = gradeType.getSelectedItemPosition();
+                        String name = gradeNames.get(gradePosition);
+                        int gradeId = getGradeNameId(name);
+                        if (updated) {
+                            int id = bundle.getInt("id");
+                            updateGrade(id, gradeId, value);
+                            dismiss();
+                        } else {
+                            int id = findMaxId();
+                            int gradePos = gradeType.getSelectedItemPosition();
+                            String gradeN = gradeNames.get(gradePos);
+                            int gradeNameId = getGradeNameId(gradeN);
+                            Float valueGrade = Float.valueOf(gradeText.getText().toString());
+                            Grade grade = new Grade(id, studentId, courseId, gradeNameId, valueGrade);
+                            addNewGrade(grade);
+                            dismiss();
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "Proszę podać ocenę w zakresie 1-6", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    int id = findMaxId();
-                    int gradePos = gradeType.getSelectedItemPosition();
-                    String gradeN = gradeNames.get(gradePos);
-                    int gradeNameId = getGradeNameId(gradeN);
-                    Float valueGrade = Float.valueOf(gradeText.getText().toString());
-                    Grade grade = new Grade(id, studentId, courseId, gradeNameId, valueGrade);
-                    addNewGrade(grade);
-                    dismiss();
+                    Toast.makeText(getContext(), "Proszę podać ocenę!", Toast.LENGTH_SHORT).show();
                 }
 
             }

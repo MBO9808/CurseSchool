@@ -99,27 +99,31 @@ public class NewCourseAdvancementHandler extends BottomSheetDialogFragment {
             @Override
             public void onClick(View view) {
                 String name = courseAdvancementName.getText().toString();
-                String text = "Poziom zaawansowania kursu o nazwie " + name + " już istnieje w słowniku.";
-                if (updated) {
-                    int id = bundle.getInt("id");
-                    CourseAdvancement courseAdvancement = new CourseAdvancement(id, name);
-                    boolean classRoomAlreadyExists = isCourseAdvancementAlreadyExists(courseAdvancement);
-                    if (classRoomAlreadyExists == false) {
-                        updateCourseAdvancement(courseAdvancement);
-                        dismiss();
+                if (name != null && !name.equals("")) {
+                    String text = "Poziom zaawansowania kursu o nazwie " + name + " już istnieje w słowniku.";
+                    if (updated) {
+                        int id = bundle.getInt("id");
+                        CourseAdvancement courseAdvancement = new CourseAdvancement(id, name);
+                        boolean classRoomAlreadyExists = isCourseAdvancementAlreadyExists(courseAdvancement);
+                        if (classRoomAlreadyExists == false) {
+                            updateCourseAdvancement(courseAdvancement);
+                            dismiss();
+                        } else {
+                            Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
+                        }
                     } else {
-                        Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
+                        int id = findMaxId();
+                        CourseAdvancement courseAdvancement = new CourseAdvancement(id, name);
+                        boolean courseAdvancementAlreadyExists = isCourseAdvancementAlreadyExists(courseAdvancement);
+                        if (courseAdvancementAlreadyExists == false) {
+                            addNewCourseAdvancement(courseAdvancement);
+                            dismiss();
+                        } else {
+                            Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
+                        }
                     }
                 } else {
-                    int id = findMaxId();
-                    CourseAdvancement courseAdvancement = new CourseAdvancement(id, name);
-                    boolean courseAdvancementAlreadyExists = isCourseAdvancementAlreadyExists(courseAdvancement);
-                    if (courseAdvancementAlreadyExists == false) {
-                        addNewCourseAdvancement(courseAdvancement);
-                        dismiss();
-                    } else {
-                        Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
-                    }
+                    Toast.makeText(getContext(), "Proszę wpisać nazwę poziomu zaawansowania", Toast.LENGTH_LONG).show();
                 }
 
             }

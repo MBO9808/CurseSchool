@@ -176,13 +176,13 @@ public class CourseView extends AppCompatActivity {
         return courseDates;
     }
 
-    //toDo: ogarnąć nowy kurs
     private void setListenerForNewCourse() {
         newCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (view.getId() == newCourse.getId()) {
-                    NewCourseLanguageHandler.newInstance().show(getSupportFragmentManager(), NewCourseLanguageHandler.TAG);
+                    Intent intent = new Intent(CourseView.this, NewCourseMainForm.class);
+                    startActivity(intent);
                 }
             }
         });

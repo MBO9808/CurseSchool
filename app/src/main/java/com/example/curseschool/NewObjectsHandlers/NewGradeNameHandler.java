@@ -99,27 +99,31 @@ public class NewGradeNameHandler extends BottomSheetDialogFragment {
             @Override
             public void onClick(View view) {
                 String name = gradeName.getText().toString();
-                String text = "Typ oceny o nazwie " + name + " już istnieje w słowniku.";
-                if (updated) {
-                    int id = bundle.getInt("id");
-                    GradeName gradeName = new GradeName(id, name);
-                    boolean gradeNameAlreadyExists = isGradeNameAlreadyExists(gradeName);
-                    if (gradeNameAlreadyExists == false) {
-                        updateGradeName(gradeName);
-                        dismiss();
+                if (name != null && !name.equals("")) {
+                    String text = "Typ oceny o nazwie " + name + " już istnieje w słowniku.";
+                    if (updated) {
+                        int id = bundle.getInt("id");
+                        GradeName gradeName = new GradeName(id, name);
+                        boolean gradeNameAlreadyExists = isGradeNameAlreadyExists(gradeName);
+                        if (gradeNameAlreadyExists == false) {
+                            updateGradeName(gradeName);
+                            dismiss();
+                        } else {
+                            Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
+                        }
                     } else {
-                        Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
+                        int id = findMaxId();
+                        GradeName gradeName = new GradeName(id, name);
+                        boolean gradeNameAlreadyExists = isGradeNameAlreadyExists(gradeName);
+                        if (gradeNameAlreadyExists == false) {
+                            addNewGradeName(gradeName);
+                            dismiss();
+                        } else {
+                            Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
+                        }
                     }
                 } else {
-                    int id = findMaxId();
-                    GradeName gradeName = new GradeName(id, name);
-                    boolean gradeNameAlreadyExists = isGradeNameAlreadyExists(gradeName);
-                    if (gradeNameAlreadyExists == false) {
-                        addNewGradeName(gradeName);
-                        dismiss();
-                    } else {
-                        Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
-                    }
+                    Toast.makeText(getContext(), "Proszę wpisać nazwę typu oceny", Toast.LENGTH_LONG).show();
                 }
 
             }

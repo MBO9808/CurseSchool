@@ -13,20 +13,6 @@ public class User {
     private boolean archival;
     private String idn;
 
-    public User(int id, String firstName, String lastName, String email, String phoneNumber, String city, String postalCode, String type, String street, boolean archival, String idn) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.city = city;
-        this.postalCode = postalCode;
-        this.type = type;
-        this.street = street;
-        this.archival = archival;
-        this.idn = idn;
-    }
-
     public String getIdn() {
         return idn;
     }
