@@ -1,327 +1,307 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".CourseView.CourseFormFragment">
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/courseFormMainLinear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/courseFormMainLinear"
         android:layout_marginTop="50dp"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="16dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:padding="8dp">
-
-        <TextView
-            android:id="@+id/courseFormTeacherTxt"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Prowadzący:"
-            android:layout_weight="0.5"
-            android:gravity="left"
-            android:textSize="14sp"
-            />
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="6dp">
 
-        <TextView
-            android:id="@+id/courseFormTeacher"
+            <TextView
+                android:id="@+id/courseFormTeacherTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="left"
+                android:text="Prowadzący:"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/courseFormTeacher"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="Imie i nazwisko"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:gravity="center"
-            android:text="Imie i nazwisko"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="6dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:padding="8dp">
+            <TextView
+                android:id="@+id/courseFormLanguageTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="left"
+                android:text="Język:"
+                android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/courseFormLanguageTxt"
+            <TextView
+                android:id="@+id/courseFormLanguage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="Język:"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:gravity="left"
-            android:text="Język:"
-            android:textSize="14sp"
-            />
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="6dp">
 
-        <TextView
-            android:id="@+id/courseFormLanguage"
+            <TextView
+                android:id="@+id/courseFormAdvancementTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="left"
+                android:text="Poziom zaawansowania:"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/courseFormAdvancement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="Poziom zaawansowania"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:gravity="center"
-            android:text="Język:"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="6dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:padding="8dp">
+            <TextView
+                android:id="@+id/courseFormMaxStudentsTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="left"
+                android:text="Liczba studentów:"
+                android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/courseFormAdvancementTxt"
+            <TextView
+                android:id="@+id/courseFormMaxStudents"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="Liczba studentów"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Poziom zaawansowania:"
-            android:layout_weight="0.5"
-            android:gravity="left"
-            android:textSize="14sp"
-            />
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="6dp">
 
-        <TextView
-            android:id="@+id/courseFormAdvancement"
+            <TextView
+                android:id="@+id/courseFormStartDateTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="left"
+                android:text="Data rozpoczęcia kursu:"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/courseFormStartDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="Data rozpoczęcia kursu"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Poziom zaawansowania"
-            android:layout_weight="0.5"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            />
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="6dp">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/courseFormEndDateTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="left"
+                android:text="Data zakończenia kursu:"
+                android:textSize="14sp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:padding="8dp">
+            <TextView
+                android:id="@+id/courseFormEndDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="Data zakończenia kursu"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/courseFormMaxStudentsTxt"
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:gravity="left"
-            android:text="Liczba studentów:"
-            android:textSize="14sp"
-            />
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="6dp">
 
-        <TextView
-            android:id="@+id/courseFormMaxStudents"
+            <TextView
+                android:id="@+id/courseClassRoomTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="left"
+                android:text="Sala zajęć:"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/courseClassRoom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="Sala zajęć"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Liczba studentów"
-            android:layout_weight="0.5"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            />
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="6dp">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/coursePaymentDateTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="left"
+                android:text="Termin płatnośći:"
+                android:textSize="14sp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:padding="8dp">
+            <TextView
+                android:id="@+id/coursePaymentDateTo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="Termin płatności"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/courseFormStartDateTxt"
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Data rozpoczęcia kursu:"
-            android:layout_weight="0.5"
-            android:gravity="left"
-            android:textSize="14sp"
-            />
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="6dp">
 
-        <TextView
-            android:id="@+id/courseFormStartDate"
+            <TextView
+                android:id="@+id/coursePaymentTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="left"
+                android:text="Koszt:"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/coursePaymentValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="Koszt"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Data rozpoczęcia kursu"
-            android:layout_weight="0.5"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            />
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="6dp">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/courseEnrollTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="left"
+                android:text="Zapisy do dnia:"
+                android:textSize="14sp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:padding="8dp">
+            <TextView
+                android:id="@+id/courseEnroll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="Zapisy do dnia"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/courseFormEndDateTxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Data zakończenia kursu:"
-            android:layout_weight="0.5"
-            android:gravity="left"
-            android:textSize="14sp"
-            />
-
-        <TextView
-            android:id="@+id/courseFormEndDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Data zakończenia kursu"
-            android:layout_weight="0.5"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:padding="8dp">
-
-        <TextView
-            android:id="@+id/courseClassRoomTxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sala zajęć:"
-            android:layout_weight="0.5"
-            android:gravity="left"
-            android:textSize="14sp"
-            />
-
-        <TextView
-            android:id="@+id/courseClassRoom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sala zajęć"
-            android:layout_weight="0.5"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:padding="8dp">
-
-        <TextView
-            android:id="@+id/coursePaymentDateTxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Termin płatnośći:"
-            android:layout_weight="0.5"
-            android:gravity="left"
-            android:textSize="14sp"
-            />
-
-        <TextView
-            android:id="@+id/coursePaymentDateTo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Termin płatności"
-            android:layout_weight="0.5"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:padding="8dp">
-
-        <TextView
-            android:id="@+id/coursePaymentTxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Koszt:"
-            android:layout_weight="0.5"
-            android:gravity="left"
-            android:textSize="14sp"
-            />
-
-        <TextView
-            android:id="@+id/coursePaymentValue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Koszt"
-            android:layout_weight="0.5"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:padding="8dp">
-
-        <TextView
-            android:id="@+id/courseEnrollTxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Zapisy do dnia:"
-            android:layout_weight="0.5"
-            android:gravity="left"
-            android:textSize="14sp"
-            />
-
-        <TextView
-            android:id="@+id/courseEnroll"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Zapisy do dnia"
-            android:layout_weight="0.5"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            />
-
-    </LinearLayout>
+        </LinearLayout>
 
         <Button
             android:id="@+id/signForCourse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/grade"
-            android:gravity="right"
             android:layout_marginTop="20dp"
             android:background="@color/primary"
+            android:gravity="right"
             android:text="Zapisz się"
             android:textAllCaps="false"
             android:textColor="@color/white"
@@ -331,47 +311,45 @@
             android:id="@+id/fab_edit"
             android:layout_width="130dp"
             android:layout_height="40dp"
+            android:layout_gravity="end"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="5dp"
-            android:layout_gravity="end"
+            android:gravity="center"
             android:text="Edycja"
             android:textAlignment="center"
-            android:gravity="center"
+            android:textColor="@color/white"
             android:visibility="invisible"
-            />
+            app:backgroundTint="@color/primary" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/fab_archive"
             android:layout_width="130dp"
             android:layout_height="40dp"
+            android:layout_gravity="end"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="5dp"
-            android:layout_gravity="end"
+            android:gravity="center"
             android:text="Archiwizuj"
             android:textAlignment="center"
-            android:gravity="center"
+            android:textColor="@color/white"
             android:visibility="invisible"
-            />
+            app:backgroundTint="@color/primary" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/fab_options"
             android:layout_width="130dp"
             android:layout_height="40dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="20dp"
             android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="40dp"
+            android:gravity="center"
             android:text="Opcje"
             android:textAlignment="center"
-            android:gravity="center"
-            />
-
+            android:textColor="@color/white"
+            app:backgroundTint="@color/primary" />
 
 
     </LinearLayout>
-
-
-
-
 
 
 </FrameLayout>

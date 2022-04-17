@@ -120,9 +120,9 @@ public class NewGradeHandler extends BottomSheetDialogFragment {
             @Override
             public void onClick(View view) {
                 String gradeValueTxt = gradeText.getText().toString();
-                if(gradeValueTxt != null && !gradeValueTxt.equals("")) {
+                if (gradeValueTxt != null && !gradeValueTxt.equals("")) {
                     Float value = Float.valueOf(gradeValueTxt);
-                    if(value >= 1 && value <= 6) {
+                    if (value >= 1 && value <= 6) {
                         int gradePosition = gradeType.getSelectedItemPosition();
                         String name = gradeNames.get(gradePosition);
                         int gradeId = getGradeNameId(name);
