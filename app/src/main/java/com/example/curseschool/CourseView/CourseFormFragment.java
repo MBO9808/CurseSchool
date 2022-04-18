@@ -448,7 +448,9 @@ public class CourseFormFragment extends Fragment {
         fabEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Edycja", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getContext(), EditCourseForm.class);
+                intent.putExtra("courseId", courseId);
+                startActivity(intent);
             }
         });
 

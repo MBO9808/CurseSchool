@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -33,13 +32,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.text.DateFormat;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
-public class NewCourseMainFormFragment extends Fragment {
+
+public class EditCourseFormFragment extends Fragment {
 
     private View view;
     private Toolbar toolbar;
@@ -54,7 +55,7 @@ public class NewCourseMainFormFragment extends Fragment {
     private TextView paymentDate;
     private EditText payment;
     private TextView signDate;
-    private ExtendedFloatingActionButton saveNewCourse;
+    private ExtendedFloatingActionButton saveEditCourse;
     private DatePickerDialog.OnDateSetListener setListenerOnStartDate;
     private DatePickerDialog.OnDateSetListener setListenerOnEndDate;
     private DatePickerDialog.OnDateSetListener setListenerOnPaymentDate;
@@ -63,24 +64,27 @@ public class NewCourseMainFormFragment extends Fragment {
     private ArrayList<String> languageNameList;
     private ArrayList<String> advancementNameList;
     private ArrayList<String> classRoomNameList;
+    private int courseId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_new_course_main_form, container, false);
+        view = inflater.inflate(R.layout.fragment_edit_course_form, container, false);
+        courseId = getActivity().getIntent().getIntExtra("courseId", 0);
         setToolbar();
         initFields();
         createDatePickers();
         createSpinners();
+        setCourseValues();
         setSaveListener();
         return view;
     }
 
     private void setToolbar() {
-        toolbar = view.findViewById(R.id.include);
+        toolbar = view.findViewById(R.id.includeToolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-        toolbar.setTitle("Nowy kurs");
+        toolbar.setTitle("Edycja kursu");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,19 +95,19 @@ public class NewCourseMainFormFragment extends Fragment {
     }
 
     private void initFields() {
-        courseName = view.findViewById(R.id.newCourseFormName);
-        teacherSpinner = view.findViewById(R.id.newCourseFormTeacher);
-        languageSpinner = view.findViewById(R.id.newCourseFormLanguage);
-        advancementSpinner = view.findViewById(R.id.newCourseFormAdvancement);
-        maxStudent = view.findViewById(R.id.newCourseFormMaxStudents);
+        courseName = view.findViewById(R.id.editCourseFormName);
+        teacherSpinner = view.findViewById(R.id.editCourseFormTeacher);
+        languageSpinner = view.findViewById(R.id.editCourseFormLanguage);
+        advancementSpinner = view.findViewById(R.id.editCourseFormAdvancement);
+        maxStudent = view.findViewById(R.id.editCourseFormMaxStudents);
         maxStudent.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
-        courseStartDate = view.findViewById(R.id.newCourseFormStartDate);
-        courseEndDate = view.findViewById(R.id.newCourseFormEndDate);
-        classRoomSpinner = view.findViewById(R.id.newCourseFormClassRoom);
-        paymentDate = view.findViewById(R.id.newCourseFormPaymentDateTo);
-        payment = view.findViewById(R.id.newCourseFormPaymentValue);
-        signDate = view.findViewById(R.id.newCourseFormEnroll);
-        saveNewCourse = view.findViewById(R.id.saveNewCourse);
+        courseStartDate = view.findViewById(R.id.editCourseFormStartDate);
+        courseEndDate = view.findViewById(R.id.editCourseFormEndDate);
+        classRoomSpinner = view.findViewById(R.id.editCourseFormClassRoom);
+        paymentDate = view.findViewById(R.id.editCourseFormPaymentDateTo);
+        payment = view.findViewById(R.id.editCourseFormPaymentValue);
+        signDate = view.findViewById(R.id.editCourseFormEnroll);
+        saveEditCourse = view.findViewById(R.id.saveEditCourse);
     }
 
     private void createDatePickers() {
@@ -374,18 +378,296 @@ public class NewCourseMainFormFragment extends Fragment {
         return classRoomList;
     }
 
+    private void setCourseValues() {
+        Course course = getCourse();
+        courseName.setText(course.getCourseName());
+
+        int teacherId = course.getTeacherId();
+        int teacherPositionOnList = getTeacherPosition(teacherId);
+        teacherSpinner.setSelection(teacherPositionOnList);
+
+        int languageId = course.getLanguageId();
+        int languagePositionOnList = getLanguagePosition(languageId);
+        languageSpinner.setSelection(languagePositionOnList);
+
+        int advancementId = course.getCourseAdvancementId();
+        int advancementPositionOnList = getAdvancementPosition(advancementId);
+        advancementSpinner.setSelection(advancementPositionOnList);
+
+        maxStudent.setText(String.valueOf(course.getMaxStudents()));
+
+        Date startDate = course.getStartDate();
+        courseStartDate.setText(startDate.toString());
+
+        Date endDate = course.getEndDate();
+        courseEndDate.setText(endDate.toString());
+
+        int classRoomId = course.getClassRoomId();
+        int classRoomPositionOnList = getClassRoomPosition(classRoomId);
+        classRoomSpinner.setSelection(classRoomPositionOnList);
+
+        Date paymentDateForCourse = course.getPaymentDate();
+        paymentDate.setText(paymentDateForCourse.toString());
+
+        Float cost = course.getPayment();
+        payment.setText(String.valueOf(cost));
+
+        Date signDateForCourse = course.getSignDate();
+        signDate.setText(signDateForCourse.toString());
+    }
+
+    private int getTeacherPosition(int teacherId) {
+        int position = 0;
+        String teacherName = getTeacherName(teacherId);
+        for (int i = 0; i < teacherNameList.size(); i++) {
+            if (teacherName.equals(teacherNameList.get(i))) {
+                position = i;
+            }
+        }
+
+        return position;
+    }
+
+    private String getTeacherName(int teacherId) {
+        String name = "";
+        try {
+            ConnectionHelper connectionHelper = new ConnectionHelper();
+            Connection connect = connectionHelper.getConnection();
+            if (connect != null) {
+                String query = "Select forename, surname, idn from users where id = " + teacherId;
+                Statement statement = connect.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                while (resultSet.next()) {
+                    String forename = resultSet.getString(1);
+                    String surname = resultSet.getString(2);
+                    String idn = resultSet.getString(3);
+                    name = forename + " " + surname + "/" + idn;
+                }
+                connect.close();
+
+            } else {
+                String connectionResult = "Check Connection";
+            }
+        } catch (Exception ex) {
+            Log.e("Error :", ex.getMessage());
+        }
+
+        return name;
+    }
+
+    private int getLanguagePosition(int languageId) {
+        int position = 0;
+        String languageName = getLanguageName(languageId);
+        for (int i = 0; i < languageNameList.size(); i++) {
+            if (languageName.equals(languageNameList.get(i))) {
+                position = i;
+            }
+        }
+
+        return position;
+    }
+
+    private String getLanguageName(int languageId) {
+        String name = "";
+        try {
+            ConnectionHelper connectionHelper = new ConnectionHelper();
+            Connection connect = connectionHelper.getConnection();
+            if (connect != null) {
+                String query = "Select name from course_languages where id = " + languageId;
+                Statement statement = connect.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                while (resultSet.next()) {
+                    name = resultSet.getString(1);
+                }
+                connect.close();
+
+            } else {
+                String connectionResult = "Check Connection";
+            }
+        } catch (Exception ex) {
+            Log.e("Error :", ex.getMessage());
+        }
+
+        return name;
+    }
+
+    private int getAdvancementPosition(int advancementId) {
+        int position = 0;
+        String advancementName = getAdvancementName(advancementId);
+        for (int i = 0; i < advancementNameList.size(); i++) {
+            if (advancementName.equals(advancementNameList.get(i))) {
+                position = i;
+            }
+        }
+
+        return position;
+    }
+
+    private String getAdvancementName(int advancementId) {
+        String name = "";
+        try {
+            ConnectionHelper connectionHelper = new ConnectionHelper();
+            Connection connect = connectionHelper.getConnection();
+            if (connect != null) {
+                String query = "Select name from course_advancement where id = " + advancementId;
+                Statement statement = connect.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                while (resultSet.next()) {
+                    name = resultSet.getString(1);
+                }
+                connect.close();
+
+            } else {
+                String connectionResult = "Check Connection";
+            }
+        } catch (Exception ex) {
+            Log.e("Error :", ex.getMessage());
+        }
+
+        return name;
+    }
+
+    private int getClassRoomPosition(int classRoomId) {
+        int position = 0;
+        String classRoomName = getClassRoomName(classRoomId);
+        for (int i = 0; i < classRoomNameList.size(); i++) {
+            if (classRoomName.equals(classRoomNameList.get(i))) {
+                position = i;
+            }
+        }
+
+        return position;
+    }
+
+    private String getClassRoomName(int classRoomId) {
+        String name = "";
+        try {
+            ConnectionHelper connectionHelper = new ConnectionHelper();
+            Connection connect = connectionHelper.getConnection();
+            if (connect != null) {
+                String query = "Select number from class_room where id = " + classRoomId;
+                Statement statement = connect.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                while (resultSet.next()) {
+                    name = String.valueOf(resultSet.getInt(1));
+                }
+                connect.close();
+
+            } else {
+                String connectionResult = "Check Connection";
+            }
+        } catch (Exception ex) {
+            Log.e("Error :", ex.getMessage());
+        }
+
+        return name;
+    }
+
     private void setSaveListener() {
-        saveNewCourse.setOnClickListener(new View.OnClickListener() {
+        saveEditCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (view.getId() == saveNewCourse.getId()) {
-                    saveNewCourse();
+                if (view.getId() == saveEditCourse.getId()) {
+                    saveEditedCourse();
                 }
             }
         });
     }
 
-    private void saveNewCourse() {
+    private Course getCourse() {
+        Course course = null;
+        try {
+            ConnectionHelper connectionHelper = new ConnectionHelper();
+            Connection connect = connectionHelper.getConnection();
+            if (connect != null) {
+                String query = "Select * from courses where archival = 0 and id = " + courseId;
+                Statement statement = connect.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                while (resultSet.next()) {
+                    int id = resultSet.getInt(1);
+                    String courseName = resultSet.getString(2);
+                    int teacherId = resultSet.getInt(3);
+                    int languageId = resultSet.getInt(4);
+                    int advancementId = resultSet.getInt(5);
+                    int maxStudents = resultSet.getInt(6);
+                    Date startDate = resultSet.getDate(7);
+                    Date endDate = resultSet.getDate(8);
+                    int classRoomId = resultSet.getInt(9);
+                    Date paymentDate = resultSet.getDate(10);
+                    Float payment = resultSet.getFloat(11);
+                    Date creationDate = resultSet.getDate(12);
+                    boolean archival = resultSet.getBoolean(13);
+                    Date signDate = resultSet.getDate(14);
+                    ArrayList<Integer> studentsList = getStudentsList();
+                    ArrayList<CourseDate> courseDatesList = getCourseDatesList();
+                    course = new Course(id, courseName, teacherId, languageId, advancementId, maxStudents, startDate, endDate, classRoomId, paymentDate, payment, creationDate, archival, signDate, studentsList, courseDatesList);
+                }
+                connect.close();
+
+            } else {
+                String connectionResult = "Check Connection";
+            }
+        } catch (Exception ex) {
+            Log.e("Error :", ex.getMessage());
+        }
+
+        return course;
+    }
+
+    private ArrayList<Integer> getStudentsList() {
+        ArrayList<Integer> studentsList = new ArrayList<>();
+        try {
+            ConnectionHelper connectionHelper = new ConnectionHelper();
+            Connection connect = connectionHelper.getConnection();
+            if (connect != null) {
+                String query = "Select student_id from course_students where course_id = " + courseId;
+                Statement statement = connect.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                while (resultSet.next()) {
+                    int studentId = resultSet.getInt(1);
+                    studentsList.add(studentId);
+                }
+                connect.close();
+
+            } else {
+                String connectionResult = "Check Connection";
+            }
+        } catch (Exception ex) {
+            Log.e("Error :", ex.getMessage());
+        }
+        return studentsList;
+    }
+
+    private ArrayList<CourseDate> getCourseDatesList() {
+        ArrayList<CourseDate> courseDates = new ArrayList<>();
+        try {
+            ConnectionHelper connectionHelper = new ConnectionHelper();
+            Connection connect = connectionHelper.getConnection();
+            if (connect != null) {
+                String query = "Select * from course_dates where course_id = " + courseId;
+                Statement statement = connect.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                while (resultSet.next()) {
+                    int dateId = resultSet.getInt(1);
+                    int courseId = resultSet.getInt(2);
+                    Date date = resultSet.getDate(3);
+                    Time courseTimeStart = resultSet.getTime(4);
+                    Time courseTimeEnd = resultSet.getTime(5);
+                    CourseDate courseDate = new CourseDate(dateId, courseId, date, courseTimeStart, courseTimeEnd);
+                    courseDates.add(courseDate);
+                }
+                connect.close();
+
+            } else {
+                String connectionResult = "Check Connection";
+            }
+        } catch (Exception ex) {
+            Log.e("Error :", ex.getMessage());
+        }
+        return courseDates;
+    }
+
+    private void saveEditedCourse() {
         String name = courseName.getText().toString();
         if (name == null || name.equals("")) {
             Toast.makeText(getContext(), "Proszę uzupełnić nazwę kursu", Toast.LENGTH_SHORT).show();
@@ -415,17 +697,10 @@ public class NewCourseMainFormFragment extends Fragment {
             Toast.makeText(getContext(), "Proszę uzupełnić datę rozpoczęcia kursu", Toast.LENGTH_SHORT).show();
             return;
         }
-        java.sql.Date startDate = java.sql.Date.valueOf(startDateTxt);
 
         String endDateTxt = courseEndDate.getText().toString();
         if (endDateTxt == null || endDateTxt.equals("")) {
             Toast.makeText(getContext(), "Proszę uzupełnić datę zakończenia kursu", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        java.sql.Date endDate = java.sql.Date.valueOf(endDateTxt);
-
-        if(startDate.after(endDate)){
-            Toast.makeText(getContext(), "Data rozpoczęcia kursu nie może być późniejsza niż data zakończenia kursu", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -438,7 +713,6 @@ public class NewCourseMainFormFragment extends Fragment {
             Toast.makeText(getContext(), "Proszę wybrać termin płatności", Toast.LENGTH_SHORT).show();
             return;
         }
-        java.sql.Date dateOfPayment = java.sql.Date.valueOf(dateOfPaymentTxt);
 
         String cost = payment.getText().toString();
         if (cost == null || cost.equals("")) {
@@ -451,35 +725,16 @@ public class NewCourseMainFormFragment extends Fragment {
             Toast.makeText(getContext(), "Proszę uzupełnić ostateczną datę zapisów", Toast.LENGTH_SHORT).show();
             return;
         }
-        java.sql.Date dateOfSign = java.sql.Date.valueOf(dateOfSignTxt);
-        Date currentDate = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String currentDateStr = simpleDateFormat.format(currentDate);
-        java.sql.Date creationDate = java.sql.Date.valueOf(currentDateStr);
 
-        String query = "INSERT INTO courses (id, course_name, teacher_id, language_id, course_advancement_id, max_students_number, start_date, end_date, class_room_id, payment_date, payment, creation_date, archival, sign_date) "
-                + " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String query = "UPDATE courses SET course_name = '" + name + "', teacher_id = " + teacherId + ", language_id = " + languageId + ", course_advancement_id = " + advancementId + ", max_students_number = " + Integer.valueOf(studentLimit) +
+                ", start_date = '" + startDateTxt + "', end_date = '" + endDateTxt + "', class_room_id = " + classRoomId + ", payment_date = '" + dateOfPaymentTxt + "', payment = " + Float.valueOf(cost)
+                + ", sign_date = '" + dateOfSignTxt + "' where id = " + courseId;
         try {
-            int courseId = findMaxId();
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
             if (connect != null) {
-                PreparedStatement preparedStatement = connect.prepareStatement(query);
-                preparedStatement.setInt(1, courseId);
-                preparedStatement.setString(2, name);
-                preparedStatement.setInt(3, teacherId);
-                preparedStatement.setInt(4, languageId);
-                preparedStatement.setInt(5, advancementId);
-                preparedStatement.setInt(6, Integer.valueOf(studentLimit));
-                preparedStatement.setDate(7, startDate);
-                preparedStatement.setDate(8, endDate);
-                preparedStatement.setInt(9, classRoomId);
-                preparedStatement.setDate(10, dateOfPayment);
-                preparedStatement.setFloat(11, Float.valueOf(cost));
-                preparedStatement.setDate(12, creationDate);
-                preparedStatement.setBoolean(13, false);
-                preparedStatement.setDate(14, dateOfSign);
-                preparedStatement.execute();
+                Statement statement = connect.createStatement();
+                statement.executeUpdate(query);
                 connect.close();
 
             } else {
@@ -491,7 +746,7 @@ public class NewCourseMainFormFragment extends Fragment {
         }
 
         Intent intent = new Intent(getContext(), CourseView.class);
-        Toast.makeText(getContext(), "Zapisano nowy kurs", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Zapisano edycję kursu", Toast.LENGTH_SHORT).show();
         startActivity(intent);
 
     }

@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CourseView.NewCourseMainForm">
+    tools:context=".CourseView.EditCourseForm">
 
     <fragment
-        android:id="@+id/fragment2"
-        android:name="com.example.curseschool.CourseView.NewCourseMainFormFragment"
+        android:id="@+id/fragment3"
+        android:name="com.example.curseschool.CourseView.EditCourseFormFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

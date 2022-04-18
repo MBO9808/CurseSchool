@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CurseSchool">
-        <activity android:name=".CourseView.NewCourseMainForm"></activity>
+        <activity android:name=".CourseView.EditCourseForm"></activity>
+        <activity android:name=".CourseView.NewCourseMainForm" />
         <activity android:name=".CourseView.CourseFormView" />
         <activity android:name=".ScheduleView.CalendarView" />
         <activity android:name=".StudentGradesView.GradesStudentView" />
