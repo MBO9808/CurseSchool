@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CurseSchool">
-        <activity android:name=".CourseView.EditCourseDatesForm"></activity>
+        <activity android:name=".UserSettingsActivities.UserChangePersonalData"></activity>
+        <activity android:name=".UserSettingsActivities.UserChangeEmail" />
+        <activity android:name=".CourseView.EditCourseDatesForm" />
         <activity android:name=".CourseView.EditCourseForm" />
         <activity android:name=".CourseView.NewCourseMainForm" />
         <activity android:name=".CourseView.CourseFormView" />

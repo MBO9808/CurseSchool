@@ -177,8 +177,8 @@ public class RegisterActivity extends AppCompatActivity {
         } else if (userPhoneNumber.isEmpty()) {
             showError(inputUserPhoneNumber, "Nie podano numeru telefonu!");
             isEmpty = true;
-        } else if (userPhoneNumber.length() <= 7) {
-            showError(inputUserPhoneNumber, "Numer telefonu musi mieć więcej niż 9 cyfr");
+        } else if (userPhoneNumber.length() != 9) {
+            showError(inputUserPhoneNumber, "Numer telefonu musi mieć 9 cyfr");
             isEmpty = true;
         } else if (userCity.isEmpty()) {
             showError(inputUserCity, "Nie podano miasta!");

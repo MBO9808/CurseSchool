@@ -21,6 +21,8 @@ import com.example.curseschool.Dictionaries.CourseLanguagesDictionary;
 import com.example.curseschool.Dictionaries.GradeNameDictionary;
 import com.example.curseschool.LoginActivity.LoginActivity;
 import com.example.curseschool.R;
+import com.example.curseschool.UserSettingsActivities.UserChangeEmail;
+import com.example.curseschool.UserSettingsActivities.UserChangePersonalData;
 import com.example.curseschool.UserUtils.UserKind;
 import com.example.curseschool.Dictionaries.UsersSettings;
 
@@ -39,6 +41,8 @@ public class thirdFragment extends Fragment {
     private Button settingsAboutApp;
     private Button settingsCourseAdvancement;
     private Button settingGradeType;
+    private Button settingsChangeUserEmail;
+    private Button settingsChangeUserPersonalData;
 
 
     public thirdFragment() {
@@ -75,6 +79,8 @@ public class thirdFragment extends Fragment {
         settingsAboutApp = view.findViewById(R.id.settingsAboutApp);
         settingsCourseAdvancement = view.findViewById(R.id.settingsCourseAdvancement);
         settingGradeType = view.findViewById(R.id.settingsGradeType);
+        settingsChangeUserEmail = view.findViewById(R.id.settingsChangeUserEmail);
+        settingsChangeUserPersonalData = view.findViewById(R.id.settingsChangeUserPersonalData);
         handleButtonsVisibility();
         setSettingsListeners();
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -125,6 +131,8 @@ public class thirdFragment extends Fragment {
         setSettingsClassRoomListener();
         setSettingsCourseAdvancementListener();
         setSettingsGradeTypeListener();
+        setSettingsChangeUserEmailListener();
+        setSettingsChangeUserPersonalDataListener();
     }
 
     private void setSettingsUsersListener() {
@@ -171,12 +179,34 @@ public class thirdFragment extends Fragment {
         });
     }
 
+    private void setSettingsChangeUserEmailListener() {
+        settingsChangeUserEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (view.getId() == settingsChangeUserEmail.getId()) {
+                    startActivity(new Intent(getActivity(), UserChangeEmail.class));
+                }
+            }
+        });
+    }
+
     private void setSettingsGradeTypeListener() {
         settingGradeType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (view.getId() == settingGradeType.getId()) {
                     startActivity(new Intent(getActivity(), GradeNameDictionary.class));
+                }
+            }
+        });
+    }
+
+    private void setSettingsChangeUserPersonalDataListener(){
+        settingsChangeUserPersonalData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (view.getId() == settingsChangeUserPersonalData.getId()) {
+                    startActivity(new Intent(getActivity(), UserChangePersonalData.class));
                 }
             }
         });
