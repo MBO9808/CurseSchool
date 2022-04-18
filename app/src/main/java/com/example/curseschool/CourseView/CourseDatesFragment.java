@@ -1,5 +1,9 @@
 package com.example.curseschool.CourseView;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +20,11 @@ import com.example.curseschool.Adapters.CourseFormStudentsAdapter;
 import com.example.curseschool.Helpers.ConnectionHelper;
 import com.example.curseschool.Objects.CourseDate;
 import com.example.curseschool.Objects.Student;
+import com.example.curseschool.Objects.User;
 import com.example.curseschool.R;
+import com.example.curseschool.UserUtils.UserKind;
+import com.example.curseschool.UserUtils.UserUtils;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -28,11 +36,13 @@ import java.util.Date;
 
 public class CourseDatesFragment extends Fragment {
 
+    private String MyPREFERENCES = "userData";
     private View view;
     private RecyclerView recyclerView;
     private ArrayList<CourseDate> courseDateArrayList;
     private CourseFormDatesAdapter courseFormDatesAdapter;
     private int courseId;
+    private ExtendedFloatingActionButton fabEdit;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,6 +50,7 @@ public class CourseDatesFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_course_dates, container, false);
         courseId = getActivity().getIntent().getIntExtra("courseId", 0);
         initDictionaryView(view);
+        handleFabButton();
         return view;
     }
 
@@ -51,6 +62,24 @@ public class CourseDatesFragment extends Fragment {
         courseFormDatesAdapter = new CourseFormDatesAdapter(getContext(), courseDateArrayList, CourseDatesFragment.this);
         recyclerView.setAdapter(courseFormDatesAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
+    }
+
+    private void handleFabButton() {
+        fabEdit = view.findViewById(R.id.fabEditDates);
+        fabEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), EditCourseDatesForm.class);
+                intent.putExtra("courseId", courseId);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private int getCurrentUserId() {
+        SharedPreferences sharedpreferences = getContext().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        int id = sharedpreferences.getInt("id", 0);
+        return id;
     }
 
     private void handleCoursesList() {
