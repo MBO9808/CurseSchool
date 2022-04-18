@@ -1,6 +1,7 @@
 package com.example.curseschool.CourseView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -454,7 +455,7 @@ public class CourseFormFragment extends Fragment {
         fabArchive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Archiwizacja", Toast.LENGTH_LONG).show();
+                archiveCourse();
             }
         });
     }
@@ -474,6 +475,38 @@ public class CourseFormFragment extends Fragment {
             fabEdit.setClickable(true);
             fabArchive.setClickable(true);
             isFabOpen = true;
+        }
+    }
+
+    private void archiveCourse(){
+        Course course = getCourse();
+        Date currentDate = new Date();
+        if(currentDate.before(course.getStartDate()) || currentDate.after(course.getEndDate())){
+            archive();
+            Toast.makeText(getContext(), "Usunięto kurs", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(getContext(), CourseView.class);
+            startActivity(intent);
+        } else {
+            Toast.makeText(getContext(), "Nie można usunąć aktualnie trwającego kursu", Toast.LENGTH_LONG).show();
+        }
+
+
+    }
+
+    private void archive(){
+        try {
+            ConnectionHelper connectionHelper = new ConnectionHelper();
+            Connection connect = connectionHelper.getConnection();
+            if (connect != null) {
+                String query = "UPDATE courses SET archival = 1 WHERE id = " + courseId;
+                Statement statement = connect.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                connect.close();
+            } else {
+                String connectionResult = "Check Connection";
+            }
+        } catch (Exception ex) {
+            Log.e("Error :", ex.getMessage());
         }
     }
 }

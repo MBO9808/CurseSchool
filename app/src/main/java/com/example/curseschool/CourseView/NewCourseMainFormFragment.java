@@ -130,6 +130,7 @@ public class NewCourseMainFormFragment extends Fragment {
         setListenerOnStartDate = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+                month += 1;
                 String monthTxt = String.valueOf(month);
                 if (month < 10) {
                     monthTxt = "0" + month;
@@ -159,6 +160,7 @@ public class NewCourseMainFormFragment extends Fragment {
         setListenerOnEndDate = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+                month += 1;
                 String monthTxt = String.valueOf(month);
                 if (month < 10) {
                     monthTxt = "0" + month;
@@ -188,6 +190,7 @@ public class NewCourseMainFormFragment extends Fragment {
         setListenerOnPaymentDate = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+                month += 1;
                 String monthTxt = String.valueOf(month);
                 if (month < 10) {
                     monthTxt = "0" + month;
