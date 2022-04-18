@@ -188,8 +188,8 @@ public class NewGradeNameHandler extends BottomSheetDialogFragment {
     private void addNewGradeName(GradeName gradeName) {
         int id = gradeName.getId();
         String name = gradeName.getName();
-        String query = "INSERT INTO grade_type (id, name) "
-                + " VALUES(?,?)";
+        String query = "INSERT INTO grade_type (id, name, archival) "
+                + " VALUES(?,?,?)";
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
@@ -197,6 +197,7 @@ public class NewGradeNameHandler extends BottomSheetDialogFragment {
                 PreparedStatement preparedStatement = connect.prepareStatement(query);
                 preparedStatement.setInt(1, id);
                 preparedStatement.setString(2, name);
+                preparedStatement.setBoolean(3, false);
                 preparedStatement.execute();
                 connect.close();
 
@@ -226,7 +227,7 @@ public class NewGradeNameHandler extends BottomSheetDialogFragment {
 
     private GradeName getGradeNameFromDb(String name) {
         GradeName gradeName = null;
-        String query = "SELECT * FROM grade_type WHERE name = '" + name + "'";
+        String query = "SELECT * FROM grade_type WHERE archival = 0 and name = '" + name + "'";
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();

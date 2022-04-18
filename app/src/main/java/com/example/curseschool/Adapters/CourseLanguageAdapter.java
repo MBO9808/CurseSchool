@@ -66,17 +66,17 @@ public class CourseLanguageAdapter extends RecyclerView.Adapter<CourseLanguageAd
 
     public void deleteLanguage(int id){
         CourseLanguage language = courseLanguages.get(id);
-        deleteItem(language.getId());
+        archiveItem(language.getId());
         courseLanguages.remove(id);
         notifyItemRemoved(id);
     }
 
-    private void deleteItem(int id){
+    private void archiveItem(int id){
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
             if (connect != null) {
-                String query = "DELETE FROM course_languages WHERE id = " + id;
+                String query = "UPDATE course_languages SET archival = 1 WHERE id = " + id;
                 Statement statement = connect.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 connect.close();

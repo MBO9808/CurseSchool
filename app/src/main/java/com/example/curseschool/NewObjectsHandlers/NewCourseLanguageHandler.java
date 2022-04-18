@@ -188,8 +188,8 @@ public class NewCourseLanguageHandler extends BottomSheetDialogFragment {
     private void addNewLanguage(CourseLanguage courseLanguage) {
         int id = courseLanguage.getId();
         String name = courseLanguage.getLanguage();
-        String query = "INSERT INTO course_languages (id, name) "
-                + " VALUES(?,?)";
+        String query = "INSERT INTO course_languages (id, name, archival) "
+                + " VALUES(?,?,?)";
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
@@ -197,6 +197,7 @@ public class NewCourseLanguageHandler extends BottomSheetDialogFragment {
                 PreparedStatement preparedStatement = connect.prepareStatement(query);
                 preparedStatement.setInt(1, id);
                 preparedStatement.setString(2, name);
+                preparedStatement.setBoolean(3,false);
                 preparedStatement.execute();
                 connect.close();
 
@@ -226,7 +227,7 @@ public class NewCourseLanguageHandler extends BottomSheetDialogFragment {
 
     private CourseLanguage getLanguageFromDb(String name) {
         CourseLanguage courseLanguage = null;
-        String query = "SELECT * FROM course_languages WHERE name = '" + name + "'";
+        String query = "SELECT * FROM course_languages WHERE archival = 0 and name = '" + name + "'";
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();

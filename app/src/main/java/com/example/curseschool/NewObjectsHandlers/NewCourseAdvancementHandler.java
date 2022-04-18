@@ -188,8 +188,8 @@ public class NewCourseAdvancementHandler extends BottomSheetDialogFragment {
     private void addNewCourseAdvancement(CourseAdvancement courseAdvancement) {
         int id = courseAdvancement.getId();
         String name = courseAdvancement.getName();
-        String query = "INSERT INTO course_advancement (id, name) "
-                + " VALUES(?,?)";
+        String query = "INSERT INTO course_advancement (id, name, archival) "
+                + " VALUES(?,?,?)";
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
@@ -197,6 +197,7 @@ public class NewCourseAdvancementHandler extends BottomSheetDialogFragment {
                 PreparedStatement preparedStatement = connect.prepareStatement(query);
                 preparedStatement.setInt(1, id);
                 preparedStatement.setString(2, name);
+                preparedStatement.setBoolean(3, false);
                 preparedStatement.execute();
                 connect.close();
 
@@ -226,7 +227,7 @@ public class NewCourseAdvancementHandler extends BottomSheetDialogFragment {
 
     private CourseAdvancement getCourseAdvancementFromDb(String name) {
         CourseAdvancement courseAdvancement = null;
-        String query = "SELECT * FROM course_advancement WHERE name = '" + name + "'";
+        String query = "SELECT * FROM course_advancement WHERE archival = 0 and name = '" + name + "'";
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();

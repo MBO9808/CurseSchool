@@ -95,13 +95,14 @@ public class ClassRoomDictionary extends AppCompatActivity implements ClassRoomD
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
             if (connect != null) {
-                String query = "Select * from class_room order by number asc";
+                String query = "Select * from class_room where archival = 0 order by number asc";
                 Statement statement = connect.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
                     int id = resultSet.getInt(1);
                     int number = resultSet.getInt(2);
-                    ClassRoom classRoom = new ClassRoom(id, number);
+                    boolean archival = resultSet.getBoolean(3);
+                    ClassRoom classRoom = new ClassRoom(id, number, archival);
                     classRooms.add(classRoom);
                 }
                 connect.close();

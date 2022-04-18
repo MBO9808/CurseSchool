@@ -63,19 +63,19 @@ public class ClassRoomAdapter extends RecyclerView.Adapter<ClassRoomAdapter.Clas
         notifyDataSetChanged();
     }
 
-    public void deleteClassRoom(int id){
+    public void archiveClassRoom(int id){
         ClassRoom classRoom = classRooms.get(id);
-        deleteItem(classRoom.getId());
+        archiveItem(classRoom.getId());
         classRooms.remove(id);
         notifyItemRemoved(id);
     }
 
-    private void deleteItem(int id){
+    private void archiveItem(int id){
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
             if (connect != null) {
-                String query = "DELETE FROM class_room WHERE id = " + id;
+                String query = "UPDATE class_room SET archival = 1 WHERE id = " + id;
                 Statement statement = connect.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 connect.close();

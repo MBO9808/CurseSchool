@@ -103,7 +103,7 @@ public class NewClassRoomHandler extends BottomSheetDialogFragment {
                     String text = "Sale o numerze " + number + " już istnieje w słowniku.";
                     if (updated) {
                         int id = bundle.getInt("id");
-                        ClassRoom classRoom = new ClassRoom(id, number);
+                        ClassRoom classRoom = new ClassRoom(id, number,false);
                         boolean classRoomAlreadyExists = isClassRoomAlreadyExists(classRoom);
                         if (classRoomAlreadyExists == false) {
                             updateClassRoom(classRoom);
@@ -113,7 +113,7 @@ public class NewClassRoomHandler extends BottomSheetDialogFragment {
                         }
                     } else {
                         int id = findMaxId();
-                        ClassRoom classRoom = new ClassRoom(id, number);
+                        ClassRoom classRoom = new ClassRoom(id, number, false);
                         boolean classRoomAlreadyExists = isClassRoomAlreadyExists(classRoom);
                         if (classRoomAlreadyExists == false) {
                             addNewClassRoom(classRoom);
@@ -188,8 +188,8 @@ public class NewClassRoomHandler extends BottomSheetDialogFragment {
     private void addNewClassRoom(ClassRoom classRoom) {
         int id = classRoom.getId();
         int number = classRoom.getClassRoom();
-        String query = "INSERT INTO class_room (id, number) "
-                + " VALUES(?,?)";
+        String query = "INSERT INTO class_room (id, number, archival) "
+                + " VALUES(?,?,?)";
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
@@ -197,6 +197,7 @@ public class NewClassRoomHandler extends BottomSheetDialogFragment {
                 PreparedStatement preparedStatement = connect.prepareStatement(query);
                 preparedStatement.setInt(1, id);
                 preparedStatement.setInt(2, number);
+                preparedStatement.setBoolean(3, false);
                 preparedStatement.execute();
                 connect.close();
 
@@ -226,7 +227,7 @@ public class NewClassRoomHandler extends BottomSheetDialogFragment {
 
     private ClassRoom getClassRoomFromDb(int number) {
         ClassRoom classRoom = null;
-        String query = "SELECT * FROM class_room WHERE number = '" + number + "'";
+        String query = "SELECT * FROM class_room WHERE number = '" + number + "' and archival = 0";
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
@@ -236,7 +237,8 @@ public class NewClassRoomHandler extends BottomSheetDialogFragment {
                 if (resultSet.next() != false) {
                     int id = resultSet.getInt(1);
                     int classRoomNo = resultSet.getInt(2);
-                    classRoom = new ClassRoom(id, classRoomNo);
+                    boolean archival = resultSet.getBoolean(3);
+                    classRoom = new ClassRoom(id, classRoomNo, archival);
                 }
                 connect.close();
             } else {

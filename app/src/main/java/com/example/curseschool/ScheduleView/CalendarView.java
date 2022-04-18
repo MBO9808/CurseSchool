@@ -133,7 +133,8 @@ public class CalendarView extends AppCompatActivity {
                 while (resultSet.next()) {
                     int id = resultSet.getInt(1);
                     int number = resultSet.getInt(2);
-                    classRoom = new ClassRoom(id, number);
+                    boolean archival = resultSet.getBoolean(3);
+                    classRoom = new ClassRoom(id, number, archival);
                 }
                 connect.close();
 

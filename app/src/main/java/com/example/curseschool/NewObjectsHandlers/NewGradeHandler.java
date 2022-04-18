@@ -234,7 +234,7 @@ public class NewGradeHandler extends BottomSheetDialogFragment {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
             if (connect != null) {
-                String query = "Select * from grade_type order by id asc";
+                String query = "Select * from grade_type where archival = 0 order by id asc";
                 Statement statement = connect.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
@@ -282,7 +282,7 @@ public class NewGradeHandler extends BottomSheetDialogFragment {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
             if (connect != null) {
-                String query = "Select * from grade_type order by id asc";
+                String query = "Select * from grade_type where archival = 0 order by id asc";
                 Statement statement = connect.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {

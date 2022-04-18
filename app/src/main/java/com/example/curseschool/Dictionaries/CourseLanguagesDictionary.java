@@ -95,7 +95,7 @@ public class CourseLanguagesDictionary extends AppCompatActivity implements Lang
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
             if (connect != null) {
-                String query = "Select * from course_languages";
+                String query = "Select * from course_languages where archival = 0";
                 Statement statement = connect.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {

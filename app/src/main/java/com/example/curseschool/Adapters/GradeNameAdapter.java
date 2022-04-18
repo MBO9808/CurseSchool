@@ -65,17 +65,17 @@ public class GradeNameAdapter extends RecyclerView.Adapter<GradeNameAdapter.Grad
 
     public void deleteGradeName(int id) {
         GradeName gradeName = gradeNames.get(id);
-        deleteItem(gradeName.getId());
+        archiveItem(gradeName.getId());
         gradeNames.remove(id);
         notifyItemRemoved(id);
     }
 
-    private void deleteItem(int id) {
+    private void archiveItem(int id) {
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
             if (connect != null) {
-                String query = "DELETE FROM grade_type WHERE id = " + id;
+                String query = "UPDATE grade_type SET archival = 1 WHERE id = " + id;
                 Statement statement = connect.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 connect.close();

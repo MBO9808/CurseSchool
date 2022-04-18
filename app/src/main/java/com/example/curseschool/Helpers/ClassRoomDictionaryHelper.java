@@ -37,7 +37,7 @@ public class ClassRoomDictionaryHelper extends ItemTouchHelper.SimpleCallback {
             builder.setTitle("Usuń salę");
             builder.setMessage("Czy na pewno chcesz usunąć salę?");
             builder.setPositiveButton("Tak", (dialogInterface, i) -> {
-                classRoomAdapter.deleteClassRoom(classRoomId);
+                classRoomAdapter.archiveClassRoom(classRoomId);
             });
             builder.setNegativeButton("Nie", (dialogInterface, i) -> {
                 classRoomAdapter.notifyItemChanged(classRoomId);

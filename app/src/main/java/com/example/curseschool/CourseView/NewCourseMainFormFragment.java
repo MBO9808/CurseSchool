@@ -302,7 +302,7 @@ public class NewCourseMainFormFragment extends Fragment {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
             if (connect != null) {
-                String query = "Select name from course_languages order by id asc";
+                String query = "Select name from course_languages where archival = 0 order by id asc";
                 Statement statement = connect.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
@@ -327,7 +327,7 @@ public class NewCourseMainFormFragment extends Fragment {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
             if (connect != null) {
-                String query = "Select name from course_advancement order by id asc";
+                String query = "Select name from course_advancement where archival = 0 order by id asc";
                 Statement statement = connect.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
@@ -352,7 +352,7 @@ public class NewCourseMainFormFragment extends Fragment {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
             if (connect != null) {
-                String query = "Select number from class_room order by number asc";
+                String query = "Select number from class_room where archival = 0 order by number asc";
                 Statement statement = connect.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
@@ -520,7 +520,7 @@ public class NewCourseMainFormFragment extends Fragment {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
             if (connect != null) {
-                String query = "Select id from course_languages where name = '" + languageName + "'";
+                String query = "Select id from course_languages where archival = 0 and name = '" + languageName + "'";
                 Statement statement = connect.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
@@ -544,7 +544,7 @@ public class NewCourseMainFormFragment extends Fragment {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
             if (connect != null) {
-                String query = "Select id from course_advancement where name = '" + advancementName + "'";
+                String query = "Select id from course_advancement where archival = 0 and name = '" + advancementName + "'";
                 Statement statement = connect.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
@@ -568,7 +568,7 @@ public class NewCourseMainFormFragment extends Fragment {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
             if (connect != null) {
-                String query = "Select id from class_room where number = '" + className + "'";
+                String query = "Select id from class_room where archival = 0 and number = '" + className + "'";
                 Statement statement = connect.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {

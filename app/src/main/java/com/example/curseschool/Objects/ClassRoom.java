@@ -4,10 +4,12 @@ public class ClassRoom {
 
     private int id;
     private int classRoom;
+    private boolean archival;
 
-    public ClassRoom(int id, int classRoom) {
+    public ClassRoom(int id, int classRoom, boolean archival) {
         this.id = id;
         this.classRoom = classRoom;
+        this.archival = archival;
     }
 
     public int getId() {
@@ -24,5 +26,13 @@ public class ClassRoom {
 
     public void setClassRoom(int classRoom) {
         this.classRoom = classRoom;
+    }
+
+    public boolean isArchival() {
+        return archival;
+    }
+
+    public void setArchival(boolean archival) {
+        this.archival = archival;
     }
 }

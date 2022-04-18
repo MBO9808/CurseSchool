@@ -95,7 +95,7 @@ public class CourseAdvancementDictionary extends AppCompatActivity implements Co
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
             if (connect != null) {
-                String query = "Select * from course_advancement order by id asc";
+                String query = "Select * from course_advancement where archival = 0 order by id asc";
                 Statement statement = connect.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {

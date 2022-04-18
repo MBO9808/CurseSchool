@@ -65,17 +65,17 @@ public class CourseAdvancementAdapter extends RecyclerView.Adapter<CourseAdvance
 
     public void deleteCourseAdvancement(int id) {
         CourseAdvancement courseAdvancement = courseAdvancements.get(id);
-        deleteItem(courseAdvancement.getId());
+        archiveItem(courseAdvancement.getId());
         courseAdvancements.remove(id);
         notifyItemRemoved(id);
     }
 
-    private void deleteItem(int id) {
+    private void archiveItem(int id) {
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
             if (connect != null) {
-                String query = "DELETE FROM course_advancement WHERE id = " + id;
+                String query = "UPDATE course_advancement SET archival = 1 WHERE id = " + id;
                 Statement statement = connect.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 connect.close();
