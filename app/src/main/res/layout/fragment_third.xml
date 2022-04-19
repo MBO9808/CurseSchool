@@ -42,6 +42,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Zmień email" />
+    <Button
+        android:id="@+id/settingsChangeUserPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Zmień hasło" />
 
     <Button
         android:id="@+id/settingsChangeUserPersonalData"

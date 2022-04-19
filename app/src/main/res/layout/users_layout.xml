@@ -76,32 +76,6 @@
             android:padding="8dp">
 
             <TextView
-                android:id="@+id/editCourseFormTimeEndTxt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:gravity="left"
-                android:text="Godzina zakończenia:"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/editCourseFormTimeEnd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:gravity="center"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:padding="8dp">
-
-            <TextView
                 android:id="@+id/settingsUserEmailTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

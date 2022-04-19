@@ -22,6 +22,7 @@ import com.example.curseschool.Dictionaries.GradeNameDictionary;
 import com.example.curseschool.LoginActivity.LoginActivity;
 import com.example.curseschool.R;
 import com.example.curseschool.UserSettingsActivities.UserChangeEmail;
+import com.example.curseschool.UserSettingsActivities.UserChangePassword;
 import com.example.curseschool.UserSettingsActivities.UserChangePersonalData;
 import com.example.curseschool.UserUtils.UserKind;
 import com.example.curseschool.Dictionaries.UsersSettings;
@@ -43,6 +44,7 @@ public class thirdFragment extends Fragment {
     private Button settingGradeType;
     private Button settingsChangeUserEmail;
     private Button settingsChangeUserPersonalData;
+    private Button settingsChangeUserPassword;
 
 
     public thirdFragment() {
@@ -81,6 +83,7 @@ public class thirdFragment extends Fragment {
         settingGradeType = view.findViewById(R.id.settingsGradeType);
         settingsChangeUserEmail = view.findViewById(R.id.settingsChangeUserEmail);
         settingsChangeUserPersonalData = view.findViewById(R.id.settingsChangeUserPersonalData);
+        settingsChangeUserPassword = view.findViewById(R.id.settingsChangeUserPassword);
         handleButtonsVisibility();
         setSettingsListeners();
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -133,6 +136,7 @@ public class thirdFragment extends Fragment {
         setSettingsGradeTypeListener();
         setSettingsChangeUserEmailListener();
         setSettingsChangeUserPersonalDataListener();
+        setSettingsChangeUserPasswordListener();
     }
 
     private void setSettingsUsersListener() {
@@ -207,6 +211,17 @@ public class thirdFragment extends Fragment {
             public void onClick(View view) {
                 if (view.getId() == settingsChangeUserPersonalData.getId()) {
                     startActivity(new Intent(getActivity(), UserChangePersonalData.class));
+                }
+            }
+        });
+    }
+
+    private void setSettingsChangeUserPasswordListener(){
+        settingsChangeUserPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (view.getId() == settingsChangeUserPassword.getId()) {
+                    startActivity(new Intent(getActivity(), UserChangePassword.class));
                 }
             }
         });
