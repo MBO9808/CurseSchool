@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:padding="16dp">
+
+<TextView
+    android:id="@+id/textAddNewUserForenameTxt"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@null"
+    android:text="Imie"
+    android:textColor="@color/black"
+    android:textSize="14sp"
+    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+<EditText
+    android:id="@+id/textAddNewUserForename"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/textAddNewUserForenameTxt"
+    android:background="@null"
+    android:textColor="@color/black"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+<TextView
+    android:id="@+id/textAddNewUserSurnameTxt"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@null"
+    android:text="Nazwisko"
+    android:textColor="@color/black"
+    android:paddingTop="10dp"
+    android:textSize="14sp"
+    android:layout_below="@id/textAddNewUserForename"
+    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+<EditText
+    android:id="@+id/textAddNewUserSurname"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/textAddNewUserSurnameTxt"
+    android:background="@null"
+    android:textColor="@color/black"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+<TextView
+    android:id="@+id/textAddNewUserEmailTxt"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@null"
+    android:text="Email"
+    android:paddingTop="10dp"
+    android:textColor="@color/black"
+    android:textSize="14sp"
+    android:layout_below="@id/textAddNewUserSurname"
+    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <EditText
+        android:id="@+id/textAddNewUserEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textAddNewUserEmailTxt"
+        android:background="@null"
+        android:inputType="textEmailAddress"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+<TextView
+    android:id="@+id/textAddNewUserPasswordTxt"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@null"
+    android:text="Hasło"
+    android:textColor="@color/black"
+    android:paddingTop="10dp"
+    android:textSize="14sp"
+    android:layout_below="@id/textAddNewUserEmail"
+    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <EditText
+        android:id="@+id/textAddNewUserPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textAddNewUserPasswordTxt"
+        android:background="@null"
+        android:inputType="textPassword"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+<TextView
+    android:id="@+id/textAddNewUserPhoneNumberTxt"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@null"
+    android:text="Numer telefonu"
+    android:textColor="@color/black"
+    android:paddingTop="10dp"
+    android:textSize="14sp"
+    android:layout_below="@id/textAddNewUserPassword"
+    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <EditText
+        android:id="@+id/textAddNewUserPhoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textAddNewUserPhoneNumberTxt"
+        android:background="@null"
+        android:inputType="phone"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+<TextView
+    android:id="@+id/textAddNewUserCityTxt"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@null"
+    android:text="Miasto"
+    android:textColor="@color/black"
+    android:paddingTop="10dp"
+    android:textSize="14sp"
+    android:layout_below="@id/textAddNewUserPhoneNumber"
+    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+<EditText
+    android:id="@+id/textAddNewUserCity"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/textAddNewUserCityTxt"
+    android:background="@null"
+    android:textColor="@color/black"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+<TextView
+    android:id="@+id/textAddNewUserStreetTxt"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@null"
+    android:text="Ulica"
+    android:textColor="@color/black"
+    android:paddingTop="10dp"
+    android:textSize="14sp"
+    android:layout_below="@id/textAddNewUserCity"
+    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+<EditText
+    android:id="@+id/textAddNewUserStreet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/textAddNewUserStreetTxt"
+    android:background="@null"
+    android:textColor="@color/black"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+<TextView
+    android:id="@+id/textAddNewUserPostalCodeTxt"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@null"
+    android:text="Kod pocztowy"
+    android:textColor="@color/black"
+    android:paddingTop="10dp"
+    android:textSize="14sp"
+    android:layout_below="@id/textAddNewUserStreet"
+    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <EditText
+        android:id="@+id/textAddNewUserPostalCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textAddNewUserPostalCodeTxt"
+        android:background="@null"
+        android:inputType="textPostalAddress"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+<TextView
+    android:id="@+id/textAddNewUserTypeTxt"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@null"
+    android:textColor="@color/black"
+    android:textSize="14sp"
+    android:text="Typ użytkownika"
+    android:paddingTop="10dp"
+    android:layout_below="@id/textAddNewUserPostalCode"
+    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+<Spinner
+    android:id="@+id/textAddNewUserType"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="0.5"
+    android:layout_below="@id/textAddNewUserTypeTxt"
+    android:gravity="center"
+    android:textColor="@color/black"
+    android:textSize="18sp"
+    android:textStyle="bold" />
+
+<Button
+    android:id="@+id/saveNewGradeName"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/textAddNewUserType"
+    android:layout_alignParentEnd="true"
+    android:background="@android:color/transparent"
+    android:text="Zapisz"
+    android:textAllCaps="false"
+    android:textColor="@android:color/darker_gray"
+    android:textSize="16sp" />
+
+</RelativeLayout>
