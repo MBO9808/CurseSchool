@@ -39,7 +39,6 @@ public class thirdFragment extends Fragment {
     private Button settingsUsers;
     private Button settingsCourseLanguages;
     private Button settingsClassRoom;
-    private Button settingsAboutApp;
     private Button settingsCourseAdvancement;
     private Button settingGradeType;
     private Button settingsChangeUserEmail;
@@ -78,7 +77,6 @@ public class thirdFragment extends Fragment {
         settingsUsers = view.findViewById(R.id.settingsUsers);
         settingsCourseLanguages = view.findViewById(R.id.settingsCourseLanguage);
         settingsClassRoom = view.findViewById(R.id.settingsClassRoom);
-        settingsAboutApp = view.findViewById(R.id.settingsAboutApp);
         settingsCourseAdvancement = view.findViewById(R.id.settingsCourseAdvancement);
         settingGradeType = view.findViewById(R.id.settingsGradeType);
         settingsChangeUserEmail = view.findViewById(R.id.settingsChangeUserEmail);

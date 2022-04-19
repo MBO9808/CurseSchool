@@ -53,10 +53,4 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Zmień dane" />
-
-    <Button
-        android:id="@+id/settingsAboutApp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="O aplikacji" />
 </LinearLayout>

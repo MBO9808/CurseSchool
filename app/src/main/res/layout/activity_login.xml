@@ -62,6 +62,7 @@
         android:paddingBottom="10dp"
         android:shadowColor="@color/white"
         android:textColorHint="@color/white"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/inputUserLogin"
         app:layout_constraintHorizontal_bias="0.481"
         app:layout_constraintStart_toStartOf="@+id/inputUserLogin"

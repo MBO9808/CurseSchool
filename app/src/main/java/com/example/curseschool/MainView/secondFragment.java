@@ -72,7 +72,7 @@ public class secondFragment extends Fragment {
         TextView userPhone = view.findViewById(R.id.userProfilePhone);
         TextView userCity = view.findViewById(R.id.userProfileCity);
         TextView userStreet = view.findViewById(R.id.userProfileStreet);
-        String name = user.getFirstName() + " " + user.getLastName();
+        String name = user.getFirstName() + " " + user.getLastName() + "/" + user.getIdn();
         userName.setText(name);
         userEmail.setText(user.getEmail());
         userPhone.setText(user.getPhoneNumber());
