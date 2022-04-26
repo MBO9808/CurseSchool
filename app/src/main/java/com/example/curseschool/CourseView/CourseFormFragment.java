@@ -43,7 +43,6 @@ public class CourseFormFragment extends Fragment {
     private TextView courseFormMaxStudents;
     private TextView courseFormStartDate;
     private TextView courseFormEndDate;
-    private TextView courseClassRoom;
     private TextView coursePaymentDateTo;
     private TextView coursePaymentValue;
     private TextView courseEnroll;
@@ -74,7 +73,6 @@ public class CourseFormFragment extends Fragment {
         courseFormMaxStudents = view.findViewById(R.id.courseFormMaxStudents);
         courseFormStartDate = view.findViewById(R.id.courseFormStartDate);
         courseFormEndDate = view.findViewById(R.id.courseFormEndDate);
-        courseClassRoom = view.findViewById(R.id.courseClassRoom);
         coursePaymentDateTo = view.findViewById(R.id.coursePaymentDateTo);
         coursePaymentValue = view.findViewById(R.id.coursePaymentValue);
         courseEnroll = view.findViewById(R.id.courseEnroll);
@@ -93,7 +91,6 @@ public class CourseFormFragment extends Fragment {
         courseFormStartDate.setText(startDate);
         String endDate = course.getEndDate().toString();
         courseFormEndDate.setText(endDate);
-        setClassRoom(course.getClassRoomId());
         String paymentDate = course.getPaymentDate().toString();
         coursePaymentDateTo.setText(paymentDate);
         String payment = String.valueOf(course.getPayment());
@@ -117,11 +114,6 @@ public class CourseFormFragment extends Fragment {
         courseFormAdvancement.setText(advancement);
     }
 
-    private void setClassRoom(int classRoomId) {
-        String classRoom = getCourseClassRoom(classRoomId);
-        courseClassRoom.setText(classRoom);
-    }
-
     private Course getCourse() {
         Course course = null;
         try {
@@ -140,15 +132,14 @@ public class CourseFormFragment extends Fragment {
                     int maxStudents = resultSet.getInt(6);
                     Date startDate = resultSet.getDate(7);
                     Date endDate = resultSet.getDate(8);
-                    int classRoomId = resultSet.getInt(9);
-                    Date paymentDate = resultSet.getDate(10);
-                    Float payment = resultSet.getFloat(11);
-                    Date creationDate = resultSet.getDate(12);
-                    boolean archival = resultSet.getBoolean(13);
-                    Date signDate = resultSet.getDate(14);
+                    Date paymentDate = resultSet.getDate(9);
+                    Float payment = resultSet.getFloat(10);
+                    Date creationDate = resultSet.getDate(11);
+                    boolean archival = resultSet.getBoolean(12);
+                    Date signDate = resultSet.getDate(13);
                     ArrayList<Integer> studentsList = getStudentsList();
                     ArrayList<CourseDate> courseDatesList = getCourseDatesList();
-                    course = new Course(id, courseName, teacherId, languageId, advancementId, maxStudents, startDate, endDate, classRoomId, paymentDate, payment, creationDate, archival, signDate, studentsList, courseDatesList);
+                    course = new Course(id, courseName, teacherId, languageId, advancementId, maxStudents, startDate, endDate, paymentDate, payment, creationDate, archival, signDate, studentsList, courseDatesList);
                 }
                 connect.close();
 
@@ -201,7 +192,8 @@ public class CourseFormFragment extends Fragment {
                     Date date = resultSet.getDate(3);
                     Time courseTimeStart = resultSet.getTime(4);
                     Time courseTimeEnd = resultSet.getTime(5);
-                    CourseDate courseDate = new CourseDate(dateId, courseId, date, courseTimeStart, courseTimeEnd);
+                    int classRoomId = resultSet.getInt(6);
+                    CourseDate courseDate = new CourseDate(dateId, courseId, date, courseTimeStart, courseTimeEnd, classRoomId);
                     courseDates.add(courseDate);
                 }
                 connect.close();
@@ -286,30 +278,6 @@ public class CourseFormFragment extends Fragment {
             Log.e("Error :", ex.getMessage());
         }
         return advancementName;
-    }
-
-    private String getCourseClassRoom(int classRoomId) {
-        String classRoom = "";
-        try {
-            ConnectionHelper connectionHelper = new ConnectionHelper();
-            Connection connect = connectionHelper.getConnection();
-            if (connect != null) {
-                String query = "Select number from class_room where id = " + classRoomId;
-                Statement statement = connect.createStatement();
-                ResultSet resultSet = statement.executeQuery(query);
-                while (resultSet.next()) {
-                    int room = resultSet.getInt(1);
-                    classRoom = String.valueOf(room);
-                }
-                connect.close();
-
-            } else {
-                String connectionResult = "Check Connection";
-            }
-        } catch (Exception ex) {
-            Log.e("Error :", ex.getMessage());
-        }
-        return classRoom;
     }
 
     private void setListenerForSign() {

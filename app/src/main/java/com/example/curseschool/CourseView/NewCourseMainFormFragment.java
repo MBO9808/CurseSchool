@@ -50,7 +50,6 @@ public class NewCourseMainFormFragment extends Fragment {
     private EditText maxStudent;
     private TextView courseStartDate;
     private TextView courseEndDate;
-    private Spinner classRoomSpinner;
     private TextView paymentDate;
     private EditText payment;
     private TextView signDate;
@@ -62,7 +61,6 @@ public class NewCourseMainFormFragment extends Fragment {
     private ArrayList<String> teacherNameList;
     private ArrayList<String> languageNameList;
     private ArrayList<String> advancementNameList;
-    private ArrayList<String> classRoomNameList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,7 +97,6 @@ public class NewCourseMainFormFragment extends Fragment {
         maxStudent.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
         courseStartDate = view.findViewById(R.id.newCourseFormStartDate);
         courseEndDate = view.findViewById(R.id.newCourseFormEndDate);
-        classRoomSpinner = view.findViewById(R.id.newCourseFormClassRoom);
         paymentDate = view.findViewById(R.id.newCourseFormPaymentDateTo);
         payment = view.findViewById(R.id.newCourseFormPaymentValue);
         signDate = view.findViewById(R.id.newCourseFormEnroll);
@@ -240,7 +237,6 @@ public class NewCourseMainFormFragment extends Fragment {
         createTeacherSpinner();
         createLanguageSpinner();
         createAdvancementSpinner();
-        createClassRoomSpinner();
     }
 
     private void createTeacherSpinner() {
@@ -262,13 +258,6 @@ public class NewCourseMainFormFragment extends Fragment {
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, advancementNameList);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         advancementSpinner.setAdapter(spinnerAdapter);
-    }
-
-    private void createClassRoomSpinner() {
-        classRoomNameList = getClassRoomList();
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, classRoomNameList);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        classRoomSpinner.setAdapter(spinnerAdapter);
     }
 
     private ArrayList<String> getTeachersList() {
@@ -429,10 +418,6 @@ public class NewCourseMainFormFragment extends Fragment {
             return;
         }
 
-        int selectedClassRoomPosition = classRoomSpinner.getSelectedItemPosition();
-        String classRoomName = classRoomNameList.get(selectedClassRoomPosition);
-        int classRoomId = getClassRoomId(classRoomName);
-
         String dateOfPaymentTxt = paymentDate.getText().toString();
         if (dateOfPaymentTxt == null || dateOfPaymentTxt.equals("")) {
             Toast.makeText(getContext(), "Proszę wybrać termin płatności", Toast.LENGTH_SHORT).show();
@@ -457,8 +442,8 @@ public class NewCourseMainFormFragment extends Fragment {
         String currentDateStr = simpleDateFormat.format(currentDate);
         java.sql.Date creationDate = java.sql.Date.valueOf(currentDateStr);
 
-        String query = "INSERT INTO courses (id, course_name, teacher_id, language_id, course_advancement_id, max_students_number, start_date, end_date, class_room_id, payment_date, payment, creation_date, archival, sign_date) "
-                + " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String query = "INSERT INTO courses (id, course_name, teacher_id, language_id, course_advancement_id, max_students_number, start_date, end_date, payment_date, payment, creation_date, archival, sign_date) "
+                + " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
             int courseId = findMaxId();
             ConnectionHelper connectionHelper = new ConnectionHelper();
@@ -473,12 +458,11 @@ public class NewCourseMainFormFragment extends Fragment {
                 preparedStatement.setInt(6, Integer.valueOf(studentLimit));
                 preparedStatement.setDate(7, startDate);
                 preparedStatement.setDate(8, endDate);
-                preparedStatement.setInt(9, classRoomId);
-                preparedStatement.setDate(10, dateOfPayment);
-                preparedStatement.setFloat(11, Float.valueOf(cost));
-                preparedStatement.setDate(12, creationDate);
-                preparedStatement.setBoolean(13, false);
-                preparedStatement.setDate(14, dateOfSign);
+                preparedStatement.setDate(9, dateOfPayment);
+                preparedStatement.setFloat(10, Float.valueOf(cost));
+                preparedStatement.setDate(11, creationDate);
+                preparedStatement.setBoolean(12, false);
+                preparedStatement.setDate(13, dateOfSign);
                 preparedStatement.execute();
                 connect.close();
 
@@ -569,30 +553,6 @@ public class NewCourseMainFormFragment extends Fragment {
         }
 
         return advancementId;
-    }
-
-    private int getClassRoomId(String className) {
-        int classRoomId = 0;
-        try {
-            ConnectionHelper connectionHelper = new ConnectionHelper();
-            Connection connect = connectionHelper.getConnection();
-            if (connect != null) {
-                String query = "Select id from class_room where archival = 0 and number = '" + className + "'";
-                Statement statement = connect.createStatement();
-                ResultSet resultSet = statement.executeQuery(query);
-                while (resultSet.next()) {
-                    classRoomId = resultSet.getInt(1);
-                }
-                connect.close();
-
-            } else {
-                String connectionResult = "Check Connection";
-            }
-        } catch (Exception ex) {
-            Log.e("Error :", ex.getMessage());
-        }
-
-        return classRoomId;
     }
 
     private int findMaxId() {

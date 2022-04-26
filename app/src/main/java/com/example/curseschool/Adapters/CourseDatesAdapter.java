@@ -99,6 +99,7 @@ public class CourseDatesAdapter extends RecyclerView.Adapter<CourseDatesAdapter.
         bundle.putString("courseDate", date);
         bundle.putString("startTime", start);
         bundle.putString("endTime", end);
+        bundle.putInt("classRoomId", courseDate.getClassRoomId());
         NewCourseDateHandler handler = new NewCourseDateHandler();
         handler.setArguments(bundle);
         handler.show(editCourseDatesForm.getSupportFragmentManager(), NewCourseDateHandler.TAG);
@@ -109,12 +110,14 @@ public class CourseDatesAdapter extends RecyclerView.Adapter<CourseDatesAdapter.
         private TextView courseDate;
         private TextView timeStart;
         private TextView timeEnd;
+        private TextView classRoom;
 
         public CourseDateHolder(@NonNull View itemView) {
             super(itemView);
             this.courseDate = itemView.findViewById(R.id.editCourseFormDate);
             this.timeStart = itemView.findViewById(R.id.editCourseFormTimeStart);
             this.timeEnd = itemView.findViewById(R.id.editCourseFormTimeEnd);
+            this.classRoom = itemView.findViewById(R.id.editCourseFormClassRoom);
         }
 
         public void setDetails(CourseDate courseDate) {
@@ -125,6 +128,31 @@ public class CourseDatesAdapter extends RecyclerView.Adapter<CourseDatesAdapter.
             this.courseDate.setText(date);
             this.timeStart.setText(start);
             this.timeEnd.setText(end);
+            this.classRoom.setText(getCourseClassRoom(courseDate.getClassRoomId()));
+        }
+
+        private String getCourseClassRoom(int classRoomId) {
+            String classRoom = "";
+            try {
+                ConnectionHelper connectionHelper = new ConnectionHelper();
+                Connection connect = connectionHelper.getConnection();
+                if (connect != null) {
+                    String query = "Select number from class_room where id = " + classRoomId;
+                    Statement statement = connect.createStatement();
+                    ResultSet resultSet = statement.executeQuery(query);
+                    while (resultSet.next()) {
+                        int room = resultSet.getInt(1);
+                        classRoom = String.valueOf(room);
+                    }
+                    connect.close();
+
+                } else {
+                    String connectionResult = "Check Connection";
+                }
+            } catch (Exception ex) {
+                Log.e("Error :", ex.getMessage());
+            }
+            return classRoom;
         }
     }
 

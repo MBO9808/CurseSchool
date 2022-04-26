@@ -51,7 +51,6 @@ public class EditCourseFormFragment extends Fragment {
     private EditText maxStudent;
     private TextView courseStartDate;
     private TextView courseEndDate;
-    private Spinner classRoomSpinner;
     private TextView paymentDate;
     private EditText payment;
     private TextView signDate;
@@ -103,7 +102,6 @@ public class EditCourseFormFragment extends Fragment {
         maxStudent.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
         courseStartDate = view.findViewById(R.id.editCourseFormStartDate);
         courseEndDate = view.findViewById(R.id.editCourseFormEndDate);
-        classRoomSpinner = view.findViewById(R.id.editCourseFormClassRoom);
         paymentDate = view.findViewById(R.id.editCourseFormPaymentDateTo);
         payment = view.findViewById(R.id.editCourseFormPaymentValue);
         signDate = view.findViewById(R.id.editCourseFormEnroll);
@@ -244,7 +242,6 @@ public class EditCourseFormFragment extends Fragment {
         createTeacherSpinner();
         createLanguageSpinner();
         createAdvancementSpinner();
-        createClassRoomSpinner();
     }
 
     private void createTeacherSpinner() {
@@ -266,13 +263,6 @@ public class EditCourseFormFragment extends Fragment {
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, advancementNameList);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         advancementSpinner.setAdapter(spinnerAdapter);
-    }
-
-    private void createClassRoomSpinner() {
-        classRoomNameList = getClassRoomList();
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, classRoomNameList);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        classRoomSpinner.setAdapter(spinnerAdapter);
     }
 
     private ArrayList<String> getTeachersList() {
@@ -353,31 +343,6 @@ public class EditCourseFormFragment extends Fragment {
         return advancementList;
     }
 
-    private ArrayList<String> getClassRoomList() {
-        ArrayList<String> classRoomList = new ArrayList<>();
-        try {
-            ConnectionHelper connectionHelper = new ConnectionHelper();
-            Connection connect = connectionHelper.getConnection();
-            if (connect != null) {
-                String query = "Select number from class_room where archival = 0 order by number asc";
-                Statement statement = connect.createStatement();
-                ResultSet resultSet = statement.executeQuery(query);
-                while (resultSet.next()) {
-                    String name = String.valueOf(resultSet.getInt(1));
-                    classRoomList.add(name);
-                }
-                connect.close();
-
-            } else {
-                String connectionResult = "Check Connection";
-            }
-        } catch (Exception ex) {
-            Log.e("Error :", ex.getMessage());
-        }
-
-        return classRoomList;
-    }
-
     private void setCourseValues() {
         Course course = getCourse();
         courseName.setText(course.getCourseName());
@@ -401,10 +366,6 @@ public class EditCourseFormFragment extends Fragment {
 
         Date endDate = course.getEndDate();
         courseEndDate.setText(endDate.toString());
-
-        int classRoomId = course.getClassRoomId();
-        int classRoomPositionOnList = getClassRoomPosition(classRoomId);
-        classRoomSpinner.setSelection(classRoomPositionOnList);
 
         Date paymentDateForCourse = course.getPaymentDate();
         paymentDate.setText(paymentDateForCourse.toString());
@@ -527,42 +488,6 @@ public class EditCourseFormFragment extends Fragment {
         return name;
     }
 
-    private int getClassRoomPosition(int classRoomId) {
-        int position = 0;
-        String classRoomName = getClassRoomName(classRoomId);
-        for (int i = 0; i < classRoomNameList.size(); i++) {
-            if (classRoomName.equals(classRoomNameList.get(i))) {
-                position = i;
-            }
-        }
-
-        return position;
-    }
-
-    private String getClassRoomName(int classRoomId) {
-        String name = "";
-        try {
-            ConnectionHelper connectionHelper = new ConnectionHelper();
-            Connection connect = connectionHelper.getConnection();
-            if (connect != null) {
-                String query = "Select number from class_room where id = " + classRoomId;
-                Statement statement = connect.createStatement();
-                ResultSet resultSet = statement.executeQuery(query);
-                while (resultSet.next()) {
-                    name = String.valueOf(resultSet.getInt(1));
-                }
-                connect.close();
-
-            } else {
-                String connectionResult = "Check Connection";
-            }
-        } catch (Exception ex) {
-            Log.e("Error :", ex.getMessage());
-        }
-
-        return name;
-    }
-
     private void setSaveListener() {
         saveEditCourse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -592,15 +517,14 @@ public class EditCourseFormFragment extends Fragment {
                     int maxStudents = resultSet.getInt(6);
                     Date startDate = resultSet.getDate(7);
                     Date endDate = resultSet.getDate(8);
-                    int classRoomId = resultSet.getInt(9);
-                    Date paymentDate = resultSet.getDate(10);
-                    Float payment = resultSet.getFloat(11);
-                    Date creationDate = resultSet.getDate(12);
-                    boolean archival = resultSet.getBoolean(13);
-                    Date signDate = resultSet.getDate(14);
+                    Date paymentDate = resultSet.getDate(9);
+                    Float payment = resultSet.getFloat(10);
+                    Date creationDate = resultSet.getDate(11);
+                    boolean archival = resultSet.getBoolean(12);
+                    Date signDate = resultSet.getDate(13);
                     ArrayList<Integer> studentsList = getStudentsList();
                     ArrayList<CourseDate> courseDatesList = getCourseDatesList();
-                    course = new Course(id, courseName, teacherId, languageId, advancementId, maxStudents, startDate, endDate, classRoomId, paymentDate, payment, creationDate, archival, signDate, studentsList, courseDatesList);
+                    course = new Course(id, courseName, teacherId, languageId, advancementId, maxStudents, startDate, endDate, paymentDate, payment, creationDate, archival, signDate, studentsList, courseDatesList);
                 }
                 connect.close();
 
@@ -653,7 +577,8 @@ public class EditCourseFormFragment extends Fragment {
                     Date date = resultSet.getDate(3);
                     Time courseTimeStart = resultSet.getTime(4);
                     Time courseTimeEnd = resultSet.getTime(5);
-                    CourseDate courseDate = new CourseDate(dateId, courseId, date, courseTimeStart, courseTimeEnd);
+                    int classRoomId = resultSet.getInt(6);
+                    CourseDate courseDate = new CourseDate(dateId, courseId, date, courseTimeStart, courseTimeEnd, classRoomId);
                     courseDates.add(courseDate);
                 }
                 connect.close();
@@ -704,10 +629,6 @@ public class EditCourseFormFragment extends Fragment {
             return;
         }
 
-        int selectedClassRoomPosition = classRoomSpinner.getSelectedItemPosition();
-        String classRoomName = classRoomNameList.get(selectedClassRoomPosition);
-        int classRoomId = getClassRoomId(classRoomName);
-
         String dateOfPaymentTxt = paymentDate.getText().toString();
         if (dateOfPaymentTxt == null || dateOfPaymentTxt.equals("")) {
             Toast.makeText(getContext(), "Proszę wybrać termin płatności", Toast.LENGTH_SHORT).show();
@@ -727,7 +648,7 @@ public class EditCourseFormFragment extends Fragment {
         }
 
         String query = "UPDATE courses SET course_name = '" + name + "', teacher_id = " + teacherId + ", language_id = " + languageId + ", course_advancement_id = " + advancementId + ", max_students_number = " + Integer.valueOf(studentLimit) +
-                ", start_date = '" + startDateTxt + "', end_date = '" + endDateTxt + "', class_room_id = " + classRoomId + ", payment_date = '" + dateOfPaymentTxt + "', payment = " + Float.valueOf(cost)
+                ", start_date = '" + startDateTxt + "', end_date = '" + endDateTxt + ", payment_date = '" + dateOfPaymentTxt + "', payment = " + Float.valueOf(cost)
                 + ", sign_date = '" + dateOfSignTxt + "' where id = " + courseId;
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();

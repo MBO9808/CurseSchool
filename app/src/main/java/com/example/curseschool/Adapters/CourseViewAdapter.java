@@ -101,18 +101,6 @@ public class CourseViewAdapter extends RecyclerView.Adapter<CourseViewAdapter.Co
         }
     }
 
-    //toDO: ogarnąć edycje
-    public void editCourse(int id) {
-        Course course = courses.get(id);
-        Bundle bundle = new Bundle();
-        bundle.putInt("id", course.getId());
-        bundle.putString("courseName", course.getCourseName());
-        NewGradeNameHandler handler = new NewGradeNameHandler();
-        handler.setArguments(bundle);
-        //handler.show(courseView.getSupportFragmentManager(), NewCourseHandler.TAG);
-
-    }
-
     class CourseHolder extends RecyclerView.ViewHolder {
         private TextView courseName;
         private TextView courseTeacher;
@@ -121,7 +109,6 @@ public class CourseViewAdapter extends RecyclerView.Adapter<CourseViewAdapter.Co
         private TextView courseMaxStudents;
         private TextView courseStartDate;
         private TextView courseEndDate;
-        private TextView courseClassRoom;
         private TextView coursePaymentDate;
         private TextView coursePayment;
         private TextView courseSignDate;
@@ -135,7 +122,6 @@ public class CourseViewAdapter extends RecyclerView.Adapter<CourseViewAdapter.Co
             this.courseMaxStudents = itemView.findViewById(R.id.courseMaxStudents);
             this.courseStartDate = itemView.findViewById(R.id.courseStartDate);
             this.courseEndDate = itemView.findViewById(R.id.courseEndDate);
-            this.courseClassRoom = itemView.findViewById(R.id.courseClassRoom);
             this.coursePaymentDate = itemView.findViewById(R.id.coursePaymentDate);
             this.coursePayment = itemView.findViewById(R.id.coursePayment);
             this.courseSignDate = itemView.findViewById(R.id.courseSignDate);
@@ -150,7 +136,6 @@ public class CourseViewAdapter extends RecyclerView.Adapter<CourseViewAdapter.Co
             String students = course.getStudentsList().size() + "/" + maxStudents;
             String startDate = course.getStartDate().toString();
             String endDate = course.getEndDate().toString();
-            String classRoom = getCourseClassRoom(course.getClassRoomId());
             String paymentDate = course.getPaymentDate().toString();
             String payment = String.valueOf(course.getPayment());
             String signDate = course.getSignDate().toString();
@@ -161,7 +146,6 @@ public class CourseViewAdapter extends RecyclerView.Adapter<CourseViewAdapter.Co
             this.courseMaxStudents.setText(HtmlCompat.fromHtml("<b>Liczba studentów: </b>" + students, HtmlCompat.FROM_HTML_MODE_LEGACY));
             this.courseStartDate.setText(HtmlCompat.fromHtml("<b>Data rozpoczęcia kursu: </b>" + startDate, HtmlCompat.FROM_HTML_MODE_LEGACY));
             this.courseEndDate.setText(HtmlCompat.fromHtml("<b>Data zakończenia kursu: </b>" + endDate, HtmlCompat.FROM_HTML_MODE_LEGACY));
-            this.courseClassRoom.setText(HtmlCompat.fromHtml("<b>Sala zajęć: </b>" + classRoom, HtmlCompat.FROM_HTML_MODE_LEGACY));
             this.coursePaymentDate.setText(HtmlCompat.fromHtml("<b>Termin płatności: </b>" + paymentDate, HtmlCompat.FROM_HTML_MODE_LEGACY));
             this.coursePayment.setText(HtmlCompat.fromHtml("<b>Koszt: </b>" + payment, HtmlCompat.FROM_HTML_MODE_LEGACY));
             this.courseSignDate.setText(HtmlCompat.fromHtml("<b>Zapisy do dnia: </b>" + signDate, HtmlCompat.FROM_HTML_MODE_LEGACY));
@@ -238,30 +222,6 @@ public class CourseViewAdapter extends RecyclerView.Adapter<CourseViewAdapter.Co
                 Log.e("Error :", ex.getMessage());
             }
             return advancementName;
-        }
-
-        private String getCourseClassRoom(int classRoomId) {
-            String classRoom = "";
-            try {
-                ConnectionHelper connectionHelper = new ConnectionHelper();
-                Connection connect = connectionHelper.getConnection();
-                if (connect != null) {
-                    String query = "Select number from class_room where id = " + classRoomId;
-                    Statement statement = connect.createStatement();
-                    ResultSet resultSet = statement.executeQuery(query);
-                    while (resultSet.next()) {
-                        int room = resultSet.getInt(1);
-                        classRoom = String.valueOf(room);
-                    }
-                    connect.close();
-
-                } else {
-                    String connectionResult = "Check Connection";
-                }
-            } catch (Exception ex) {
-                Log.e("Error :", ex.getMessage());
-            }
-            return classRoom;
         }
     }
 }

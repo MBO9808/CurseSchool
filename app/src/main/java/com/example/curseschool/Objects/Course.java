@@ -12,7 +12,6 @@ public class Course {
     int maxStudents;
     Date startDate;
     Date endDate;
-    int classRoomId;
     Date paymentDate;
     Float payment;
     Date creationDate;
@@ -21,7 +20,7 @@ public class Course {
     ArrayList<Integer> studentsList;
     ArrayList<CourseDate> courseDatesList;
 
-    public Course(int id, String courseName, int teacherId, int languageId, int courseAdvancementId, int maxStudents, Date startDate, Date endDate, int classRoomId, Date paymentDate, Float payment, Date creationDate, boolean archival, Date signDate, ArrayList<Integer> studentsList, ArrayList<CourseDate> courseDatesList) {
+    public Course(int id, String courseName, int teacherId, int languageId, int courseAdvancementId, int maxStudents, Date startDate, Date endDate, Date paymentDate, Float payment, Date creationDate, boolean archival, Date signDate, ArrayList<Integer> studentsList, ArrayList<CourseDate> courseDatesList) {
         this.id = id;
         this.courseName = courseName;
         this.teacherId = teacherId;
@@ -30,7 +29,6 @@ public class Course {
         this.maxStudents = maxStudents;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.classRoomId = classRoomId;
         this.paymentDate = paymentDate;
         this.payment = payment;
         this.creationDate = creationDate;
@@ -102,14 +100,6 @@ public class Course {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
-    }
-
-    public int getClassRoomId() {
-        return classRoomId;
-    }
-
-    public void setClassRoomId(int classRoomId) {
-        this.classRoomId = classRoomId;
     }
 
     public Date getPaymentDate() {

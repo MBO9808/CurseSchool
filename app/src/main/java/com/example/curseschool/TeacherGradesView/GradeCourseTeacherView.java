@@ -86,16 +86,15 @@ public class GradeCourseTeacherView extends AppCompatActivity {
                     int advancementId = resultSet.getInt(5);
                     int maxStudents = resultSet.getInt(6);
                     Date startDate = resultSet.getDate(7);
-                    Date endDate = resultSet.getDate(8);
-                    int classRoomId = resultSet.getInt(9);
-                    Date paymentDate = resultSet.getDate(10);
-                    Float payment = resultSet.getFloat(11);
-                    Date creationDate = resultSet.getDate(12);
-                    boolean archival = resultSet.getBoolean(13);
-                    Date signDate = resultSet.getDate(14);
+                    Date endDate = resultSet.getDate(8);;
+                    Date paymentDate = resultSet.getDate(9);
+                    Float payment = resultSet.getFloat(10);
+                    Date creationDate = resultSet.getDate(11);
+                    boolean archival = resultSet.getBoolean(12);
+                    Date signDate = resultSet.getDate(13);
                     ArrayList<Integer> studentsList = getStudentsList(id);
                     ArrayList<CourseDate> courseDatesList = getCourseDatesList(id);
-                    Course course = new Course(id, courseName, teacherId, languageId, advancementId, maxStudents, startDate, endDate, classRoomId, paymentDate, payment, creationDate, archival, signDate, studentsList, courseDatesList);
+                    Course course = new Course(id, courseName, teacherId, languageId, advancementId, maxStudents, startDate, endDate, paymentDate, payment, creationDate, archival, signDate, studentsList, courseDatesList);
                     courseArrayList.add(course);
                 }
                 connect.close();
@@ -155,7 +154,8 @@ public class GradeCourseTeacherView extends AppCompatActivity {
                     Date date = resultSet.getDate(3);
                     Time courseTimeStart = resultSet.getTime(4);
                     Time courseTimeEnd = resultSet.getTime(5);
-                    CourseDate courseDate = new CourseDate(dateId, courseId, date, courseTimeStart, courseTimeEnd);
+                    int classRoomId = resultSet.getInt(6);
+                    CourseDate courseDate = new CourseDate(dateId, courseId, date, courseTimeStart, courseTimeEnd, classRoomId);
                     courseDates.add(courseDate);
                 }
                 connect.close();

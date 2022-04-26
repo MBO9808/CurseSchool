@@ -101,7 +101,8 @@ public class CourseDatesFragment extends Fragment {
                     Date date = resultSet.getDate(3);
                     Time courseTimeStart = resultSet.getTime(4);
                     Time courseTimeEnd = resultSet.getTime(5);
-                    CourseDate courseDate = new CourseDate(dateId, courseId, date, courseTimeStart, courseTimeEnd);
+                    int classRoomId = resultSet.getInt(6);
+                    CourseDate courseDate = new CourseDate(dateId, courseId, date, courseTimeStart, courseTimeEnd, classRoomId);
                     courseDateArrayList.add(courseDate);
                 }
                 connect.close();

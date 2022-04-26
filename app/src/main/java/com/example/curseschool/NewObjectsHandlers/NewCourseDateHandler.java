@@ -15,8 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -37,6 +39,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class NewCourseDateHandler extends BottomSheetDialogFragment {
@@ -49,6 +52,8 @@ public class NewCourseDateHandler extends BottomSheetDialogFragment {
     private String connectionResult = "";
     private DatePickerDialog.OnDateSetListener setListenerOnDate;
     private int courseTimeFromHour, courseTimeFromMinute, courseTimeToHour, courseTimeToMinute;
+    private ArrayList<String> classRoomNameList;
+    private Spinner classRoomSpinner;
 
     public static NewCourseDateHandler newInstance() {
         return new NewCourseDateHandler();
@@ -78,6 +83,9 @@ public class NewCourseDateHandler extends BottomSheetDialogFragment {
         courseTimeTo = requireView().findViewById(R.id.textAddNewTimeEnd);
         createTimePickers();
         saveButton = requireView().findViewById(R.id.saveNewCourseDate);
+        classRoomSpinner = requireView().findViewById(R.id.textAddNewClassRoomSpinner);
+        createClassRoomSpinner();
+
         boolean isUpdate = false;
         final Bundle bundle = getArguments();
 
@@ -86,10 +94,13 @@ public class NewCourseDateHandler extends BottomSheetDialogFragment {
             String date = bundle.getString("courseDate");
             String timeFrom = bundle.getString("startTime");
             String timeTo = bundle.getString("endTime");
+            Integer classRoomId = bundle.getInt("classRoomId");
             courseDate.setText(date);
             courseTimeFrom.setText(timeFrom);
             courseTimeTo.setText(timeTo);
-            if (date != null && timeFrom != null && timeTo != null && !date.equals("") && !timeFrom.equals("") && !timeTo.equals(""))
+            int position = getClassRoomPosition(classRoomId);
+            classRoomSpinner.setSelection(position);
+            if (classRoomId != null && date != null && timeFrom != null && timeTo != null && !date.equals("") && !timeFrom.equals("") && !timeTo.equals(""))
                 saveButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.teal_200));
         }
 
@@ -163,14 +174,17 @@ public class NewCourseDateHandler extends BottomSheetDialogFragment {
                 String date = courseDate.getText().toString();
                 String timeFrom = courseTimeFrom.getText().toString();
                 String timeTo = courseTimeTo.getText().toString();
+                int selectedClassRoomPosition = classRoomSpinner.getSelectedItemPosition();
+                String classRoomName = classRoomNameList.get(selectedClassRoomPosition);
+                int classRoomId = getClassRoomId(classRoomName);
                 if (date != null && timeFrom != null && timeTo != null && !date.equals("") && !timeFrom.equals("") && !timeTo.equals("")) {
                     if (updated) {
                         int id = bundle.getInt("id");
-                        updateCourseDate(date, timeFrom, timeTo, id);
+                        updateCourseDate(date, timeFrom, timeTo, id, classRoomId);
                         dismiss();
                     } else {
                         int id = findMaxId();
-                        addNewCourseDate(date, timeFrom, timeTo, id);
+                        addNewCourseDate(date, timeFrom, timeTo, id, classRoomId);
                         dismiss();
                     }
                 } else {
@@ -293,8 +307,8 @@ public class NewCourseDateHandler extends BottomSheetDialogFragment {
             ((CourseDateDialogCloseHandler) activity).handleDialogClose(dialog);
     }
 
-    private void updateCourseDate(String date, String timeFrom, String timeTo, int id) {
-        String query = "UPDATE course_dates SET course_date = '" + date + "', course_time_start = '" + timeFrom + "', course_time_end = '" + timeTo + "' WHERE id = " + id;
+    private void updateCourseDate(String date, String timeFrom, String timeTo, int id, int classRoomId) {
+        String query = "UPDATE course_dates SET course_date = '" + date + "', course_time_start = '" + timeFrom + "', course_time_end = '" + timeTo + "', class_room_id = " + classRoomId + " WHERE id = " + id;
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
@@ -311,11 +325,11 @@ public class NewCourseDateHandler extends BottomSheetDialogFragment {
         }
     }
 
-    private void addNewCourseDate(String date, String timeFrom, String timeTo, int id) {
+    private void addNewCourseDate(String date, String timeFrom, String timeTo, int id, int classRoomId) {
         Date courseDate = Date.valueOf(date);
         int courseId = getActivity().getIntent().getIntExtra("courseId", 0);
-        String query = "INSERT INTO course_dates (id, course_id, course_date, course_time_start, course_time_end) "
-                + " VALUES(?,?,?,?,?)";
+        String query = "INSERT INTO course_dates (id, course_id, course_date, course_time_start, course_time_end, class_room_id) "
+                + " VALUES(?,?,?,?,?,?)";
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
@@ -326,6 +340,7 @@ public class NewCourseDateHandler extends BottomSheetDialogFragment {
                 preparedStatement.setDate(3, courseDate);
                 preparedStatement.setString(4, timeFrom);
                 preparedStatement.setString(5, timeTo);
+                preparedStatement.setInt(6, classRoomId);
                 preparedStatement.execute();
                 connect.close();
 
@@ -335,5 +350,97 @@ public class NewCourseDateHandler extends BottomSheetDialogFragment {
         } catch (Exception ex) {
             Log.e("Error :", ex.getMessage());
         }
+    }
+
+    private void createClassRoomSpinner() {
+        classRoomNameList = getClassRoomList();
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, classRoomNameList);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        classRoomSpinner.setAdapter(spinnerAdapter);
+    }
+
+    private ArrayList<String> getClassRoomList() {
+        ArrayList<String> classRoomList = new ArrayList<>();
+        try {
+            ConnectionHelper connectionHelper = new ConnectionHelper();
+            Connection connect = connectionHelper.getConnection();
+            if (connect != null) {
+                String query = "Select number from class_room where archival = 0 order by number asc";
+                Statement statement = connect.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                while (resultSet.next()) {
+                    String name = String.valueOf(resultSet.getInt(1));
+                    classRoomList.add(name);
+                }
+                connect.close();
+
+            } else {
+                String connectionResult = "Check Connection";
+            }
+        } catch (Exception ex) {
+            Log.e("Error :", ex.getMessage());
+        }
+
+        return classRoomList;
+    }
+
+    private int getClassRoomId(String className) {
+        int classRoomId = 0;
+        try {
+            ConnectionHelper connectionHelper = new ConnectionHelper();
+            Connection connect = connectionHelper.getConnection();
+            if (connect != null) {
+                String query = "Select id from class_room where archival = 0 and number = '" + className + "'";
+                Statement statement = connect.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                while (resultSet.next()) {
+                    classRoomId = resultSet.getInt(1);
+                }
+                connect.close();
+
+            } else {
+                String connectionResult = "Check Connection";
+            }
+        } catch (Exception ex) {
+            Log.e("Error :", ex.getMessage());
+        }
+
+        return classRoomId;
+    }
+
+    private int getClassRoomPosition(int classRoomId) {
+        int position = 0;
+        String classRoomName = getClassRoomName(classRoomId);
+        for (int i = 0; i < classRoomNameList.size(); i++) {
+            if (classRoomName.equals(classRoomNameList.get(i))) {
+                position = i;
+            }
+        }
+
+        return position;
+    }
+
+    private String getClassRoomName(int classRoomId) {
+        String name = "";
+        try {
+            ConnectionHelper connectionHelper = new ConnectionHelper();
+            Connection connect = connectionHelper.getConnection();
+            if (connect != null) {
+                String query = "Select number from class_room where id = " + classRoomId;
+                Statement statement = connect.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                while (resultSet.next()) {
+                    name = String.valueOf(resultSet.getInt(1));
+                }
+                connect.close();
+
+            } else {
+                String connectionResult = "Check Connection";
+            }
+        } catch (Exception ex) {
+            Log.e("Error :", ex.getMessage());
+        }
+
+        return name;
     }
 }

@@ -33,11 +33,21 @@
         android:hint="Wybierz czas zakończenia"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
+    <Spinner
+        android:id="@+id/textAddNewClassRoomSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textAddNewTimeEnd"
+        android:textColor="@color/black"
+        android:textSize="10dp"
+        android:hint="Wybierz salę"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
     <Button
         android:id="@+id/saveNewCourseDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textAddNewTimeEnd"
+        android:layout_below="@id/textAddNewClassRoomSpinner"
         android:layout_alignParentEnd="true"
         android:background="@android:color/transparent"
         android:text="Zapisz"
