@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.curseschool.Notification.UserNotification;
 import com.example.curseschool.ScheduleView.CalendarView;
 import com.example.curseschool.CourseView.CourseView;
 import com.example.curseschool.LoginActivity.LoginActivity;
@@ -40,6 +41,7 @@ public class mainFragment extends Fragment {
     private Button courseOverview;
     private Button teacherGradeView;
     private Button studentGradeView;
+    private Button notificationView;
     private Button calendar;
 
     public mainFragment() {
@@ -74,11 +76,13 @@ public class mainFragment extends Fragment {
         courseOverview = view.findViewById(R.id.courseOverview);
         teacherGradeView = view.findViewById(R.id.teachersGradeView);
         studentGradeView = view.findViewById(R.id.studentGradeView);
+        notificationView = view.findViewById(R.id.notificationView);
         calendar = view.findViewById(R.id.calendar);
         setCourseOverviewListener();
         setTeacherGradeViewListener();
         setStudentGradeViewListener();
         setCalendarViewListener();
+        setNotificationViewListener();
         return view;
     }
 
@@ -121,6 +125,17 @@ public class mainFragment extends Fragment {
             public void onClick(View view) {
                 if (view.getId() == calendar.getId()) {
                     startActivity(new Intent(getActivity(), CalendarView.class));
+                }
+            }
+        });
+    }
+
+    private void setNotificationViewListener() {
+        notificationView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (view.getId() == notificationView.getId()) {
+                    startActivity(new Intent(getActivity(), UserNotification.class));
                 }
             }
         });
