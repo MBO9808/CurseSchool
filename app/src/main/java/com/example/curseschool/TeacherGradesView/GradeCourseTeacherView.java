@@ -18,7 +18,10 @@ import com.example.curseschool.Helpers.ConnectionHelper;
 import com.example.curseschool.MainView.MainSite;
 import com.example.curseschool.Objects.Course;
 import com.example.curseschool.Objects.CourseDate;
+import com.example.curseschool.Objects.User;
 import com.example.curseschool.R;
+import com.example.curseschool.UserUtils.UserKind;
+import com.example.curseschool.UserUtils.UserUtils;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -70,12 +73,18 @@ public class GradeCourseTeacherView extends AppCompatActivity {
 
     private ArrayList<Course> createCourseListData() {
         int currentUserId = getCurrentUserId();
+        User user = UserUtils.getUserById(currentUserId);
         courseArrayList.clear();
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             Connection connect = connectionHelper.getConnection();
             if (connect != null) {
-                String query = "Select * from courses where archival = 0 and teacher_id = " + currentUserId;
+                String query = "";
+                if(user.getType().equals(UserKind.admin.toString())) {
+                    query = "Select * from courses where archival = 0";
+                } else {
+                    query = "Select * from courses where archival = 0 and teacher_id = " + currentUserId;
+                }
                 Statement statement = connect.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {

@@ -318,14 +318,14 @@ public class NewUserHandler extends BottomSheetDialogFragment {
     }
 
     public String getUserKind(String type) {
-        if (type.equals(String.valueOf(R.string.admin))) {
+        if (type.equals("Administrator")) {
             return UserKind.admin.toString();
-        } else if (type.equals(String.valueOf(R.string.student))) {
+        } else if (type.equals(R.string.student)) {
             return UserKind.student.toString();
-        } else if (type.equals(String.valueOf(R.string.teacher))) {
+        } else if (type.equals(R.string.teacher)) {
             return UserKind.teacher.toString();
         } else {
-            return "";
+            return UserKind.student.toString();
         }
     }
 
