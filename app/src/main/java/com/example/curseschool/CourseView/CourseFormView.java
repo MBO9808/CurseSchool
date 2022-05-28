@@ -38,7 +38,10 @@ public class CourseFormView extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         String title = getIntent().getStringExtra("courseName");
-        toolbar.setTitle(title);
+        if (title == null || title.isEmpty())
+            toolbar.setTitle("Kurs");
+        else
+            toolbar.setTitle(title);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,11 +61,11 @@ public class CourseFormView extends AppCompatActivity {
         courseFormAdapter.addFragment(new CourseFormFragment(), "Kurs");
         courseFormAdapter.addFragment(new CourseDatesFragment(), "Terminy");
         User currentUser = UserUtils.getUserById(currentUserId);
-        if (!currentUser.getType().equals(UserKind.student)) {
+        if (currentUser.getType().equals(UserKind.student.toString())) {
+            tabLayout.getTabAt(2).view.setVisibility(View.GONE);
+        } else {
             tabLayout.getTabAt(2).view.setVisibility(View.VISIBLE);
             courseFormAdapter.addFragment(new CourseStudentsFragment(), "Zapisani studenci");
-        } else {
-            tabLayout.getTabAt(2).view.setVisibility(View.GONE);
         }
         viewPager.setAdapter(courseFormAdapter);
     }

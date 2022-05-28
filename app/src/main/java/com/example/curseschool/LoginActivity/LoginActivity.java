@@ -75,7 +75,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void validateFields() throws SQLException {
-        startActivity(new Intent(LoginActivity.this, MainSite.class));
         initializeFields();
         boolean isEmpty = checkIfFieldsEmpty();
         if (!isEmpty) {
@@ -135,9 +134,11 @@ public class LoginActivity extends AppCompatActivity {
     private boolean validateLogin() throws SQLException {
         boolean loginSuccess = false;
         String userEmail = inputUserLogin.getText().toString();
+        if(userEmail.isEmpty())
+            return false;
         String userPassword = inputUserPassword.getText().toString();
         ResultSet resultSet = getResultSet(userEmail);
-        if (resultSet.next() == false) {
+        if (resultSet == null || resultSet.next() == false) {
             showError(inputUserLogin, "Nieprawidłowy adres email!");
         } else {
             do {

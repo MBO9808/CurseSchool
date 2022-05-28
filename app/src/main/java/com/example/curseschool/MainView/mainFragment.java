@@ -16,12 +16,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.curseschool.Notification.UserNotification;
+import com.example.curseschool.Objects.User;
 import com.example.curseschool.ScheduleView.CalendarView;
 import com.example.curseschool.CourseView.CourseView;
 import com.example.curseschool.LoginActivity.LoginActivity;
 import com.example.curseschool.R;
 import com.example.curseschool.StudentGradesView.GradesStudentCourseView;
 import com.example.curseschool.TeacherGradesView.GradeCourseTeacherView;
+import com.example.curseschool.UserUtils.UserKind;
+import com.example.curseschool.UserUtils.UserUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,12 +81,33 @@ public class mainFragment extends Fragment {
         studentGradeView = view.findViewById(R.id.studentGradeView);
         notificationView = view.findViewById(R.id.notificationView);
         calendar = view.findViewById(R.id.calendar);
+        handleButtonsView();
         setCourseOverviewListener();
         setTeacherGradeViewListener();
         setStudentGradeViewListener();
         setCalendarViewListener();
         setNotificationViewListener();
         return view;
+    }
+
+    private void handleButtonsView() {
+        int currentUserId = getCurrentUserId();
+        User user = UserUtils.getUserById(currentUserId);
+        if (user.getId() != 0) {
+            if (user.getType().equals(UserKind.admin.toString())) {
+                studentGradeView.setVisibility(View.GONE);
+            } else if (user.getType().equals(UserKind.teacher.toString())) {
+                studentGradeView.setVisibility(View.GONE);
+            } else {
+                teacherGradeView.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private int getCurrentUserId() {
+        SharedPreferences sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        int id = sharedpreferences.getInt("id", 0);
+        return id;
     }
 
     private void setCourseOverviewListener() {

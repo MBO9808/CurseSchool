@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Kursowo</string>
+    <string name="app_name">MBOApp</string>
     <string name="hello_blank_fragment">Tutaj coś będzie</string>
     <string name="admin">Administrator</string>
     <string name="teacher">Nauczyciel</string>

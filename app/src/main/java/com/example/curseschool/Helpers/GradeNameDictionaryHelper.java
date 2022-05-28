@@ -34,8 +34,8 @@ public class GradeNameDictionaryHelper extends ItemTouchHelper.SimpleCallback {
         final int gradeNameId = viewHolder.getAdapterPosition();
         if (direction == ItemTouchHelper.LEFT) {
             AlertDialog.Builder builder = new AlertDialog.Builder(gradeNameAdapter.getContext());
-            builder.setTitle("Usuń poziom zaawansowania");
-            builder.setMessage("Czy na pewno chcesz usunąć poziom zaawansowania?");
+            builder.setTitle("Usuń typ oceny");
+            builder.setMessage("Czy na pewno chcesz usunąć typ oceny?");
             builder.setPositiveButton("Tak", (dialogInterface, i) -> {
                 gradeNameAdapter.deleteGradeName(gradeNameId);
             });

@@ -19,7 +19,10 @@ import androidx.fragment.app.Fragment;
 import com.example.curseschool.Helpers.ConnectionHelper;
 import com.example.curseschool.Objects.Course;
 import com.example.curseschool.Objects.CourseDate;
+import com.example.curseschool.Objects.User;
 import com.example.curseschool.R;
+import com.example.curseschool.UserUtils.UserKind;
+import com.example.curseschool.UserUtils.UserUtils;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.sql.Connection;
@@ -47,6 +50,7 @@ public class CourseFormFragment extends Fragment {
     private TextView coursePaymentValue;
     private TextView courseEnroll;
     private Button signForCourse;
+    private User currentUser;
     private int currentUserId;
     private ExtendedFloatingActionButton fabOptions, fabEdit, fabArchive;
     private Animation fabOpen, fabClose, rotateForward, rotateBackward;
@@ -57,10 +61,9 @@ public class CourseFormFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_course_form, container, false);
         courseId = getActivity().getIntent().getIntExtra("courseId", 0);
-        currentUserId = getCurrentUserId();
+        currentUser = getCurrentUserId();
         initTextViews();
         setTextViewsValues();
-        handleSignButtonVisibility();
         setListenerForSign();
         handleFloatingButton();
         return view;
@@ -281,6 +284,11 @@ public class CourseFormFragment extends Fragment {
     }
 
     private void setListenerForSign() {
+        if(currentUser.getType().equals(UserKind.student.toString())){
+            signForCourse.setVisibility(View.VISIBLE);
+        } else {
+            signForCourse.setVisibility(View.GONE);
+        }
         signForCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -311,10 +319,12 @@ public class CourseFormFragment extends Fragment {
         return alreadySigned;
     }
 
-    private int getCurrentUserId() {
+    private User getCurrentUserId() {
         SharedPreferences sharedpreferences = getContext().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         int id = sharedpreferences.getInt("id", 0);
-        return id;
+        User user = UserUtils.getUserById(id);
+        currentUserId = id;
+        return user;
     }
 
     private void signUserOnCourse() {
@@ -398,11 +408,16 @@ public class CourseFormFragment extends Fragment {
         fabOptions = (ExtendedFloatingActionButton) view.findViewById(R.id.fab_options);
         fabEdit = (ExtendedFloatingActionButton) view.findViewById(R.id.fab_edit);
         fabArchive = (ExtendedFloatingActionButton) view.findViewById(R.id.fab_archive);
-
+        
         fabOpen = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
         fabClose = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
         rotateForward = AnimationUtils.loadAnimation(getContext(), R.anim.rotate_forward);
         rotateBackward = AnimationUtils.loadAnimation(getContext(), R.anim.rotate_backward);
+        if(currentUser.getType().equals(UserKind.admin.toString())){
+            fabOptions.setVisibility(View.VISIBLE);
+        } else {
+            fabOptions.setVisibility(View.GONE);
+        }
     }
 
     private void setFabListeners(){

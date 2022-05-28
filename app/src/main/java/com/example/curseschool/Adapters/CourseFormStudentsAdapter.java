@@ -1,6 +1,8 @@
 package com.example.curseschool.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +11,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.curseschool.CourseView.CourseFormView;
 import com.example.curseschool.CourseView.CourseStudentsFragment;
+import com.example.curseschool.CourseView.CourseViewStudentDataView;
 import com.example.curseschool.Objects.Student;
+import com.example.curseschool.Objects.User;
 import com.example.curseschool.R;
+import com.example.curseschool.UserUtils.UserKind;
+import com.example.curseschool.UserUtils.UserUtils;
 
 import java.util.ArrayList;
 
@@ -20,6 +27,8 @@ public class CourseFormStudentsAdapter extends RecyclerView.Adapter<CourseFormSt
     private Context context;
     private ArrayList<Student> students;
     private CourseStudentsFragment courseStudentsFragment;
+    private String MyPREFERENCES = "userData";
+    private User currentUser;
 
     public CourseFormStudentsAdapter(Context context, ArrayList<Student> studentArrayList, CourseStudentsFragment studentsFragment) {
         this.context = context;
@@ -40,6 +49,25 @@ public class CourseFormStudentsAdapter extends RecyclerView.Adapter<CourseFormSt
     public void onBindViewHolder(@NonNull CourseFormStudentsAdapter.StudentListHolder holder, int position) {
         Student student = students.get(position);
         holder.setDetails(student);
+        currentUser = getCurrentUser();
+        if(currentUser.getType().equals(UserKind.admin.toString())) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, CourseViewStudentDataView.class);
+                    intent.putExtra("courseId", student.getCourseId());
+                    intent.putExtra("studentId", student.getId());
+                    context.startActivity(intent);
+                }
+            });
+        }
+    }
+
+    private User getCurrentUser() {
+        SharedPreferences sharedpreferences = getContext().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        int id = sharedpreferences.getInt("id", 0);
+        User user = UserUtils.getUserById(id);
+        return user;
     }
 
     @Override

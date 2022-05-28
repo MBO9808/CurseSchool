@@ -118,7 +118,8 @@ public class NewCourseMainFormFragment extends Fragment {
         courseStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Dialog_MinWidth, setListenerOnStartDate, year, month, day);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+                        android.R.style.Theme_Holo_Dialog_MinWidth, setListenerOnStartDate, year, month, day);
                 datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 datePickerDialog.show();
             }
@@ -129,15 +130,11 @@ public class NewCourseMainFormFragment extends Fragment {
             public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
                 month += 1;
                 String monthTxt = String.valueOf(month);
-                if (month < 10) {
+                if (month < 10)
                     monthTxt = "0" + month;
-                }
-
                 String dayOfMonthTxt = String.valueOf(dayOfMonth);
-                if (dayOfMonth < 10) {
+                if (dayOfMonth < 10)
                     dayOfMonthTxt = "0" + dayOfMonthTxt;
-                }
-
                 String date = year + "-" + monthTxt + "-" + dayOfMonthTxt;
                 courseStartDate.setText(date);
             }
@@ -217,6 +214,7 @@ public class NewCourseMainFormFragment extends Fragment {
         setListenerOnSignDate = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+                month += 1;
                 String monthTxt = String.valueOf(month);
                 if (month < 10) {
                     monthTxt = "0" + month;
@@ -414,7 +412,8 @@ public class NewCourseMainFormFragment extends Fragment {
         java.sql.Date endDate = java.sql.Date.valueOf(endDateTxt);
 
         if(startDate.after(endDate)){
-            Toast.makeText(getContext(), "Data rozpoczęcia kursu nie może być późniejsza niż data zakończenia kursu", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Data rozpoczęcia kursu nie może być późniejsza niż data zakończenia kursu",
+                    Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -442,7 +441,8 @@ public class NewCourseMainFormFragment extends Fragment {
         String currentDateStr = simpleDateFormat.format(currentDate);
         java.sql.Date creationDate = java.sql.Date.valueOf(currentDateStr);
 
-        String query = "INSERT INTO courses (id, course_name, teacher_id, language_id, course_advancement_id, max_students_number, start_date, end_date, payment_date, payment, creation_date, archival, sign_date) "
+        String query = "INSERT INTO courses (id, course_name, teacher_id, language_id, course_advancement_id, " +
+                "max_students_number, start_date, end_date, payment_date, payment, creation_date, archival, sign_date) "
                 + " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
             int courseId = findMaxId();

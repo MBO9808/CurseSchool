@@ -116,6 +116,12 @@ public class thirdFragment extends Fragment {
             settingsUsers.setVisibility(View.VISIBLE);
             settingsCourseAdvancement.setVisibility(View.VISIBLE);
             settingGradeType.setVisibility(View.VISIBLE);
+        } else if (userType.equals(UserKind.teacher.toString())) {
+            settingsCourseLanguages.setVisibility(View.GONE);
+            settingsClassRoom.setVisibility(View.GONE);
+            settingsUsers.setVisibility(View.GONE);
+            settingsCourseAdvancement.setVisibility(View.GONE);
+            settingGradeType.setVisibility(View.VISIBLE);
         } else {
             settingsCourseLanguages.setVisibility(View.GONE);
             settingsClassRoom.setVisibility(View.GONE);
@@ -203,7 +209,7 @@ public class thirdFragment extends Fragment {
         });
     }
 
-    private void setSettingsChangeUserPersonalDataListener(){
+    private void setSettingsChangeUserPersonalDataListener() {
         settingsChangeUserPersonalData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -214,7 +220,7 @@ public class thirdFragment extends Fragment {
         });
     }
 
-    private void setSettingsChangeUserPasswordListener(){
+    private void setSettingsChangeUserPasswordListener() {
         settingsChangeUserPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -42,7 +42,7 @@ public class CourseAdvancementDictionary extends AppCompatActivity implements Co
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_advancement_dictionary);
         toolbar = findViewById(R.id.mainToolBar);
-        toolbar.setTitle("Słownik poziomów zaawansownia kursu");
+        toolbar.setTitle("Słownik poziomów zaawansownia");
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

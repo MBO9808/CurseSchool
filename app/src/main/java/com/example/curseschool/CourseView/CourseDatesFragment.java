@@ -43,15 +43,24 @@ public class CourseDatesFragment extends Fragment {
     private CourseFormDatesAdapter courseFormDatesAdapter;
     private int courseId;
     private ExtendedFloatingActionButton fabEdit;
+    private User currentUser;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_course_dates, container, false);
         courseId = getActivity().getIntent().getIntExtra("courseId", 0);
+        currentUser = getCurrentUser();
         initDictionaryView(view);
         handleFabButton();
         return view;
+    }
+
+    private User getCurrentUser() {
+        SharedPreferences sharedpreferences = getContext().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        int id = sharedpreferences.getInt("id", 0);
+        User user = UserUtils.getUserById(id);
+        return user;
     }
 
     private void initDictionaryView(View view) {
@@ -66,6 +75,10 @@ public class CourseDatesFragment extends Fragment {
 
     private void handleFabButton() {
         fabEdit = view.findViewById(R.id.fabEditDates);
+        if(currentUser.getType().equals(UserKind.admin.toString()))
+            fabEdit.setVisibility(View.VISIBLE);
+        else
+            fabEdit.setVisibility(View.GONE);
         fabEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

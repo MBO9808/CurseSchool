@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CurseSchool">
-        <activity android:name=".Notification.UserNotification"></activity>
+        <activity android:name=".CourseView.CourseViewStudentDataView"></activity>
+        <activity android:name=".Notification.UserNotification" />
         <activity android:name=".UserSettingsActivities.UserChangePassword" />
         <activity android:name=".UserSettingsActivities.UserChangePersonalData" />
         <activity android:name=".UserSettingsActivities.UserChangeEmail" />

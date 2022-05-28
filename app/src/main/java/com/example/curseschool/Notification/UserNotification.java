@@ -7,8 +7,10 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,7 +23,10 @@ import com.example.curseschool.MainView.MainSite;
 import com.example.curseschool.NewObjectsHandlers.NewCourseLanguageHandler;
 import com.example.curseschool.NewObjectsHandlers.NewNotificationHandler;
 import com.example.curseschool.Objects.Notification;
+import com.example.curseschool.Objects.User;
 import com.example.curseschool.R;
+import com.example.curseschool.UserUtils.UserKind;
+import com.example.curseschool.UserUtils.UserUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.sql.Connection;
@@ -38,6 +43,8 @@ public class UserNotification extends AppCompatActivity implements LanguageDialo
     private ArrayList<Notification> notificationArrayList;
     private Toolbar toolbar;
     private FloatingActionButton newNotification;
+    private String MyPREFERENCES = "userData";
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +62,7 @@ public class UserNotification extends AppCompatActivity implements LanguageDialo
                 startActivity(intent);
             }
         });
+        currentUser = getCurrentUser();
         initDictionaryView();
         handleSwipe();
         handleLanguageList();
@@ -68,7 +76,7 @@ public class UserNotification extends AppCompatActivity implements LanguageDialo
         startActivity(intent);
     }
 
-    private void initDictionaryView(){
+    private void initDictionaryView() {
         recyclerView = findViewById(R.id.notificationList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         notificationArrayList = new ArrayList<>();
@@ -77,18 +85,33 @@ public class UserNotification extends AppCompatActivity implements LanguageDialo
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
     }
 
-    private void handleLanguageList(){
+    private void handleLanguageList() {
         notificationArrayList = createNotificationListData();
     }
 
-    private void handleSwipe(){
+    private void handleSwipe() {
+        if (currentUser.getType().equals(UserKind.student.toString()))
+            return;
+
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new NotificationHelper(notificationAdapter));
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    private void handleFloatingButton(){
+    private User getCurrentUser() {
+        SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        int id = sharedpreferences.getInt("id", 0);
+        User user = UserUtils.getUserById(id);
+        return user;
+    }
+
+    private void handleFloatingButton() {
         newNotification = findViewById(R.id.addNewNotification);
-        setListenerForNewNotification();
+        if (currentUser.getType().equals(UserKind.student.toString()))
+            newNotification.setVisibility(View.GONE);
+        else {
+            newNotification.setVisibility(View.VISIBLE);
+            setListenerForNewNotification();
+        }
     }
 
     private ArrayList<Notification> createNotificationListData() {

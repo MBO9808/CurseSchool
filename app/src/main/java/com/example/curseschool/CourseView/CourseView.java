@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,7 +19,10 @@ import com.example.curseschool.MainView.MainSite;
 import com.example.curseschool.NewObjectsHandlers.NewCourseLanguageHandler;
 import com.example.curseschool.Objects.Course;
 import com.example.curseschool.Objects.CourseDate;
+import com.example.curseschool.Objects.User;
 import com.example.curseschool.R;
+import com.example.curseschool.UserUtils.UserKind;
+import com.example.curseschool.UserUtils.UserUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.sql.Connection;
@@ -35,6 +40,8 @@ public class CourseView extends AppCompatActivity {
     private ArrayList<Course> courseArrayList;
     private Toolbar toolbar;
     private FloatingActionButton newCourse;
+    private String MyPREFERENCES = "userData";
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +59,17 @@ public class CourseView extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        currentUser = getCurrentUser();
         initDictionaryView();
         handleCoursesList();
         handleFloatingButton();
+    }
+
+    private User getCurrentUser() {
+        SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        int id = sharedpreferences.getInt("id", 0);
+        User user = UserUtils.getUserById(id);
+        return user;
     }
 
     @Override
@@ -79,6 +94,10 @@ public class CourseView extends AppCompatActivity {
 
     private void handleFloatingButton(){
         newCourse = findViewById(R.id.addNewCourse);
+        if(currentUser.getType().equals(UserKind.admin.toString()))
+            newCourse.setVisibility(View.VISIBLE);
+        else
+            newCourse.setVisibility(View.GONE);
         setListenerForNewCourse();
     }
 
